@@ -1,0 +1,39 @@
+\documentclass[
+    table,
+    12pt,
+    twoside,
+    a4paper,
+    italian
+]{book}
+
+\input{config/packages}
+\input{config/thesis_config}
+
+\date{}
+
+\hypersetup{pdfstartview=}
+\begin{document}
+    \frontmatter
+    \input{preface/1_title_page}
+    \increasepagenumbering % increase the page numbrering by 1, in order to cout the frontispiece
+    \input{preface/2_copyright}
+    \input{preface/3_acknowledgements}
+    \input{preface/4_abstract}
+    \input{preface/5_table_of_contents}
+    \printglossary[type=\acronymtype, title=Acronimi e abbreviazioni, toctitle=Acronimi e abbreviazioni]
+    \printglossary[type=main, title=Glossario, toctitle=Glossario]
+    \blankpage % example of a blank page that also increases the page couter by 1
+
+    \mainmatter
+    \input{chapters/1_contesto_aziendale}
+    \input{chapters/2_motivazioni_obiettivi}
+    \input{chapters/3_sviluppo_estensione}
+    \input{chapters/4_valutazione}
+
+    \clearpage % garantisce che le pagine del cap. 4 vengano "spedite" con numerazione araba prima del reset a romana
+    \pagenumbering{roman}
+    \backmatter
+    \renewcommand{\chaptermark}[1]{\markboth{#1}{}} % capitoli non numerati (bibliografia, sitografia) non devono ripetere l'ultimo numero di capitolo nell'intestazione
+    \input{references/bibliography}
+    \input{references/webliography}
+\end{document}

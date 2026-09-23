@@ -1,0 +1,85 @@
+# ============================================================
+# .gitignore per il progetto di tesi LaTeX (template UniPD)
+# ============================================================
+
+## --- Output di compilazione principali ---
+*.pdf
+*.dvi
+*.synctex.gz
+*.synctex(busy)
+
+## --- File ausiliari standard di LaTeX ---
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.nav
+*.snm
+*.vrb
+*.figlist
+*.makefile
+*.auxlock
+
+## --- biblatex / biber ---
+*.bbl
+*.bcf
+*.bcf-SAVE-ERROR
+*.bcf-SAVE
+*.blg
+*.run.xml
+
+## --- glossaries / acronimi (pacchetto glossaries) ---
+*.glo
+*.gls
+*.glg
+*.glsdefs
+*.acn
+*.acr
+*.alg
+*.ist
+*.xdy
+
+## --- elenco codici sorgenti (listings/minted personalizzato) ---
+*.lol
+
+## --- minted (evidenziazione sintassi, richiede -shell-escape) ---
+_minted*/
+minted-caches/
+**/_minted-*/
+
+## --- pdfx (metadati PDF/A) ---
+*.xmpi
+
+## --- indici e altri strumenti ---
+*.idx
+*.ind
+*.ilg
+*.brf
+
+## --- backup ed editor ---
+*~
+*.bak
+*.swp
+*.swo
+*.tmp
+
+## --- macOS / Windows / Linux ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## --- editor / IDE ---
+.vscode/
+.idea/
+*.tex.backup
+
+# ============================================================
+# Nota: se si vuole invece TENERE nel repository il PDF finale
+# compilato (thesis.pdf), aggiungere un'eccezione esplicita, ad
+# esempio:
+# !thesis/files/thesis.pdf
+# ============================================================
