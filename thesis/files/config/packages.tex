@@ -1,4 +1,5 @@
 \PassOptionsToPackage{dvipsnames}{xcolor} % colori PDF/A
+\PassOptionsToPackage{hyperfootnotes=false}{hyperref} % note a piè di pagina non cliccabili nel testo (v. anche punto 7)
 
 \usepackage{colorprofiles}
 % PDF/A
@@ -22,7 +23,7 @@
 \usepackage[italian]{varioref} % riferimenti completi della pagina
 \usepackage{longtable} % tabelle su più pagine
 \usepackage[toc, acronym, automake]{glossaries}
-\usepackage[backend=biber, style=verbose-ibid, hyperref, backref]{biblatex}
+\usepackage[backend=biber, style=apa, hyperref=false, backref=true]{biblatex} % stile APA7; citazioni non cliccabili nel testo (v. thesis_config.tex)
 \usepackage{lmodern}
 \usepackage[top=3cm, bottom=3cm, inner=3.5cm, outer=2.5cm]{geometry} % margini specchiati per la rilegatura (richiede twoside nella \documentclass)
 \usepackage{parskip} % paragrafi separati da spazio verticale, senza rientro di prima riga

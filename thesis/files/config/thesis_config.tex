@@ -3,7 +3,7 @@
 \input{references/glossary_acronyms}
 
 % Define custom colors
-\definecolor{hyperColor}{HTML}{0B3EE3}
+\definecolor{hyperColor}{HTML}{7D0767}
 \definecolor{tableGray}{HTML}{F5F5F7}
 \definecolor{veryPeri}{HTML}{6667ab}
 
@@ -33,6 +33,24 @@
 
 % Add a subscript G to a glossary entry
 \newcommand{\glox}{\textsubscript{\textbf{\textit{G}}}}
+
+% Placeholder visibile per le parti non ancora scritte
+\newcommand{\todoplaceholder}[1]{\par\noindent\textcolor{red!65!black}{\textbf{[DA COMPLETARE]} #1}\par}
+
+% Comando di citazione per le fonti giuridiche (leggi, decreti, direttive):
+% stampa il campo "shorthand" del file .bib (tipo di atto, data completa, numero)
+% invece della citazione autore-anno in stile APA, mantenendo comunque il
+% collegamento bibliografico e il backref standard di biblatex.
+% Uso identico a \footcite: \legfootcite[postnote]{chiave-bib}
+\DeclareCiteCommand{\legfootcite}[\mkbibfootnote]
+  {}
+  {\usebibmacro{citeindex}%
+   \thefield{shorthand}%
+   \iffieldundef{postnote}
+     {}
+     {\addcomma\space\printfield{postnote}}}
+  {\multicitedelim}
+  {\addperiod}
 
 % Titolo di capitolo: numero e titolo sulla stessa riga (niente "Capitolo N" a capo)
 \titleformat{\chapter}[hang]{\normalfont\Huge\bfseries}{\thechapter}{1em}{}
@@ -101,19 +119,6 @@
 \endgroup
 }
 
-% Adds a blank page while increasing the page number
-\newcommand\blankpagewithnumber{ 
-  \clearpage
-  \thispagestyle{plain} % Use plain page style to keep the page number
-  \null
-  \clearpage
-}
-
-% Increase page numbering
-\newcommand\increasepagenumbering{
-    \addtocounter{page}{+1}
-}
-
 % Make glossaries and bibliography
 \makeglossaries
 % Redefine the format for the glossary entries to be italic
@@ -149,7 +154,7 @@
 % Set up hyperlinks
 \hypersetup{
     colorlinks=true,
-    linktocpage=true,
+    linktoc=all, % nell'indice l'intera riga è cliccabile, non solo il numero di pagina
     pdfstartpage=1,
     pdfstartview=,
     breaklinks=true,
@@ -164,6 +169,10 @@
     pdfhighlight=/O,
     allcolors = hyperColor
 }
+
+% Disattiva i link ipertestuali dei riferimenti al glossario nel testo
+% (restano comunque riconoscibili tramite il formattatore \glstextformat)
+\glsdisablehyper
 
 % Set up captions
 \captionsetup{
