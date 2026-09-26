@@ -3,6 +3,7 @@
 # ============================================================
 
 ## --- Output di compilazione principali ---
+*.pdf
 *.dvi
 *.synctex.gz
 *.synctex(busy)
