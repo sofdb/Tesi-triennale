@@ -23,7 +23,7 @@
 \usepackage[italian]{varioref} % riferimenti completi della pagina
 \usepackage{longtable} % tabelle su più pagine
 \usepackage[toc, acronym, automake]{glossaries}
-\usepackage[backend=biber, style=apa, hyperref=false, backref=true]{biblatex} % stile APA7; citazioni non cliccabili nel testo (v. thesis_config.tex)
+\usepackage[backend=biber, style=ieee, hyperref=false, backref=true, defernumbers=true]{biblatex} % stile IEEE per le fonti non giuridiche; citazioni non cliccabili nel testo (v. thesis_config.tex). Le fonti giuridiche restano escluse da questo stile e sono gestite da \legfootcite (v. thesis_config.tex). defernumbers=true: la bibliografia è divisa in più sezioni (Bibliografia: Testi/Articoli/Normativa; Sitografia: Siti), quindi la numerazione IEEE va calcolata solo alla fine per restare coerente tra le sezioni
 \usepackage{lmodern}
 \usepackage[top=3cm, bottom=3cm, inner=3.5cm, outer=2.5cm]{geometry} % margini specchiati per la rilegatura (richiede twoside nella \documentclass)
 \usepackage{parskip} % paragrafi separati da spazio verticale, senza rientro di prima riga

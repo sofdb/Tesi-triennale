@@ -16,13 +16,10 @@
     \frontmatter
     \input{preface/1_title_page}
     \input{preface/2_copyright}
-    \blankpage % prima facciata bianca
-    \blankpage % seconda facciata bianca
-    \input{preface/3_acknowledgements}
+    \input{preface/3_dedica} % pagina di citazione e dedica (al posto dei ringraziamenti, ora spostati in fondo al documento)
     \input{preface/4_abstract}
+    \input{preface/convenzioni_tipografiche}
     \input{preface/5_table_of_contents}
-    \printglossary[type=\acronymtype, title=Acronimi e abbreviazioni, toctitle=Acronimi e abbreviazioni]
-    \printglossary[type=main, title=Glossario, toctitle=Glossario]
     \blankpage % example of a blank page that also increases the page couter by 1
 
     \mainmatter
@@ -35,7 +32,10 @@
     \clearpage % garantisce che le pagine del cap. 4 vengano "spedite" con numerazione araba prima del reset a romana
     \pagenumbering{roman}
     \backmatter
-    \renewcommand{\chaptermark}[1]{\markboth{#1}{}} % capitoli non numerati (bibliografia, sitografia) non devono ripetere l'ultimo numero di capitolo nell'intestazione
+    \renewcommand{\chaptermark}[1]{\markboth{#1}{}} % capitoli non numerati (acronimi, glossario, bibliografia, sitografia, ringraziamenti) non devono ripetere l'ultimo numero di capitolo nell'intestazione
+    \printglossary[type=\acronymtype, title=Acronimi e abbreviazioni, toctitle=Acronimi e abbreviazioni]
+    \printglossary[type=main, title=Glossario, toctitle=Glossario]
     \input{references/bibliography}
     \input{references/webliography}
+    \input{preface/3_acknowledgements} % ringraziamenti spostati in fondo al documento
 \end{document}

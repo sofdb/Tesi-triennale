@@ -38,19 +38,66 @@
 \newcommand{\todoplaceholder}[1]{\par\noindent\textcolor{red!65!black}{\textbf{[DA COMPLETARE]} #1}\par}
 
 % Comando di citazione per le fonti giuridiche (leggi, decreti, direttive):
-% stampa il campo "shorthand" del file .bib (tipo di atto, data completa, numero)
-% invece della citazione autore-anno in stile APA, mantenendo comunque il
+% stampa il campo "usera" del file .bib (tipo di atto, data completa, numero)
+% invece della citazione autore-anno/numerica, mantenendo comunque il
 % collegamento bibliografico e il backref standard di biblatex.
+% Si usa il campo generico "usera" (e non "shorthand") perché "shorthand" è
+% un campo riservato di biblatex: se un'entry lo definisce, gli stili
+% numerici (incluso "ieee") lo utilizzano al posto del numero progressivo
+% come "labelnumber", rompendo la numerazione IEEE e la relativa gabbia di
+% impaginazione (hanging indent) della bibliografia. "usera" non ha invece
+% alcun significato predefinito per biblatex ed è quindi sicuro da riusare.
 % Uso identico a \footcite: \legfootcite[postnote]{chiave-bib}
 \DeclareCiteCommand{\legfootcite}[\mkbibfootnote]
   {}
   {\usebibmacro{citeindex}%
-   \thefield{shorthand}%
+   \thefield{usera}%
    \iffieldundef{postnote}
      {}
      {\addcomma\space\printfield{postnote}}}
   {\multicitedelim}
   {\addperiod}
+
+% Ridefinizione di \footcite per le fonti non giuridiche in stile IEEE:
+% lo stile "ieee" (biblatex-ieee) definisce di default \footcite senza le
+% parentesi quadre che invece usa per \cite nel corpo del testo (assume che
+% la nota a piè di pagina renda già evidente il rimando). Qui si vuole che
+% SOLO il numero della fonte sia racchiuso tra parentesi quadre, mentre
+% l'eventuale postnote (capitolo, paragrafo, pagina) resta fuori dalle
+% parentesi, secondo il formato:
+%   [3], cap. 4, § 4.2.
+% invece di "[3, cap. 4, § 4.2]" o di "3, cap. 4, § 4.2" senza parentesi.
+% NOTA DI PORTABILITÀ: "ieee.cbx" (biblatex-ieee) sceglie internamente quale
+% variante di stile citazionale caricare per implementare \cite/\footcite
+% (tipicamente "numeric-comp", che comprime intervalli di citazioni multiple
+% del tipo [3]-[5]); tale variante può differire fra installazioni/versioni
+% diverse di biblatex-ieee (ad es. TeX Live vs. MiKTeX), e con essa cambiano
+% anche i nomi dei bibmacro interni usati per assemblare la citazione
+% (bibmacro come "cite:init"/"cite:comp"/"cite:dump" esistono infatti SOLO
+% nella variante "numeric-comp"/"numeric-icomp", non ad esempio in
+% "numeric-verb", dove "\footcite" è invece assemblato con un bibmacro
+% generico chiamato semplicemente "cite"). Per evitare che questa
+% ridefinizione smetta di funzionare a seconda della variante caricata,
+% qui non ci si appoggia a NESSUNO di questi bibmacro interni: il numero
+% viene stampato direttamente con \printfield{labelnumber} (preceduto dal
+% campo, anch'esso opzionale, "labelprefix"), racchiuso in
+% \printtext[bibhyperref]{...} per mantenere il collegamento ipertestuale
+% e il backref verso la bibliografia. "citeindex", "labelnumber",
+% "labelprefix" e il field-format "bibhyperref" sono infatti definiti in
+% modo generico in biblatex stesso (non in uno specifico file di stile),
+% e sono quindi stabili su qualunque variante/versione di biblatex-ieee.
+% Nota: questa versione non comprime in intervalli citazioni multiple nello
+% stesso \footcite (es. \footcite{a,b,c}), a differenza della variante
+% "numeric-comp": non è un problema per il presente lavoro, dove ogni nota
+% a piè di pagina cita di norma una sola fonte per volta.
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \bibopenbracket
+   \printtext[bibhyperref]{\printfield{labelprefix}\printfield{labelnumber}}
+   \bibclosebracket}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
 
 % Titolo di capitolo: numero e titolo sulla stessa riga (niente "Capitolo N" a capo)
 \titleformat{\chapter}[hang]{\normalfont\Huge\bfseries}{\thechapter}{1em}{}
@@ -170,9 +217,14 @@
     allcolors = hyperColor
 }
 
-% Disattiva i link ipertestuali dei riferimenti al glossario nel testo
-% (restano comunque riconoscibili tramite il formattatore \glstextformat)
-\glsdisablehyper
+% I riferimenti a termini di Glossario, Acronimi e abbreviazioni (\gls, \acrshort, ecc.)
+% restano cliccabili: il collegamento ipertestuale rimanda alla voce
+% corrispondente nell'elenco (Acronimi e abbreviazioni / Glossario) in fondo
+% al documento, dove si trova la relativa spiegazione. Questo è il
+% comportamento predefinito del pacchetto "glossaries" quando "hyperref" è
+% caricato prima di esso (v. config/packages.tex): non è quindi necessaria
+% alcuna istruzione aggiuntiva; in precedenza tali link erano disattivati con
+% \glsdisablehyper, ora rimosso.
 
 % Set up captions
 \captionsetup{
@@ -208,4 +260,3 @@
 \newunicodechar{‍}{}
 \newunicodechar{﻿}{}
 \newunicodechar{⁠}{}
-% ------------------------------------------------------------------

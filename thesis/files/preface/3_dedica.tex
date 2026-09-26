@@ -1,0 +1,27 @@
+% Pagina di citazione e dedica.
+% Nessuna intestazione di capitolo: è una pagina "silenziosa", come da
+% convenzione per le pagine di dedica. \thispagestyle{empty} nasconde sia
+% l'intestazione sia il numero di pagina su questa facciata (coerentemente
+% con preface/2_copyright.tex). Il \cleardoublepage finale forza il passaggio
+% alla successiva pagina dispari, inserendo automaticamente ed esattamente
+% una pagina bianca (il "retro" di questa, senza intestazione né numero
+% grazie al pacchetto emptypage) prima del contenuto seguente.
+\cleardoublepage
+\thispagestyle{empty}
+
+\vspace*{0.22\textheight}
+
+\begin{flushright}
+    \itshape
+    \todoplaceholder{citazione da inserire, seguita dall'indicazione di autore/fonte.}
+\end{flushright}
+
+\vspace{0.28\textheight}
+
+\begin{flushright}
+    \itshape
+    \todoplaceholder{testo della dedica da scrivere.}
+\end{flushright}
+
+\vfill
+\cleardoublepage
