@@ -22,10 +22,28 @@
 \usepackage{subfig} % sottofigure, sottotabelle
 \usepackage[italian]{varioref} % riferimenti completi della pagina
 \usepackage{longtable} % tabelle su più pagine
-\usepackage[toc, acronym, automake]{glossaries}
+% NOTA SU "automake": il pacchetto "glossaries" offrirebbe un'opzione
+% "automake" (o "automake=lite") per rigenerare da sé, a fine compilazione,
+% gli elenchi di Acronimi e abbreviazioni/Glossario (i file .gls/.acr,
+% ottenuti processando i file grezzi .glo/.acn). Questa opzione NON è però
+% usata qui, perché richiede che il motore TeX possa eseguire un comando di
+% sistema (\write18) per "makeglossaries"/"makeglossaries-lite": MiKTeX, per
+% impostazione predefinita, esegue il flag -shell-escape in modalità
+% "ristretta" (restricted), che consente solo un elenco prestabilito di
+% programmi (bibtex, biber, makeindex, ecc.) e blocca qualunque altro
+% comando, incluso "makeglossaries"/"makeglossaries-lite" (nel log MiKTeX
+% questo compare come "runsystem(makeglossaries-lite ...)...disabled
+% (restricted)."). Il risultato è che gli elenchi restano vuoti in stampa e
+% i relativi collegamenti ipertestuali (\gls, ecc.) puntano a un'ancora mai
+% creata, risultando "a vuoto" una volta cliccati.
+% La rigenerazione degli elenchi è quindi affidata non a TeX ma a latexmk
+% stesso (v. il file "latexmkrc" nella stessa cartella di questo file), che
+% lancia "makeglossaries" come processo esterno al di fuori del motore TeX,
+% aggirando così del tutto la restrizione dello shell escape di MiKTeX.
+\usepackage[toc, acronym]{glossaries}
 \usepackage[backend=biber, style=ieee, hyperref=false, backref=true, defernumbers=true]{biblatex} % stile IEEE per le fonti non giuridiche; citazioni non cliccabili nel testo (v. thesis_config.tex). Le fonti giuridiche restano escluse da questo stile e sono gestite da \legfootcite (v. thesis_config.tex). defernumbers=true: la bibliografia è divisa in più sezioni (Bibliografia: Testi/Articoli/Normativa; Sitografia: Siti), quindi la numerazione IEEE va calcolata solo alla fine per restare coerente tra le sezioni
 \usepackage{lmodern}
-\usepackage[top=3cm, bottom=3cm, inner=3.5cm, outer=2.5cm]{geometry} % margini specchiati per la rilegatura (richiede twoside nella \documentclass)
+\usepackage[top=3cm, bottom=3cm, inner=3cm, outer=2.5cm]{geometry} % margini specchiati per la rilegatura (richiede twoside nella \documentclass)
 \usepackage{parskip} % paragrafi separati da spazio verticale, senza rientro di prima riga
 \usepackage{fancyhdr}
 \usepackage{lipsum}

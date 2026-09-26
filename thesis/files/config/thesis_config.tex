@@ -10,6 +10,16 @@
 % Set line height
 \linespread{1.5}
 
+% La classe "book", essendo "twoside", usa di default \flushbottom: per far
+% terminare ogni pagina esattamente al margine inferiore, LaTeX allunga gli
+% spazi elastici disponibili nella pagina. Poiché "parskip" (v. packages.tex)
+% separa i paragrafi con uno spazio elastico anziché fisso, nelle pagine con
+% pochi paragrafi questo allungamento diventa molto vistoso (spazi enormi e
+% disuguali fra un paragrafo e l'altro). \raggedbottom disattiva questo
+% comportamento: il margine inferiore può variare leggermente da pagina a
+% pagina, ma lo spazio fra i paragrafi resta uniforme.
+\raggedbottom
+
 % Custom hyphenation rules
 \hyphenation {
     data-base
@@ -260,3 +270,4 @@
 \newunicodechar{‍}{}
 \newunicodechar{﻿}{}
 \newunicodechar{⁠}{}
+% ------------------------------------------------------------------

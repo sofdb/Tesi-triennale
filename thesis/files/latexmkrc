@@ -1,1 +1,34 @@
-$ENV{'TZ'}='Europe/Rome'
+$ENV{'TZ'}='Europe/Rome';
+
+# Rigenerazione automatica degli elenchi di Acronimi e abbreviazioni/Glossario.
+#
+# "glossaries" scrive, durante la compilazione, i file grezzi .glo (voci di
+# glossario) e .acn (voci di acronimi); questi vanno poi "ordinati" in .gls
+# e .acr (i file effettivamente letti da \printglossary) da un programma
+# esterno, "makeglossaries". A differenza di quanto suggerirebbe la
+# documentazione del pacchetto, questo passaggio NON è delegato all'opzione
+# "automake" di "glossaries" (v. la nota in config/packages.tex): tale
+# opzione userebbe \write18, il meccanismo con cui TeX esegue comandi di
+# sistema, che MiKTeX per impostazione predefinita limita in modalità
+# "ristretta" a un elenco fisso di programmi (bibtex, biber, makeindex,
+# ecc.), bloccando "makeglossaries" e lasciando quindi gli elenchi vuoti.
+# Qui la rigenerazione è affidata direttamente a latexmk, che lancia
+# "makeglossaries" come proprio processo esterno, del tutto separato dal
+# motore TeX e quindi non soggetto alla restrizione dello shell escape di
+# MiKTeX. Questa è la configurazione raccomandata dalla documentazione
+# ufficiale del pacchetto "glossaries" per l'uso con latexmk.
+add_cus_dep('glo', 'gls', 0, 'run_makeglossaries');
+add_cus_dep('acn', 'acr', 0, 'run_makeglossaries');
+
+sub run_makeglossaries {
+    if ($silent) {
+        system("makeglossaries -q \"$_[0]\"");
+    }
+    else {
+        system("makeglossaries \"$_[0]\"");
+    };
+}
+
+push @generated_exts, 'glo', 'gls', 'glg';
+push @generated_exts, 'acn', 'acr', 'alg';
+$clean_ext .= ' %R.ist %R.xdy';
