@@ -5,7 +5,6 @@
 % Define custom colors
 \definecolor{hyperColor}{HTML}{7D0767}
 \definecolor{tableGray}{HTML}{F5F5F7}
-\definecolor{veryPeri}{HTML}{6667ab}
 
 % Set line height
 \linespread{1.5}
@@ -178,8 +177,50 @@
 
 % Make glossaries and bibliography
 \makeglossaries
-% Redefine the format for the glossary entries to be italic
-\renewcommand*{\glstextformat}[1]{\textit{#1}\glox}
+
+\colorlet{acronymColor}{hyperColor}
+
+% Tre comandi distinti, uno per ciascuna delle categorie descritte in
+% preface/convenzioni_tipografiche.tex ("Termini del glossario"), ognuno
+% con una resa tipografica propria che ne rende riconoscibile la
+% categoria senza dover leggere il testo espanso:
+%  - \gls{...}      Glossario vero e proprio (voci di tipo "main"):
+%                    corsivo + apice G (v. \glox sopra).
+%  - \acrshort{...} Acronimi e abbreviazioni, forma breve: stampa sempre
+%                    e solo la sigla, senza mai espanderla (comportamento
+%                    nativo del pacchetto "glossaries"); colorato come
+%                    \acr, mai in corsivo, senza apice G.
+% \acr è un semplice alias di \gls (stesso comportamento di espansione),
+% con un nome distinto per chiarezza nel sorgente: rende esplicito, a chi
+% scrive, che il comando va usato solo sulle voci di tipo "acronym" (per
+% le quali \gls resta comunque utilizzabile, v. nota tecnica sotto), mai
+% su quelle di Glossario.
+\newcommand{\acr}[2][]{\gls[#1]{#2}}
+
+% Formattazione dei riferimenti \gls/\acr/\acrshort (e delle rispettive
+% varianti automatiche del pacchetto "glossaries", che richiamano tutte la
+% stessa macro \glstextformat): la resa dipende dal tipo della voce di
+% glossario richiamata (\glsentrytype), non dal nome del comando con cui è
+% stata richiamata. In questo modo la formattazione resta corretta anche
+% nell'eventualità in cui, per errore, \gls venga usato su una voce di
+% tipo "acronym" invece di \acr/\acrshort (verrebbe comunque colorata come
+% un acronimo, mai in corsivo con apice G).
+% Nota tecnica: il tipo va prima "pre-espanso" con \edef in una macro di
+% appoggio (\glscurrenttype) e SOLO DOPO confrontato con \ifdefstring:
+% confrontare direttamente \ifstrequal{\glsentrytype{\glslabel}}{main}{…}{…}
+% non funziona, perché \ifstrequal non espande a sufficienza una chiamata
+% annidata come \glsentrytype{\glslabel} (il confronto risulta sempre
+% "falso" anche quando il tipo è realmente "main"). La macro di appoggio non
+% deve contenere la chiocciola "@" nel nome: usata qui, il valore risultava
+% corrotto (verificato con \meaning) — probabilmente per un'interazione con
+% il modo in cui \gls memorizza \glslabel; con un nome senza "@" il
+% confronto funziona in modo affidabile.
+\renewcommand*{\glstextformat}[1]{%
+  \edef\glscurrenttype{\glsentrytype{\glslabel}}%
+  \ifdefstring{\glscurrenttype}{main}
+    {\textit{#1}\glox}
+    {\textcolor{acronymColor}{#1}}%
+}
 %\glsaddall
 
 \bibliography{references/bibliography}
