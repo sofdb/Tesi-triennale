@@ -18,6 +18,10 @@
 \usepackage[pdfa]{hyperref} % collegamenti ipertestuali
 \usepackage{mparhack,relsize}  % finezze tipografiche
 \usepackage{nameref} % visualizza nome dei riferimenti
+\usepackage{placeins} % \FloatBarrier, per evitare che tabelle/figure "galleggino" oltre la sezione in cui sono definite
+\usepackage{float} % specificatore [H], per le piccole tabelle di analisi che devono restare esattamente sotto il proprio paragraph* e non "galleggiare" via in blocco altrove
+\usepackage{array} % \extrarowheight, per il padding verticale nelle celle delle tabelle (v. thesis_config.tex)
+\usepackage{chngcntr} % \counterwithout, per rendere la numerazione delle note a piè di pagina continua su tutto il documento anziché ripartire ad ogni capitolo (v. thesis_config.tex)
 \usepackage[font=small]{quoting} % citazioni
 \usepackage{subfig} % sottofigure, sottotabelle
 \usepackage[italian]{varioref} % riferimenti completi della pagina

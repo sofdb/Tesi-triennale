@@ -5,6 +5,7 @@
 % Define custom colors
 \definecolor{hyperColor}{HTML}{7D0767}
 \definecolor{tableGray}{HTML}{F5F5F7}
+\definecolor{veryPeri}{HTML}{6667ab}
 
 % Set line height
 \linespread{1.5}
@@ -35,6 +36,22 @@
 % Better spacing for footnotes
 \setlength{\skip\footins}{5mm}
 \setlength{\footnotesep}{5mm}
+
+% Numerazione delle note a piè di pagina continua su tutto il documento:
+% di default la classe "book" azzera il contatore "footnote" ad ogni
+% \chapter (v. \@startsection / \chapter in book.cls). Con \counterwithout
+% (da "chngcntr", v. packages.tex) si rimuove questo reset, cosicché le
+% note continuino a crescere dal capitolo 1 fino all'ultimo.
+\counterwithout{footnote}{chapter}
+
+% Stile delle tabelle: linee di contorno più sottili di quelle di default
+% (0.4pt) e un po' di spazio in più sopra e sotto il contenuto di ogni
+% cella, in modo che il testo non tocchi la riga superiore/inferiore. Si usa
+% \extrarowheight (da "array", v. packages.tex) anziché \arraystretch perché
+% aggiunge un padding fisso sopra e sotto ogni riga senza alterare
+% l'interlinea interna alle celle con testo su più righe (colonne "p{}").
+\setlength{\arrayrulewidth}{0.3pt}
+\setlength{\extrarowheight}{3pt}
 
 \setlength{\headheight}{14.5pt}
 \setlength{\headsep}{1.2cm} % più margine tra la riga di intestazione e il testo
