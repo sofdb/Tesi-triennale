@@ -1,7 +1,7 @@
 \chapter{Metodologia di lavoro e selezione dei criteri WCAG}
 \label{chap:metodologia-selezione}
 
-Questo capitolo copre la prima fase dello stage: la definizione del metodo di lavoro adottato e la selezione del sottoinsieme di criteri WCAG~2.1 livello A e AA su cui è stata concentrata la verifica automatica. Le fasi successive del lavoro -- progettazione e sviluppo del prototipo (capitolo~\ref{chap:progettazione-prototipo}) e validazione sperimentale (capitolo~\ref{chap:validazione-benchmark}) -- si basano direttamente sui criteri individuati in questo capitolo.
+Questo capitolo tratta la definizione del metodo di lavoro adottato e la selezione del sottoinsieme di criteri WCAG~2.1 livello A e AA su cui è stata concentrata la verifica automatica. Le fasi successive del lavoro (progettazione e sviluppo del prototipo (capitolo~\ref{chap:progettazione-prototipo}) e validazione sperimentale (capitolo~\ref{chap:validazione-benchmark})) si basano direttamente sui criteri individuati in questo capitolo.
 
 \section{Metodo di lavoro}
 \label{sec:metodo-lavoro}
@@ -12,11 +12,26 @@ Questo capitolo copre la prima fase dello stage: la definizione del metodo di la
 % cadenza delle revisioni di progresso, strumenti usati per tracciare requisiti e progressi.
 
 \section{Selezione dei criteri WCAG oggetto di verifica}
+
 \label{sec:selezione-criteri}
 
-La selezione del sottoinsieme di criteri di successo WCAG~2.1 livello A e AA da sottoporre a verifica automatica è stata condotta seguendo un percorso in cinque fasi, descritte nel seguito della sezione: (1) si è partiti dall'insieme completo dei 50 criteri applicabili alle pagine web; (2) i criteri sono stati distribuiti per principio POUR e per livello di conformità; (3) si è verificato quali criteri fossero effettivamente riscontrabili nei tre report di riferimento assunti come indicatori di frequenza sul web reale, distinguendo quelli presenti in tutti e tre, in due o in un solo report; (4) per i soli criteri riscontrati in almeno un report è stata condotta un'analisi completa, lungo le dimensioni già introdotte nella sezione~\ref{sec:livello-aa} (verificabilità statica, classificazione, integrabilità con \acr{llm}, condizioni d'uso coperte); (5) infine, incrociando i risultati dell'analisi con i tre criteri di selezione, i criteri sono stati suddivisi in \emph{core}, \emph{opzionali} ed \emph{esclusi}.
+La selezione del sottoinsieme di criteri di successo WCAG~2.1 di livello A e AA da sottoporre a verifica automatica è stata condotta a partire dall'insieme dei criteri applicabili alle pagine web, attraverso un percorso articolato in cinque fasi:
 
-\subsection*{I 50 criteri di riferimento, per principio e livello di conformità}
+\begin{enumerate}
+
+\item individuazione dell'insieme completo dei 50 criteri applicabili alle pagine web;
+
+\item classificazione dei criteri in base al principio POUR e al livello di conformità;
+
+\item verifica della presenza dei criteri nei tre report di riferimento, assunti come indicatori della frequenza con cui le diverse problematiche di accessibilità emergono sul web reale: il WebAIM Million\footcite{webaim:million2026}, il monitoraggio semplificato\footcite{agid:errori-semplificato} e il monitoraggio approfondito\footcite{agid:errori-approfondito} condotti da AGID;
+
+\item analisi dei soli criteri riscontrati in almeno un report, considerando la verificabilità statica, la classificazione, l'integrabilità con LLM, le tecniche sufficienti WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C nelle quali ogni criterio ha un elenco di metodi concreti già collaudati per soddisfarlo, ciascuno con un codice (lettera = tecnologia: H=HTML, ARIA=ARIA, C=CSS, G=General) + numero, e una pagina propria che spiega esattamente come implementarlo.][]{w3c:techniques} e le condizioni d'uso coperte;
+
+\item selezione finale dei criteri \textbf{core}, \textbf{opzionali} ed \textbf{esclusi}, rapportata alla fattibilità della verifica automatica e al tempo disponibile per la realizzazione del progetto.
+\end{enumerate}
+
+
+\subsection{I 50 criteri di riferimento, per principio e livello di conformità}
 
 Come richiamato nella sezione~\ref{sec:livello-aa}, i criteri di successo di livello A e AA delle WCAG~2.1 applicabili alle pagine web sono complessivamente 50. La tabella~\ref{tab:distribuzione-pour} ne riporta la distribuzione per principio POUR (v.~sezione~\ref{sec:quattro-principi}) e per livello di conformità.
 
@@ -45,7 +60,7 @@ Robusto & 2 & 1 & 3 \\
 
 La distribuzione non è uniforme: il principio Utilizzabile concentra da solo 14 dei 30 criteri di livello A (quasi la metà), mentre il principio Robusto ne conta complessivamente solo 3. Questa distribuzione è un primo elemento di contesto per la selezione: un sottoinsieme rappresentativo dei quattro principi deve necessariamente attingere in modo molto più selettivo da Utilizzabile e Robusto che da Percepibile, dove il numero di criteri disponibili è maggiore.
 
-\subsection*{Copertura dei criteri nei tre report di riferimento}
+\subsection{Copertura dei criteri nei tre report di riferimento}
 
 A partire da questo insieme di 50 criteri, il passo successivo consiste nell'individuare quali di essi compaiono effettivamente, come categoria di errore rilevata, in almeno uno dei tre report assunti come indicatori di frequenza sul web reale: il WebAIM Million, già introdotto nella sezione~\ref{sec:problema-pratico}, che analizza mediante il motore automatico \acr{wave} le home page di un milione di siti web e riporta, per l'edizione 2026, la percentuale di home page in cui compaiono le categorie di errore più comuni\footcite{webaim:million2026}; il monitoraggio semplificato di \gls{agid-descrizione}, condotto automaticamente da \gls{mauve} sui siti web della PA\footcite{agid:errori-semplificato}; e il monitoraggio approfondito di AGID, condotto invece da personale esperto\footcite{agid:errori-approfondito}. Per il monitoraggio semplificato e per quello approfondito sono stati utilizzati i cruscotti pubblici aggiornati, che riportano la quota percentuale di errore per i soli 10 criteri più frequenti rispettivamente nel secondo trimestre 2025 e nell'anno 2024\footcite{agid:errori-semplificato,agid:errori-approfondito}: un criterio è stato considerato presente in una di queste due fonti solo se compreso in tale prime 10 posizioni, senza fare ricorso a fonti AGID più datate per i criteri non compresi. Per ciascun criterio è stato quindi verificato in quanti di questi tre report compaia: 3/3 se presente in tutti, 2/3 o 1/3 se presente solo in due o in un solo report. La tabella~\ref{tab:frequenza-errori} riporta il risultato di questo confronto per i 13 criteri risultati presenti in almeno un report, ordinati per grado di copertura decrescente.
 
@@ -94,11 +109,11 @@ A partire da questo insieme di 50 criteri, il passo successivo consiste nell'ind
 \end{table}
 \FloatBarrier
 
-I tre report non sono equivalenti fra loro, e questo spiega perché diversi criteri compaiano solo in una parte di essi. Essendo il WebAIM Million e il monitoraggio semplificato AGID basati esclusivamente su motori automatici, essi possono riportare, per costruzione, soltanto le problematiche rilevabili senza interazione con la pagina: un criterio come 2.4.7 (Focus Visible), che richiede di eseguire realmente un'interazione per essere verificato, compare infatti solo grazie al monitoraggio approfondito, condotto da valutatori esperti, che copre anche questi casi pur con un campione di siti più ristretto rispetto al milione di home page del WebAIM Million. Le tre fonti sono quindi complementari: le prime due forniscono un'indicazione quantitativa su scala molto ampia mediante rilevazione automatica, la terza permette di stimare la frequenza anche dei criteri che sfuggono, per definizione, a una rilevazione di questo tipo.
+I tre report non sono equivalenti fra loro, e questo spiega perché diversi criteri compaiano solo in una parte di essi. Essendo il WebAIM Million e il monitoraggio semplificato AGID basati esclusivamente su motori automatici, essi possono riportare, per costruzione, soltanto le problematiche rilevabili senza interazione con la pagina: un criterio come 2.4.1 (Bypass Blocks), la cui verifica sufficiente richiede di valutare se i landmark presenti coprono davvero tutte le sezioni ripetute, compare infatti solo grazie al monitoraggio approfondito, condotto da valutatori esperti, che copre anche questi casi pur con un campione di siti più ristretto rispetto al milione di home page del WebAIM Million. Le tre fonti sono quindi complementari: le prime due forniscono un'indicazione quantitativa su scala molto ampia mediante rilevazione automatica, la terza permette di stimare la frequenza anche dei criteri che sfuggono, per definizione, a una rilevazione di questo tipo.
 
-Il confronto diretto fra le percentuali del monitoraggio semplificato e di quello approfondito, disponibili per la prima volta in forma aggiornata e comparabile su scala percentuale, evidenzia inoltre un fenomeno rilevante ai fini della selezione: per alcuni criteri la quota di errore rilevata dal controllo manuale è nettamente superiore a quella rilevata dal solo controllo automatico, mentre per altri vale l'opposto. Il caso più marcato è quello di 1.3.1 (Info and Relationships), che passa dall'1,6\% degli errori rilevati automaticamente al 23,2\% di quelli confermati dagli esperti -- la quota più alta fra tutti i criteri del monitoraggio approfondito, superiore anche a quella di 4.1.2 (17,8\%) e 2.4.4 (11,1\%), anch'essi in crescita marcata dal controllo automatico a quello manuale. Questi tre criteri condividono una caratteristica: la loro violazione richiede un giudizio semantico -- la struttura riflette davvero il contenuto? il nome esposto corrisponde al comportamento reale? il testo del collegamento è comprensibile fuori dal proprio contesto? -- che un motore di scansione puramente sintattico tende a non cogliere, mentre un valutatore esperto lo individua sistematicamente. Il fenomeno opposto si osserva invece per 2.4.7 (Focus Visible) e 1.4.1 (Use of Color), la cui quota crolla rispettivamente dal 42,4\% al 2,6\% e dal 17,4\% al 3,5\%: una quota così alta nel controllo automatico e così bassa in quello manuale suggerisce che gli strumenti automatici tendano, in questo caso, a sovra-segnalare il criterio -- verosimilmente per l'uso di euristiche CSS statiche (ad esempio la sola assenza di regole \texttt{:focus} esplicite) che producono un numero non trascurabile di falsi positivi, poi non confermati dalla valutazione manuale. Questo divario, in entrambe le direzioni, costituisce un argomento aggiuntivo -- distinto dalla semplice frequenza -- a favore dell'integrazione di un \acr{llm}: i criteri per cui il controllo manuale rileva sistematicamente più errori di quello automatico sono proprio quelli in cui un sistema capace di un giudizio semantico promette il maggiore valore aggiunto rispetto agli strumenti puramente sintattici oggi disponibili.
+Il confronto diretto fra le percentuali del monitoraggio semplificato e di quello approfondito, disponibili per la prima volta in forma aggiornata e comparabile su scala percentuale, evidenzia inoltre un fenomeno rilevante ai fini della selezione: per alcuni criteri la quota di errore rilevata dal controllo manuale è nettamente superiore a quella rilevata dal solo controllo automatico, mentre per altri vale l'opposto. Il caso più marcato è quello di 1.3.1 (Info and Relationships), che passa dall'1,6\% degli errori rilevati automaticamente al 23,2\% di quelli confermati dagli esperti -- la quota più alta fra tutti i criteri del monitoraggio approfondito, superiore anche a quella di 4.1.2 (17,8\%) e 2.4.4 (11,1\%), anch'essi in crescita marcata dal controllo automatico a quello manuale. Questi tre criteri condividono una caratteristica: la loro violazione richiede un giudizio semantico -- la struttura riflette davvero il contenuto? il nome esposto corrisponde al comportamento reale? il testo del collegamento è comprensibile fuori dal proprio contesto? -- che un motore di scansione puramente sintattico tende a non cogliere, mentre un valutatore esperto lo individua sistematicamente. Il fenomeno opposto si osserva invece per 2.4.7 (Focus Visible) e 1.4.1 (Use of Color), la cui quota crolla rispettivamente dal 42,4\% al 2,6\% e dal 17,4\% al 3,5\%. Un divario così ampio, in questa direzione, ammette più di una spiegazione: può indicare una sovra-segnalazione da parte del controllo automatico (ad esempio, nel caso di 2.4.7, per l'uso di euristiche CSS statiche come la sola assenza di regole \texttt{:focus} esplicite, che potrebbero produrre falsi positivi non confermati dalla valutazione manuale), ma può derivare anche da altri fattori non distinguibili dai soli dati aggregati dei due report, come una diversa composizione del campione di siti fra monitoraggio semplificato e approfondito. Non disponendo di dati sui singoli casi rilevati, questa spiegazione resta un'ipotesi di lavoro, che la validazione sperimentale del capitolo~\ref{chap:validazione-benchmark} permetterà di verificare direttamente sul benchmark costituito. Il divario osservato in direzione opposta -- 1.3.1, 4.1.2 e 2.4.4, discussi sopra -- costituisce invece un argomento più solido, distinto dalla semplice frequenza, a favore dell'integrazione di un \acr{llm}: i criteri per cui il controllo manuale rileva sistematicamente più errori di quello automatico sono proprio quelli in cui un sistema capace di un giudizio semantico promette il maggiore valore aggiunto rispetto agli strumenti puramente sintattici oggi disponibili.
 
-\subsection*{Analisi dei criteri riscontrati nei report}
+\subsection{Analisi dei criteri riscontrati nei report}
 
 Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un'analisi lungo sei dimensioni: la verificabilità a partire dal solo markup HTML statico (Sì, No, Parziale); la classificazione del controllo risultante (automatica, semi-automatica, manuale), con relativa motivazione; la possibilità di integrare un \acr{llm} nel controllo (Sì, No, Parziale), con relativa spiegazione; le tecniche sufficienti WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C nelle quali ogni criterio ha un elenco di metodi concreti già collaudati per soddisfarlo, ciascuno con un codice (lettera = tecnologia: H=HTML, ARIA=ARIA, C=CSS, G=General) + numero, e una pagina propria che spiega esattamente come implementarlo.][]{w3c:techniques}; e le condizioni d'uso, permanenti, temporanee o situazionali, che il criterio contribuisce a coprire. L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagine \emph{Understanding} e le tecniche sufficienti associate a ciascun criterio\footcite{w3c:understanding-intro,w3c:quickref}. I criteri sono presentati nello stesso ordine di copertura della tabella~\ref{tab:frequenza-errori}: prima una tabella riassuntiva con la sola verificabilità statica e la classificazione, poi, per ciascun criterio, la relativa tabella di analisi completa.
 
@@ -147,9 +162,9 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \end{table}
 \FloatBarrier
 
-\paragraph*{Criteri presenti in tutti e tre i report (3/3)}
+\paragraph{Criteri presenti in tutti e tre i report (3/3)}
 
-\paragraph*{1.1.1 -- Non-text Content (Livello A, Percepibile)}
+\paragraph{1.1.1 -- Non-text Content (Livello A, Percepibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. La presenza o assenza dell'attributo \texttt{alt} è rilevabile dal solo markup; la sua adeguatezza (corrispondenza col contenuto reale, specificità del messaggio funzionale, distinzione fra immagine decorativa e informativa) richiede invece di valutare l'immagine e il suo contesto d'uso.
@@ -158,7 +173,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: ciechi e ipovedenti che usano uno \emph{screen reader}. Temporanee: infortunio o bendaggio che impedisce di vedere lo schermo. Situazionali: immagini non caricate per banda scarsa, schermo con riflessi o scarsa luminosità, uso a \enquote{mani libere/occhi altrove} (ad esempio alla guida, con audio).
 \end{description}
 
-\paragraph*{1.4.3 -- Contrast (Minimum) (Livello AA, Percepibile)}
+\paragraph{1.4.3 -- Contrast (Minimum) (Livello AA, Percepibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. Se lo sfondo è un colore CSS solido dichiarato, il contrasto è calcolabile interamente da markup e CSS statici, applicando la formula di luminanza relativa sRGB (soglie 4{,}5:1 per il testo normale, 3:1 per il testo grande). Se lo sfondo è un'immagine, un gradiente, o dipende da stili calcolati a runtime, serve invece il rendering effettivo per campionare il colore realmente visualizzato dietro al testo; restano inoltre da valutare le eccezioni (testo decorativo, loghi, testo incidentale in una fotografia).
@@ -167,7 +182,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: ipovedenti e persone con bassa sensibilità al contrasto per patologie oculari (degenerazione maculare, cataratta). Temporanee: recupero post-operatorio oculare, fotosensibilità da emicrania. Situazionali: luce solare diretta sullo schermo, schermi di scarsa qualità o luminosità.
 \end{description}
 
-\paragraph*{2.4.4 -- Link Purpose (In Context) (Livello A, Utilizzabile)}
+\paragraph{2.4.4 -- Link Purpose (In Context) (Livello A, Utilizzabile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. Rilevare link vuoti o privi di testo accessibile è un controllo statico; giudicare se il testo è sufficientemente descrittivo, da solo o insieme al contesto (frase, elemento di lista, cella di tabella con relativa intestazione), richiede invece comprensione semantica.
@@ -176,7 +191,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: utenti di \emph{screen reader}, che spesso navigano per elenco di link isolati dal contesto visivo. Situazionali: scansione rapida della pagina, navigazione vocale.
 \end{description}
 
-\paragraph*{4.1.2 -- Name, Role, Value (Livello A, Robusto)}
+\paragraph{4.1.2 -- Name, Role, Value (Livello A, Robusto)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. La presenza di un nome accessibile (\texttt{aria-label}, \texttt{aria-labelledby}, testo interno), la validità sintattica degli attributi ARIA e l'assegnazione dei ruoli sono rilevabili dal markup; la correttezza semantica -- il ruolo assegnato corrisponde davvero al comportamento del widget? -- e la corretta trasmissione delle notifiche di cambiamento di stato richiedono invece l'esecuzione o l'interazione con una tecnologia assistiva.
@@ -185,9 +200,9 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: ciechi e ipovedenti che usano uno \emph{screen reader} -- è il criterio che rende possibile l'interazione stessa con qualunque controllo non nativo. Situazionali: navigazione vocale, tecnologie assistive di commutazione (\emph{switch access}).
 \end{description}
 
-\paragraph*{Criteri presenti in due report (2/3)}
+\paragraph{Criteri presenti in due report (2/3)}
 
-\paragraph*{1.3.1 -- Info and Relationships (Livello A, Percepibile)}
+\paragraph{1.3.1 -- Info and Relationships (Livello A, Percepibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. Molti aspetti sono rilevabili dal solo markup (etichette associate, \texttt{th}/\texttt{scope} nelle tabelle, gerarchia di intestazioni, \texttt{ul}/\texttt{ol} per le liste); capire se il markup rispecchia davvero ciò che è percepibile visivamente -- ad esempio testo formattato visivamente come lista ma senza \texttt{ul}, o tabelle di layout usate al posto di \texttt{table} -- richiede invece di confrontare il rendering con il DOM.
@@ -196,7 +211,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: ciechi e ipovedenti che usano uno \emph{screen reader} e che si affidano alla struttura per navigare; persone con disabilità cognitive che usano la struttura per orientarsi. Situazionali: navigazione vocale; \emph{reflow} su schermi piccoli, che dipende dalla struttura semantica per riorganizzare il contenuto.
 \end{description}
 
-\paragraph*{1.4.1 -- Use of Color (Livello A, Percepibile)}
+\paragraph{1.4.1 -- Use of Color (Livello A, Percepibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. Alcuni sotto-casi sono calcolabili da CSS/DOM senza screenshot, ad esempio il contrasto fra il colore di un link e il testo circostante, o l'assenza di uno stile o di un'icona aggiuntiva su campi obbligatori segnalati solo tramite \texttt{border-color}. Riconoscere in generale se il colore è l'unico mezzo usato per trasmettere un'informazione (ad esempio la legenda di un grafico, o un'etichetta di stato) richiede invece di vedere il rendering e interpretarne il significato semantico.
@@ -205,7 +220,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: persone daltoniche e con altre forme di deficit della percezione cromatica. Situazionali: schermi con calibrazione scarsa o luce solare forte, che riducono la percezione dei contrasti cromatici; dispositivi o modalità in scala di grigi.
 \end{description}
 
-\paragraph*{2.4.7 -- Focus Visible (Livello AA, Utilizzabile)}
+\paragraph{2.4.7 -- Focus Visible (Livello AA, Utilizzabile)}
 \begin{description}
 \item[Verificabile via HTML statico?] No.
 \item[Classificazione] Semi-automatica. Serve un'interazione reale (attivare il focus su ogni elemento) e l'osservazione del rendering per capire se compare un indicatore visibile e distinguibile. Uno strumento può rilevare se esistono regole CSS \texttt{:focus}/\texttt{:focus-visible} definite, o se sono state rimosse senza un sostituto (ad esempio \texttt{outline: none}), ma la sufficienza visiva e di contrasto dell'indicatore richiede l'ispezione del rendering effettivo.
@@ -214,7 +229,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: disabilità motorie, in particolare chi naviga solo da tastiera; ipovedenti. Situazionali: uso senza mouse, ad esempio con un dispositivo dotato di sola tastiera o di uno \emph{switch}.
 \end{description}
 
-\paragraph*{3.3.2 -- Labels or Instructions (Livello A, Comprensibile)}
+\paragraph{3.3.2 -- Labels or Instructions (Livello A, Comprensibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. La presenza di etichette associate ai campi (tramite \texttt{for}/\texttt{id}, \texttt{aria-label} o \texttt{aria-labelledby}) è rilevabile dal markup; se l'etichetta sia effettivamente comprensibile, completa e adeguata al contesto -- ad esempio istruzioni sul formato atteso per campi complessi -- richiede invece un giudizio, con lo stesso tipo di valutazione già visto per 1.1.1.
@@ -223,7 +238,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: disabilità cognitive; utenti di \emph{screen reader}, per cui l'etichetta è l'unica informazione disponibile senza il contesto visivo del modulo. Situazionali: compilazione di moduli in mobilità o in condizioni di distrazione, dove istruzioni chiare riducono gli errori.
 \end{description}
 
-\paragraph*{4.1.1 -- Parsing (Livello A, Robusto)}
+\paragraph{4.1.1 -- Parsing (Livello A, Robusto)}
 \begin{description}
 \item[Verificabile via HTML statico?] Sì.
 \item[Classificazione] Automatica. Il criterio richiede che il markup sia ben formato -- elementi con tag di apertura e chiusura completi, correttamente annidati, senza attributi duplicati e con \texttt{id} univoci -- requisiti verificabili in modo interamente deterministico da un validatore sintattico standard (ad esempio il W3C Markup Validator), senza margini di ambiguità.
@@ -232,9 +247,9 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: utenti di \emph{screen reader} e di altre tecnologie assistive, il cui corretto funzionamento presuppone un markup analizzabile senza ambiguità dal motore di parsing sottostante.
 \end{description}
 
-\paragraph*{Criteri presenti in un solo report (1/3)}
+\paragraph{Criteri presenti in un solo report (1/3)}
 
-\paragraph*{1.4.10 -- Reflow (Livello AA, Percepibile)}
+\paragraph{1.4.10 -- Reflow (Livello AA, Percepibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. Alcuni indizi sono rilevabili da un'analisi statica del CSS, come larghezze fisse espresse in unità assolute (\texttt{px}) anziché relative, o l'assenza di \emph{media query} responsive; accertare se il contenuto evita realmente lo scorrimento bidimensionale a una larghezza equivalente a 320~CSS px (o al 400\% di zoom) richiede invece il rendering effettivo della pagina a quella dimensione.
@@ -243,7 +258,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: ipovedenti che utilizzano l'ingrandimento del browser fino al 400\% per leggere il testo. Situazionali: consultazione da dispositivo mobile con schermo di piccole dimensioni, o da una finestra desktop ridotta/affiancata ad altre.
 \end{description}
 
-\paragraph*{1.4.11 -- Non-text Contrast (Livello AA, Percepibile)}
+\paragraph{1.4.11 -- Non-text Contrast (Livello AA, Percepibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica, con lo stesso schema già visto per 1.4.3: se i colori di sfondo e degli elementi grafici sono valori CSS solidi dichiarati, il contrasto dei bordi dei componenti dell'interfaccia (campi di input, pulsanti, indicatori di stato) e delle parti grafiche essenziali alla comprensione è calcolabile staticamente; resta invece un giudizio semantico preliminare, ossia stabilire quali elementi costituiscano davvero un \enquote{componente dell'interfaccia} o una \enquote{parte grafica essenziale} ai fini del criterio.
@@ -252,7 +267,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: ipovedenti e persone con bassa sensibilità al contrasto, per le stesse patologie oculari già indicate per 1.4.3, qui applicate a icone, controlli di modulo e altri componenti grafici dell'interfaccia. Situazionali: luce solare diretta sullo schermo, schermi di scarsa qualità.
 \end{description}
 
-\paragraph*{2.4.1 -- Bypass Blocks (Livello A, Utilizzabile)}
+\paragraph{2.4.1 -- Bypass Blocks (Livello A, Utilizzabile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. La presenza di un meccanismo per saltare i blocchi di contenuto ripetuti -- un collegamento di salto (\emph{skip link}) o un'adeguata struttura di landmark ARIA/HTML5 (\texttt{main}, \texttt{nav}) -- è rilevabile dal markup; giudicare se il meccanismo è effettivamente sufficiente (landmark che coprono davvero tutte le sezioni ripetute, etichette distintive quando sono presenti più landmark dello stesso tipo) richiede invece un giudizio più fine.
@@ -261,7 +276,7 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: utenti di \emph{screen reader} e utenti che navigano esclusivamente da tastiera, per cui saltare i blocchi ripetuti (intestazione, menu di navigazione) ad ogni pagina evita un onere significativo. Situazionali: navigazione vocale.
 \end{description}
 
-\paragraph*{3.1.1 -- Language of Page (Livello A, Comprensibile)}
+\paragraph{3.1.1 -- Language of Page (Livello A, Comprensibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Sì.
 \item[Classificazione] Automatica. La presenza dell'attributo \texttt{lang} e la validità del relativo tag lingua (ad esempio \texttt{it}, \texttt{en-US}, secondo BCP~47) sono verifiche di solo markup. Resta un sotto-caso semi-automatico: verificare che la lingua dichiarata corrisponda davvero al contenuto reale della pagina.
@@ -270,11 +285,13 @@ Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un
 \item[Condizioni d'uso coperte] Permanenti: utenti di \emph{screen reader}, per cui l'attributo serve alla pronuncia corretta da parte del sintetizzatore vocale. Situazionali: utenti di strumenti di traduzione automatica della pagina.
 \end{description}
 
-\subsection*{Selezione finale: criteri core, opzionali ed esclusi}
+\subsection{Selezione finale: criteri core, opzionali ed esclusi}
 
 Incrociando i risultati dell'analisi con i criteri di selezione introdotti in apertura di sezione -- frequenza, integrabilità con \acr{llm} e copertura delle condizioni d'uso -- a cui si aggiunge, per i criteri con dati disponibili in entrambe le rilevazioni AGID, l'ampiezza del divario fra la quota di errore rilevata automaticamente e quella confermata dal controllo manuale discussa sopra, i 13 criteri riscontrati nei report sono stati infine suddivisi in tre gruppi: \emph{core}, \emph{opzionali} ed \emph{esclusi}.
 
-Sono stati selezionati come \emph{core} sette criteri, riassunti nella tabella~\ref{tab:criteri-core}. Rispetto ai criteri di selezione già introdotti nella sezione~\ref{sec:livello-aa}, una considerazione aggiuntiva ha avuto un ruolo nella scelta finale: il confronto fra le percentuali del monitoraggio semplificato e approfondito ha motivato l'inclusione di 1.3.1 (Info and Relationships) fra i criteri \emph{core}: come illustrato sopra, è il criterio con il divario più ampio fra le due rilevazioni (dall'1,6\% al 23,2\%) e con la quota più alta in assoluto nel monitoraggio approfondito -- un'evidenza diretta del fatto che si tratta di un errore sistematicamente sotto-rilevato dal controllo automatico e sistematicamente individuato dal controllo manuale, esattamente il profilo di criterio per cui un sistema assistito da \acr{llm} promette il maggiore valore aggiunto. Resta comunque valida l'osservazione che 1.3.1 richiede di essere scomposto in numerosi sotto-casi (intestazioni, liste, tabelle, relazioni implicite fra elementi visivamente correlati): il maggiore costo di implementazione e validazione che ne deriva, discusso nei capitoli~\ref{chap:progettazione-prototipo} e~\ref{chap:validazione-benchmark}, è considerato giustificato dalla rilevanza empirica del criterio.
+Sono stati selezionati come \emph{core} otto criteri, riassunti nella tabella~\ref{tab:criteri-core}. Rispetto ai criteri di selezione già introdotti nella sezione~\ref{sec:livello-aa}, due considerazioni aggiuntive hanno avuto un ruolo nella scelta finale. In primo luogo, il confronto fra le percentuali del monitoraggio semplificato e approfondito ha motivato l'inclusione di 1.3.1 (Info and Relationships) fra i criteri \emph{core}: come illustrato sopra, è il criterio con il divario più ampio fra le due rilevazioni (dall'1,6\% al 23,2\%) e con la quota più alta in assoluto nel monitoraggio approfondito -- un'evidenza diretta del fatto che si tratta di un errore sistematicamente sotto-rilevato dal controllo automatico e sistematicamente individuato dal controllo manuale, esattamente il profilo di criterio per cui un sistema assistito da \acr{llm} promette il maggiore valore aggiunto. Resta comunque valida l'osservazione che 1.3.1 richiede di essere scomposto in numerosi sotto-casi (intestazioni, liste, tabelle, relazioni implicite fra elementi visivamente correlati): il maggiore costo di implementazione e validazione che ne deriva, discusso nei capitoli~\ref{chap:progettazione-prototipo} e~\ref{chap:validazione-benchmark}, è considerato giustificato dalla rilevanza empirica del criterio.
+
+In secondo luogo, lo stesso principio è stato applicato a 2.4.1 (Bypass Blocks), l'unico criterio, fra quelli riscontrati, presente esclusivamente nel monitoraggio approfondito e non nei due report basati su motori automatici (v.~tabella~\ref{tab:frequenza-errori}): il fatto che emerga soltanto dalla valutazione manuale è di per sé un indizio che si tratti di un aspetto poco accessibile all'analisi puramente sintattica, e l'analisi condotta sopra conferma che il criterio è effettivamente integrabile con un \acr{llm}, che può giudicare l'adeguatezza della struttura di landmark rispetto ai blocchi di contenuto ripetuti. Per i restanti criteri con entrambi i valori AGID disponibili, il confronto fra le due percentuali non ha invece motivato ulteriori inclusioni: l'ampiezza del divario risulta già più marcata proprio nei tre criteri appena discussi (1.3.1, ma anche 4.1.2 e 2.4.4, già inclusi per frequenza), mentre per i criteri con un divario nullo o di segno opposto -- rilevati cioè più spesso dal controllo automatico che da quello manuale, come 2.4.7 -- tale confronto non è stato considerato un argomento a favore dell'inclusione: il divario potrebbe indicare una sovra-segnalazione da parte del controllo automatico, ma è al momento solo un'ipotesi, che i dati aggregati dei due report non permettono di confermare (v. discussione sopra). Va inoltre segnalato che il confronto fra le due percentuali non è sempre applicabile in modo pienamente rigoroso, derivando da campioni e metodologie di rilevazione differenti (motore automatico su larga scala contro valutazione manuale su un campione più ristretto): per i criteri per cui uno dei due valori non è disponibile, come lo stesso 2.4.1 o 3.3.2, il confronto diretto non è stato quindi effettuato, e la motivazione di inclusione o esclusione si è basata sugli altri criteri di selezione.
 
 Il criterio 2.1.1 (Keyboard), pur restando l'unico a coprire in modo specifico le disabilità motorie che impediscono l'uso del mouse, non compare fra le prime 10 posizioni di nessuno dei due cruscotti AGID aggiornati, e non è quindi presente in alcuno dei tre report di riferimento assunti come base per la selezione: coerentemente con la scelta di basare la selezione unicamente sui dati aggiornati, il criterio non è stato incluso fra i criteri riscontrati né, di conseguenza, fra i criteri \emph{core}. Lo stesso vale per 3.2.2 (On Input) e 4.1.3 (Status Messages), anch'essi assenti dalle prime 10 posizioni dei cruscotti aggiornati.
 
@@ -308,14 +325,16 @@ Il criterio 2.1.1 (Keyboard), pur restando l'unico a coprire in modo specifico l
 \hline
 3.3.2 & Labels or Instructions & Comprensibile & Semi-automatica & Frequenza alta; stesso pattern LLM di 1.1.1 applicato ai moduli, ne dimostra la generalizzabilità. \\
 \hline
-2.4.7 & Focus Visible & Utilizzabile & Semi-automatica & Criterio più frequente nel monitoraggio semplificato AGID (42,4\%), ma quota minima nel manuale (2,6\%): probabile sovra-segnalazione automatica, utile caso di studio per la validazione. \\
+2.4.7 & Focus Visible & Utilizzabile & Semi-automatica & Criterio con la quota di errore più alta in assoluto fra tutti quelli rilevati (42,4\% nel monitoraggio semplificato AGID); il forte divario con il manuale (2,6\%) resta un'ipotesi da verificare in sede di validazione, non ancora una causa accertata. \\
+\hline
+2.4.1 & Bypass Blocks & Utilizzabile & Semi-automatica & Unico criterio presente esclusivamente nel monitoraggio approfondito (5,1\%), assente dai report basati su motori automatici; integrabile con LLM, colma un'ulteriore lacuna dell'automazione. \\
 \hline
 \end{longtable}
 }
 
-L'insieme selezionato copre tutti e quattro i principi POUR (v.~sezione~\ref{sec:quattro-principi}): Percepibile (1.1.1, 1.4.3, 1.3.1), Utilizzabile (2.4.4, 2.4.7), Comprensibile (3.3.2) e Robusto (4.1.2), con una rappresentazione del principio Percepibile ora più solida rispetto a quanto indicato nella sezione~\ref{sec:livello-aa}; il principio Utilizzabile, privo del contro-esempio motorio rappresentato da 2.1.1, resta comunque coperto dai restanti due criteri.
+L'insieme selezionato copre tutti e quattro i principi POUR (v.~sezione~\ref{sec:quattro-principi}): Percepibile (1.1.1, 1.4.3, 1.3.1), Utilizzabile (2.4.1, 2.4.4, 2.4.7), Comprensibile (3.3.2) e Robusto (4.1.2), con una rappresentazione del principio Percepibile ora più solida rispetto a quanto indicato nella sezione~\ref{sec:livello-aa}; il principio Utilizzabile, privo del contro-esempio motorio rappresentato da 2.1.1, resta comunque coperto da tre criteri.
 
-Un secondo gruppo di criteri è stato classificato come \emph{opzionale}: 1.4.1 (Use of Color), 1.4.10 (Reflow), 2.4.1 (Bypass Blocks) e 1.4.11 (Non-text Contrast). Si tratta, in ciascun caso, di criteri appartenenti alla stessa famiglia tecnica di uno dei criteri \emph{core} già selezionati (rispettivamente: percezione visiva del colore, rendering responsivo affine a 2.4.7, struttura di navigazione affine a 2.4.4/2.4.7, calcolo del contrasto affine a 1.4.3), ma che non introducono un pattern di verifica sostanzialmente nuovo rispetto ad esso.
+Un secondo gruppo di criteri è stato classificato come \emph{opzionale}: 1.4.1 (Use of Color), 1.4.10 (Reflow) e 1.4.11 (Non-text Contrast). Si tratta, in ciascun caso, di criteri appartenenti alla stessa famiglia tecnica di uno dei criteri \emph{core} già selezionati (rispettivamente: percezione visiva del colore, rendering responsivo affine a 2.4.7, calcolo del contrasto affine a 1.4.3), ma che non introducono un pattern di verifica sostanzialmente nuovo rispetto ad esso.
 
 Sono stati infine \emph{esclusi} due criteri, in entrambi i casi perché la loro verifica è quasi interamente riconducibile a un controllo sintattico tradizionale, per cui l'apporto di un \acr{llm} risulterebbe marginale: 3.1.1 (Language of Page), la cui validità si riduce alla presenza e correttezza formale dell'attributo \texttt{lang}, e 4.1.1 (Parsing), interamente verificabile da un validatore sintattico HTML standard. Entrambi sono comunque richiamati in questo lavoro come termine di paragone, a evidenziare che non tutti i criteri traggono lo stesso beneficio da un'architettura basata su \acr{llm}.
 
