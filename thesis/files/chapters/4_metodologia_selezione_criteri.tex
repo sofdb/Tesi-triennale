@@ -11,8 +11,7 @@ Questo capitolo tratta la definizione del metodo di lavoro adottato e la selezio
 % TODO: pianificazione delle attività, modalità di interazione con il tutor aziendale,
 % cadenza delle revisioni di progresso, strumenti usati per tracciare requisiti e progressi.
 
-\section{Selezione dei criteri WCAG oggetto di verifica}
-
+\section{Selezione dei criteri}
 \label{sec:selezione-criteri}
 
 La selezione del sottoinsieme di criteri di successo WCAG~2.1 di livello A e AA da sottoporre a verifica automatica è stata condotta a partire dall'insieme dei criteri applicabili alle pagine web, attraverso un percorso articolato in cinque fasi:
@@ -21,18 +20,18 @@ La selezione del sottoinsieme di criteri di successo WCAG~2.1 di livello A e AA 
 
 \item individuazione dell'insieme completo dei 50 criteri applicabili alle pagine web;
 
-\item classificazione dei criteri in base al principio POUR e al livello di conformità;
+\item distinzione dei criteri in base al principio POUR e al livello di conformità;
 
-\item verifica della presenza dei criteri nei tre report di riferimento, assunti come indicatori della frequenza con cui le diverse problematiche di accessibilità emergono sul web reale: il WebAIM Million\footcite{webaim:million2026}, il monitoraggio semplificato\footcite{agid:errori-semplificato} e il monitoraggio approfondito\footcite{agid:errori-approfondito} condotti da AGID;
+\item verifica della presenza dei criteri nei tre report di riferimento, assunti come indicatori della frequenza con cui le diverse problematiche di accessibilità emergono nel web reale: il WebAIM Million\footcite{webaim:million2026}, il monitoraggio semplificato\footcite{agid:errori-semplificato} e il monitoraggio approfondito\footcite{agid:errori-approfondito} condotti da AGID;
 
-\item analisi dei soli criteri riscontrati in almeno un report, considerando la verificabilità statica, la classificazione, l'integrabilità con LLM, le tecniche sufficienti WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C nelle quali ogni criterio ha un elenco di metodi concreti già collaudati per soddisfarlo, ciascuno con un codice (lettera = tecnologia: H=HTML, ARIA=ARIA, C=CSS, G=General) + numero, e una pagina propria che spiega esattamente come implementarlo.][]{w3c:techniques} e le condizioni d'uso coperte;
+\item analisi dei soli criteri riscontrati in almeno un report, considerando la verificabilità statica; la classificazione in base alla possibilità di effettuare controlli automatici, semi-automatici o manuali; la valutazione della loro integrabilità con gli LLM; l'individuazione delle \emph{Sufficient Techniques} WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C nelle quali ogni criterio ha un elenco di metodi concreti già collaudati per soddisfarlo, ciascuno con un codice (lettera = tecnologia: H=HTML, ARIA=ARIA, C=CSS, G=General) + numero, e una pagina propria che spiega esattamente come implementarlo.][]{w3c:techniques} e le condizioni d'uso coperte;
 
 \item selezione finale dei criteri \textbf{core}, \textbf{opzionali} ed \textbf{esclusi}, rapportata alla fattibilità della verifica automatica e al tempo disponibile per la realizzazione del progetto.
 \end{enumerate}
 
 \subsection{I 50 criteri di riferimento, per principio e livello di conformità}
 
-Come richiamato nella sezione~\ref{sec:livello-aa}, i criteri di successo di livello A e AA delle WCAG~2.1 applicabili alle pagine web sono complessivamente 50. La tabella~\ref{tab:distribuzione-pour} ne riporta la distribuzione per principio POUR (v.~sezione~\ref{sec:quattro-principi}) e per livello di conformità.
+Come richiamato nella sezione~\ref{sec:livello-aa}, i criteri di successo di livello A e AA delle WCAG~2.1 applicabili alle pagine web sono complessivamente 50. La tabella~\ref{tab:distribuzione-pour} ne riporta la distribuzione per principio POUR e per livello di conformità.
 
 \begin{table}[htbp]
 \centering
@@ -57,7 +56,7 @@ Robusto & 2 & 1 & 3 \\
 \end{table}
 \FloatBarrier
 
-\subsection{Copertura dei criteri nei tre report di riferimento}
+\subsection{Criteri di successo rilevati nei report}
 
 A partire da questo insieme di 50 criteri, il passo successivo consiste nell'individuare quali di essi compaiono effettivamente, come categoria di errore rilevata, in almeno uno dei tre report assunti come indicatori di frequenza sul web reale: 
 
@@ -67,17 +66,26 @@ A partire da questo insieme di 50 criteri, il passo successivo consiste nell'ind
 \item il \textbf{monitoraggio approfondito} di AGID, condotto invece da un gruppo di esperti di accessibilità\footcite{agid:errori-approfondito}. 
 \end{itemize}
 
-Per ciascun criterio è stato quindi verificato in quanti di questi tre report compaia: 3/3 se presente in tutti, 2/3 se presente solo in due o 1/3 se presente solo in un solo report. La tabella~\ref{tab:frequenza-errori} riporta il risultato di questo confronto per i 13 criteri risultati presenti in almeno un report, ordinati per grado di copertura decrescente.
+Per ciascun criterio è stato quindi verificato in quanti di questi tre report compaia e la tabella~\ref{tab:frequenza-errori} riporta il risultato di questo confronto per i 13 criteri, ordinati per grado di copertura decrescente.
 
-\begin{table}[h]
-\centering
-\small
+{\small
+\begin{longtable}{|p{1.1cm}|p{3cm}|p{1.8cm}|p{1.8cm}|p{1.8cm}|p{0.8cm}|}
 \caption{Criteri di successo riscontrati nei tre report di riferimento}
-\label{tab:frequenza-errori}
-\begin{tabular}{|p{1.1cm}|p{3cm}|p{1.8cm}|p{1.8cm}|p{1.8cm}|p{0.9cm}|}
+\label{tab:frequenza-errori}\\
 \hline
 \textbf{Crit.} & \textbf{Nome} & \textbf{WebAIM Million} & \textbf{AGID sempl.} & \textbf{AGID appr.} & \textbf{Cop.} \\
 \hline
+\endfirsthead
+\multicolumn{6}{c}{\textit{Tabella~\ref{tab:frequenza-errori} -- segue dalla pagina precedente}} \\
+\hline
+\textbf{Crit.} & \textbf{Nome} & \textbf{WebAIM Million} & \textbf{AGID sempl.} & \textbf{AGID appr.} & \textbf{Cop.} \\
+\hline
+\endhead
+\hline
+\multicolumn{6}{r}{\textit{continua nella pagina successiva}} \\
+\endfoot
+\hline
+\endlastfoot
 \multicolumn{6}{|c|}{\textbf{Presenti in tutti e tre i report (3/3)}} \\
 \hline
 1.1.1 & Non-text Content & 53,1\% & 9,7\% & 6,5\% & 3/3 \\
@@ -110,23 +118,22 @@ Per ciascun criterio è stato quindi verificato in quanti di questi tre report c
 \hline
 3.1.1 & Language of Page & 13,5\% & --- & --- & 1/3 \\
 \hline
-\end{tabular}
-\end{table}
-\FloatBarrier
+\end{longtable}
+}
 
-I tre report non sono equivalenti fra loro, e questo spiega perché diversi criteri compaiano solo in una parte di essi. Infatti, il WebAIM Million e il monitoraggio semplificato AGID, essendo basati esclusivamente su motori automatici, possono riportare soltanto le problematiche rilevabili senza interazione con la pagina. Conseguentemente, un criterio come 2.4.1 (\emph{Bypass Blocks}), la cui verifica richiede di valutare se i landmark presenti coprono davvero tutte le sezioni ripetute, compare solo grazie al monitoraggio approfondito, condotto da valutatori esperti, che copre anche questi casi pur con un campione di siti più ristretto rispetto al milione di \emph{home page} del WebAIM Million. Le tre fonti sono quindi complementari: le prime due forniscono un'indicazione quantitativa su scala molto ampia mediante rilevazione automatica, la terza permette di stimare la frequenza anche dei criteri che sfuggono a una rilevazione di quel tipo.
+Tale confronto ha scaturito due principali osservazioni. In primo luogo, i tre report non sono equivalenti fra loro: il WebAIM Million e il monitoraggio semplificato AGID, basandosi esclusivamente su motori automatici, possono riportare soltanto le problematiche rilevabili senza interazione con la pagina. Di conseguenza, un criterio come il \textbf{2.4.1 (\emph{Bypass Blocks})}, la cui verifica richiede di valutare se i landmark presenti coprono effettivamente tutte le sezioni ripetute, può essere verificato solo grazie al monitoraggio approfondito, che essendo condotto da da un gruppo di esperti, copre anche questi casi  pur con un campione di siti più ristretto rispetto al milione di \emph{home page} del WebAIM Million.Le tre fonti sono quindi complementari: le prime due forniscono un'indicazione quantitativa su scala molto ampia mediante la rilevazione automatica, mentre la terza permette di stimare la frequenza anche dei criteri che sfuggono a una rilevazione di questo tipo.
 
-Il confronto diretto fra le percentuali del monitoraggio semplificato e di quello approfondito evidenzia inoltre un fenomeno rilevante ai fini della selezione: per alcuni criteri la quota di errore rilevata dal controllo manuale è nettamente superiore a quella rilevata dal solo controllo automatico; per altri vale l'opposto. I due casi hanno un peso molto diverso ai fini della selezione, e vengono perciò discussi separatamente.
- 
-Il primo caso, manuale nettamente superiore ad automatico, è quello di 1.3.1 (\emph{Info and Relationships}), 4.1.2 (\emph{Name, Role, Value}) e 2.4.4 (\emph{Link Purpose}). Il più marcato è 1.3.1, che passa dall'1,6\% degli errori rilevati automaticamente al 23,2\% di quelli confermati dagli esperti, diventando la quota più alta fra tutti i criteri del monitoraggio approfondito, superiore anche a quella di 4.1.2 (17,8\%) e 2.4.4 (11,1\%). Questi tre criteri condividono una caratteristica, ossia la loro violazione richiede un giudizio semantico che risponda a domande come "la struttura riflette davvero il contenuto?", "il nome esposto corrisponde al comportamento reale?", "il testo del collegamento è comprensibile fuori dal proprio contesto?" a cui un motore di scanzione puramente sintattico non può rispondere. Questo primo caso costituisce quindi un argomento solido, distinto dalla semplice frequenza, a favore dell'integrazione di un LLM: i criteri per cui il controllo manuale rileva sistematicamente più errori di quello automatico sono proprio quelli in cui un sistema capace di un giudizio semantico promette il maggiore valore aggiunto rispetto agli strumenti puramente sintattici oggi disponibili.
- 
-Il secondo caso, automatico nettamente superiore a manuale, riguarda invece 2.4.7 (\emph{Focus Visible}) e 1.4.1 (\emph{Use of Color}), la cui quota crolla rispettivamente dal 42,4\% al 2,6\% e dal 17,4\% al 3,5\%. Un divario così ampio, nella direzione opposta al primo caso, ammette più di una spiegazione: può indicare una sovra-segnalazione da parte del controllo automatico, ma può derivare anche da altri fattori non distinguibili dai soli dati dei due report, come una diversa composizione del campione di siti fra monitoraggio semplificato e approfondito. Non disponendo di dati sui singoli casi rilevati questa spiegazione resta un'ipotesi che la validazione sperimentale del capitolo~\ref{chap:validazione-benchmark} permetterà di verificare direttamente sul benchmark costituito. A differenza del primo caso, questo secondo fenomeno non è stato quindi considerato un argomento a favore dell'inclusione fra i criteri \emph{core}.
+In secondo luogo, il confronto diretto fra le percentuali del monitoraggio semplificato e di quello approfondito evidenzia un fenomeno rilevante ai fini della selezione: per alcuni criteri la quota di errore rilevata dal controllo manuale è nettamente superiore a quella rilevata dal solo controllo automatico; per altri vale l'opposto. I due casi hanno un peso molto diverso ai fini della selezione, e vengono perciò discussi separatamente.
+
+Il primo caso, \textbf{manuale nettamente superiore ad automatico}, è quello che si riscontra per i criteri: \textbf{1.3.1 (\emph{Info and Relationships})}, \textbf{4.1.2 (\emph{Name, Role, Value})} e \textbf{2.4.4 (\emph{Link Purpose})}. Il più marcato è \textbf{1.3.1}, che passa dall'1,6\% degli errori rilevati automaticamente al 23,2\% di quelli confermati dagli esperti, diventando la quota più alta fra tutti i criteri del monitoraggio approfondito, superiore anche a quella di \textbf{4.1.2} (17,8\%) e \textbf{2.4.4} (11,1\%). Questi tre criteri condividono una caratteristica: la loro verifica richiede un giudizio semantico che risponda a domande come “la struttura riflette davvero il contenuto?”, “il nome esposto corrisponde al comportamento reale?”, “il testo del collegamento è comprensibile fuori dal proprio contesto?” alle quali un motore di scansione puramente sintattico non può rispondere. Questo primo caso costituisce quindi un argomento solido, distinto dalla semplice frequenza, a favore dell'integrazione di un LLM: i criteri per cui il controllo manuale rileva sistematicamente più errori di quello automatico sono proprio quelli in cui un sistema capace di un giudizio semantico promette il maggiore valore aggiunto rispetto agli strumenti puramente sintattici oggi disponibili.
+    
+Il secondo caso, \textbf{automatico nettamente superiore a manuale}, riguarda invece \textbf{2.4.7 (\emph{Focus Visible}} e \textbf{1.4.1 (\emph{Use of Color})}, la cui quota crolla rispettivamente dal 42,4\% al 2,6\% e dal 17,4\% al 3,5\%. Un divario così ampio, nella direzione opposta al primo caso, ammette più di una spiegazione: può indicare una sovra-segnalazione da parte del controllo automatico, ma può derivare anche da altri fattori non distinguibili dai soli dati dei due report, come una diversa composizione del campione di siti fra monitoraggio semplificato e approfondito. Non disponendo di dati sui singoli casi rilevati questa spiegazione resta un'ipotesi che la validazione sperimentale del capitolo~\ref{chap:validazione-benchmark} permetterà di verificare direttamente sul benchmark costituito. A differenza del primo caso, questo secondo fenomeno non è stato quindi considerato un argomento a favore dell'inclusione fra i criteri \textbf{core}.
 
 
 
 \subsection{Analisi dei criteri riscontrati nei report}
 
-Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un'analisi in termini di verificabilità a partire dal solo markup HTML statico (Sì, No, Parziale); classificazione del controllo (automatico, semi-automatico, manuale), con relativa motivazione; possibilità di integrare un LLM nel controllo (Sì, No, Parziale), con relativa spiegazione; le tecniche sufficienti WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C nelle quali ogni criterio ha un elenco di metodi concreti già collaudati per soddisfarlo, ciascuno con un codice (lettera = tecnologia: H=HTML, ARIA=ARIA, C=CSS, G=General) + numero, e una pagina propria che spiega esattamente come implementarlo.][]{w3c:techniques}; e le condizioni d'uso (permanenti, temporanee o situazionali) che il criterio contribuisce a coprire. 
+Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un'analisi in termini di verificabilità a partire dal solo markup HTML statico (Sì, No, Parziale); classificazione del controllo (automatico, semi-automatico, manuale), con relativa motivazione; possibilità di integrare un LLM nel controllo (Sì, No, Parziale), con relativa spiegazione; le tecniche sufficienti WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C nelle quali ogni criterio ha un elenco di metodi concreti già collaudati per soddisfarlo, ciascuno con un codice identificativo ((lettera = tecnologia: H=HTML, ARIA=ARIA, C=CSS, G=General) + numero), e una pagina propria che spiega esattamente come implementarlo.][]{w3c:techniques}; e le condizioni d'uso (permanenti, temporanee o situazionali) che il criterio contribuisce a coprire. 
 
 L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagine \emph{Understanding} e le tecniche sufficienti associate a ciascun criterio\footcite{w3c:understanding-intro,w3c:quickref}. I criteri sono presentati nello stesso ordine di copertura della tabella~\ref{tab:frequenza-errori}, e una tabella riassuntiva al termine della sezione (tabella~\ref{tab:sintesi-analisi}) ne riepiloga i risultati.
 
@@ -210,7 +217,8 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \item[Condizioni d'uso coperte] Permanenti: disabilità cognitive; utenti che usano \emph{screen reader}, per cui l'etichetta è l'unica informazione disponibile senza il contesto visivo del modulo. Situazionali: compilazione di moduli in mobilità o in condizioni di distrazione, dove istruzioni chiare riducono gli errori.
 \end{description}
 
-\paragraph{4.1.1 Parsing (Livello A, Robusto)}
+\paragraph*{4.1.1 -- Parsing (Livello A, Robusto)}
+
 \textit{Nota:} il criterio 4.1.1 è stato rimosso in WCAG 2.2~\footcite{w3c:wcag22-changes}, che lo ha giudicato ridondante rispetto alla gestione degli errori di parsing ormai garantita dai browser e dalle tecnologie assistive moderne. Questo lavoro fa riferimento a WCAG 2.1 Livello AA (v.~sezione~\ref{sec:livello-aa}), motivo per cui il criterio è comunque incluso in questa analisi preliminare; non sarà tuttavia oggetto di ulteriore sviluppo nei capitoli successivi, essendo già escluso dall'insieme \emph{core} per le ragioni discusse più avanti in questa sezione.
 \begin{description}
 \item[Verificabile via HTML statico?] Sì.
@@ -240,7 +248,7 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \item[Condizioni d'uso coperte] Permanenti: ipovedenti e persone con bassa sensibilità al contrasto, per le stesse patologie oculari già indicate per 1.4.3, qui applicate a icone, controlli di modulo e altri componenti grafici dell'interfaccia. Situazionali: luce solare diretta sullo schermo, schermi di scarsa qualità.
 \end{description}
 
-\paragraph{2.4.1 Bypass Blocks (Livello A, Utilizzabile)}
+\paragraph*{2.4.1 -- Bypass Blocks (Livello A, Utilizzabile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. La presenza di un meccanismo per saltare i blocchi di contenuto ripetuti un collegamento di salto (\emph{skip link}) o un'adeguata struttura di landmark ARIA/HTML5 (\texttt{main}, \texttt{nav}) è rilevabile dal markup; giudicare se il meccanismo è effettivamente sufficiente (landmark che coprono davvero tutte le sezioni ripetute, etichette distintive quando sono presenti più landmark dello stesso tipo) richiede invece un giudizio più fine.
@@ -259,8 +267,12 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \end{description}
 
 {\small
-\begin{longtable}{|p{1.2cm}|p{3.1cm}|p{1.6cm}|p{1.1cm}|p{1.6cm}|p{1.5cm}|}
-\caption{Sintesi dell'analisi dei 13 criteri riscontrati nei report} \label{tab:sintesi-analisi} \\ \multicolumn{6}{p{\linewidth}}{\footnotesize \textit{Nota.} Classificazione: A = automatica, S = semi-automatica, M = manuale. Copertura utenza: P = permanenti, T = temporanee, S = situazionali (solo le condizioni effettivamente coperte). } \\
+\begin{longtable}{|p{1.2cm}|p{4.3cm}|p{1.6cm}|p{1.1cm}|p{1.6cm}|p{1.2cm}|}
+\caption{Sintesi dell'analisi dei 13 criteri riscontrati nei report} 
+\label{tab:sintesi-analisi} \\ 
+[-0.3em] 
+\multicolumn{6}{p{\dimexpr\linewidth-6\tabcolsep}}{\footnotesize \textit{Nota.} Classificazione: A = automatica, S = semi-automatica, M = manuale. Copertura utenza: P = permanenti, T = temporanee, S = situazionali. } \\
+[0.6em] 
 \hline
 \textbf{Crit.} & \textbf{Nome} & \textbf{Verific.} & \textbf{Class.} & \textbf{Integr. LLM} & \textbf{Copert.} \\
 \hline
@@ -311,18 +323,14 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 }
 
 \subsection*{Selezione finale: criteri core, opzionali ed esclusi}
- 
-Incrociando i risultati dell'analisi con i criteri di selezione introdotti in apertura di sezione -- frequenza, integrabilità con LLM e copertura delle condizioni d'uso -- a cui si aggiunge, per i criteri con dati disponibili in entrambe le rilevazioni AGID, l'ampiezza del divario fra la quota di errore rilevata automaticamente e quella confermata dal controllo manuale discussa sopra, i 13 criteri riscontrati nei report sono stati infine suddivisi in tre gruppi: \emph{core}, \emph{opzionali} ed \emph{esclusi}.
- 
-Sono stati selezionati come \emph{core} otto criteri, riassunti nella tabella~\ref{tab:criteri-core}. Rispetto ai criteri di selezione già introdotti nella sezione~\ref{sec:livello-aa}, due considerazioni aggiuntive hanno avuto un ruolo nella scelta finale. In primo luogo, il confronto fra le percentuali del monitoraggio semplificato e approfondito ha motivato l'inclusione di 1.3.1 (Info and Relationships) fra i criteri \emph{core}: come illustrato sopra, è il criterio con il divario più ampio fra le due rilevazioni (dall'1,6\% al 23,2\%) e con la quota più alta in assoluto nel monitoraggio approfondito -- un'evidenza diretta del fatto che si tratta di un errore sistematicamente sotto-rilevato dal controllo automatico e sistematicamente individuato dal controllo manuale, esattamente il profilo di criterio per cui un sistema assistito da LLM promette il maggiore valore aggiunto. Resta comunque valida l'osservazione che 1.3.1 richiede di essere scomposto in numerosi sotto-casi (intestazioni, liste, tabelle, relazioni implicite fra elementi visivamente correlati): il maggiore costo di implementazione e validazione che ne deriva, discusso nei capitoli~\ref{chap:progettazione-prototipo} e~\ref{chap:validazione-benchmark}, è considerato giustificato dalla rilevanza empirica del criterio.
- 
-In secondo luogo, lo stesso principio è stato applicato a 2.4.1 (Bypass Blocks), l'unico criterio, fra quelli riscontrati, presente esclusivamente nel monitoraggio approfondito e non nei due report basati su motori automatici (v.~tabella~\ref{tab:frequenza-errori}): il fatto che emerga soltanto dalla valutazione manuale è di per sé un indizio che si tratti di un aspetto poco accessibile all'analisi puramente sintattica, e l'analisi condotta sopra conferma che il criterio è effettivamente integrabile con un LLM, che può giudicare l'adeguatezza della struttura di landmark rispetto ai blocchi di contenuto ripetuti. Per i restanti criteri con entrambi i valori AGID disponibili, il confronto fra le due percentuali non ha invece motivato ulteriori inclusioni: l'ampiezza del divario risulta già più marcata proprio nei tre criteri appena discussi (1.3.1, ma anche 4.1.2 e 2.4.4, già inclusi per frequenza), mentre per i criteri con un divario di segno opposto, come 2.4.7, tale confronto non è stato considerato un argomento a favore dell'inclusione, per le ragioni già discusse sopra. Va inoltre segnalato che il confronto fra le due percentuali non è sempre applicabile in modo pienamente rigoroso, derivando da campioni e metodologie di rilevazione differenti (motore automatico su larga scala contro valutazione manuale su un campione più ristretto): per i criteri per cui uno dei due valori non è disponibile, come lo stesso 2.4.1 o 3.3.2, il confronto diretto non è stato quindi effettuato, e la motivazione di inclusione o esclusione si è basata sugli altri criteri di selezione.
- 
-Il criterio 2.1.1 (Keyboard), pur restando l'unico a coprire in modo specifico le disabilità motorie che impediscono l'uso del mouse, non compare fra le prime 10 posizioni di nessuno dei due cruscotti AGID aggiornati, e non è quindi presente in alcuno dei tre report di riferimento assunti come base per la selezione: coerentemente con la scelta di basare la selezione unicamente sui dati aggiornati, il criterio non è stato incluso fra i criteri riscontrati né, di conseguenza, fra i criteri \emph{core}. Lo stesso vale per 3.2.2 (On Input) e 4.1.3 (Status Messages), anch'essi assenti dalle prime 10 posizioni dei cruscotti aggiornati.
- 
+
+Incrociando i risultati dell'analisi con i criteri di selezione introdotti in apertura di sezione (frequenza, integrabilità con LLM e copertura delle condizioni d'uso) a cui si aggiunge, per i criteri con dati disponibili in entrambe le rilevazioni AGID, l'ampiezza del divario fra la quota di errore rilevata automaticamente e quella confermata dal controllo manuale discussa sopra, i 13 criteri riscontrati nei report sono stati infine suddivisi in tre gruppi: \textbf{core}, \textbf{opzionali} ed \textbf{esclusi}.
+
+Sono stati selezionati come \textbf{core} otto criteri, riassunti nella tabella~\ref{tab:criteri-core}. 
+
 {\small
-\begin{longtable}{|p{1.4cm}|p{2.6cm}|p{2.1cm}|p{1.8cm}|p{3.9cm}|}
-\caption{Criteri di successo selezionati per la verifica sperimentale (insieme \emph{core}).}
+\begin{longtable}{|p{1.4cm}|p{2.2cm}|p{2.1cm}|p{1.8cm}|p{4.5cm}|}
+\caption{Criteri di successo selezionati per la verifica sperimentale (insieme \textbf{core}).}
 \label{tab:criteri-core} \\
 \hline
 \textbf{Criterio} & \textbf{Nome} & \textbf{Principio} & \textbf{Classific.} & \textbf{Motivazione sintetica} \\
@@ -338,7 +346,7 @@ Il criterio 2.1.1 (Keyboard), pur restando l'unico a coprire in modo specifico l
 \endfoot
 \hline
 \endlastfoot
-1.1.1 & Non-text Content & Percepibile & Semi-automatica & Frequenza altissima; copertura utenza completa; caso più ricco di integrazione LLM (confronto visivo-testuale e inferenza del messaggio funzionale). \\
+1.1.1 & Non-text Content & Percepibile & Semi-automatica & Frequenza altissima; copertura utenza completa; caso più ricco di integrazione LLM (confronto visivo-testuale e deduzione del messaggio funzionale). \\
 \hline
 1.4.3 & Contrast (Minimum) & Percepibile & Semi-automatica & Frequenza altissima; quasi interamente calcolabile con formula deterministica, funge da controllo metodologico rispetto ai criteri valutati dall'LLM. \\
 \hline
@@ -356,19 +364,10 @@ Il criterio 2.1.1 (Keyboard), pur restando l'unico a coprire in modo specifico l
 \hline
 \end{longtable}
 }
- 
-L'insieme selezionato copre tutti e quattro i principi POUR (v.~sezione~\ref{sec:quattro-principi}): Percepibile (1.1.1, 1.4.3, 1.3.1), Utilizzabile (2.4.1, 2.4.4, 2.4.7), Comprensibile (3.3.2) e Robusto (4.1.2), con una rappresentazione del principio Percepibile ora più solida rispetto a quanto indicato nella sezione~\ref{sec:livello-aa}; il principio Utilizzabile, privo del contro-esempio motorio rappresentato da 2.1.1, resta comunque coperto da tre criteri.
- 
-Un secondo gruppo di criteri è stato classificato come \emph{opzionale}: 1.4.1 (Use of Color), 1.4.10 (Reflow) e 1.4.11 (Non-text Contrast). Si tratta, in ciascun caso, di criteri appartenenti alla stessa famiglia tecnica di uno dei criteri \emph{core} già selezionati (rispettivamente: percezione visiva del colore, rendering responsivo affine a 2.4.7, calcolo del contrasto affine a 1.4.3), ma che non introducono un pattern di verifica sostanzialmente nuovo rispetto ad esso.
- 
-Sono stati infine \emph{esclusi} due criteri, in entrambi i casi perché la loro verifica è quasi interamente riconducibile a un controllo sintattico tradizionale, per cui l'apporto di un LLM risulterebbe marginale: 3.1.1 (Language of Page), la cui validità si riduce alla presenza e correttezza formale dell'attributo \texttt{lang}, e 4.1.1 (Parsing), interamente verificabile da un validatore sintattico HTML standard. Per quest'ultimo, l'esclusione è ulteriormente motivata dal fatto che il criterio è stato rimosso in WCAG 2.2~\footcite{w3c:wcag22-changes}: pur essendo parte del riferimento normativo WCAG 2.1 Livello AA adottato in questo lavoro, non verrà quindi analizzato oltre questa sezione. Entrambi i criteri sono comunque richiamati in questo lavoro come termine di paragone, a evidenziare che non tutti i criteri traggono lo stesso beneficio da un'architettura basata su LLM.
- 
-La classificazione completa dei 50 criteri, comprensiva delle motivazioni di dettaglio e delle tecniche di riferimento W3C associate a ciascuno, è riportata integralmente nel materiale di lavoro dello stage e viene ripresa, per i soli criteri selezionati come \emph{core}, nell'analisi dei requisiti del capitolo~\ref{chap:progettazione-prototipo}.
- 
-Il numero di otto criteri \emph{core} non deriva unicamente dai criteri di selezione discussi sopra, ma tiene conto anche delle tempistiche effettivamente disponibili per la loro implementazione, previste dal piano di lavoro dello stage. Le settimane 2--4 coprono, rispettivamente, la definizione della strategia di prompting e la realizzazione del primo prototipo con un LLM di riferimento (\emph{frontier model}), il lavoro di prompt engineering e la sperimentazione con modelli di dimensioni minori a fini di confronto, e infine la validazione sperimentale, comprensiva dell'analisi di falsi positivi, falsi negativi e allucinazioni: un arco di tre settimane entro cui va quindi realizzata un'estensione web funzionante con integrazione LLM, testata su più tentativi e più modelli, e infine validata su un benchmark di casi reali. Un insieme di criteri troppo ampio avrebbe compromesso la possibilità di condurre, per ciascun criterio, un numero di iterazioni di prompt engineering e un confronto fra modelli sufficienti a produrre risultati significativi in questo intervallo di tempo, oltre a ridurre il tempo disponibile per la validazione stessa.
- 
-Nella scelta ha pesato anche la complessità implementativa dei singoli criteri, non solo il loro numero. Alcuni dei criteri \emph{core}, come 1.3.1, richiedono la gestione di numerosi sotto-casi (intestazioni, liste, tabelle, relazioni implicite fra elementi) e quindi un prompt engineering più articolato; altri, come 2.4.7, presuppongono l'acquisizione automatizzata dello stato visivo della pagina in condizioni diverse (ad esempio schermate a fuoco spostato fra i vari elementi interattivi), il che richiede funzionalità di automazione del browser aggiuntive rispetto alla sola interrogazione dell'LLM sul markup statico; altri ancora, come 2.4.4 o 3.3.2, si prestano invece a un controllo prevalentemente testuale, con un costo di implementazione contenuto. L'insieme finale di otto criteri è stato quindi calibrato per restare realizzabile entro le tre settimane previste, includendo comunque una rappresentanza di criteri a complessità implementativa eterogenea, in modo da non limitare la validazione ai soli casi più semplici.
- 
-È importante distinguere questa valutazione di fattibilità dai criteri di selezione discussi in precedenza: la rilevanza empirica di un criterio (frequenza, divario fra le rilevazioni, copertura d'utenza) resta il fattore che ne determina l'inclusione nell'insieme \emph{core}, indipendentemente dal costo implementativo. In particolare, 2.4.7 e 1.1.1 -- inclusi per la frequenza più alta in assoluto e per frequenza e copertura d'utenza massime, rispettivamente -- presentano anche il rischio implementativo più elevato dell'insieme: 2.4.7 richiede di dare il focus programmaticamente a ciascun elemento interattivo della pagina e di confrontarne lo stato visivo risultante, funzionalità di automazione del browser aggiuntive rispetto alla sola interrogazione dell'LLM sul markup statico; 1.1.1 richiede, per un giudizio accurato sull'adeguatezza di un testo alternativo, la capacità di mettere in relazione il contenuto visivo di un'immagine con il testo che la descrive, funzione che presuppone un LLM multimodale o un passaggio dedicato di descrizione dell'immagine. Anziché escludere questi due criteri dal core in base al costo di implementazione, si è scelto di mantenerne la classificazione motivata dalla rilevanza empirica e di prevedere, nella progettazione del prototipo (capitolo~\ref{chap:progettazione-prototipo}), una versione semplificata per ciascuno, da estendere compatibilmente con i tempi a disposizione: per 2.4.7, un controllo statico preliminare basato sui fogli di stile (ad esempio la rilevazione di regole che rimuovono esplicitamente l'indicatore di focus di default, come \texttt{outline: none} senza un sostituto visibile), a cui affiancare l'automazione per-elemento se il tempo lo consente; per 1.1.1, un'euristica basata sul solo testo (confronto fra nome del file, attributi presenti nel markup e testo alternativo dichiarato), a cui affiancare la valutazione multimodale come estensione.
- 
+
+Un secondo gruppo di criteri è stato classificato come \textbf{opzionale}: \textbf{1.4.1 (Use of Color)}, \textbf{1.4.10 (Reflow)} e \textbf{1.4.11 (Non-text Contrast)}. Si tratta, in ciascun caso, di criteri appartenenti alla stessa famiglia tecnica di uno dei criteri \textbf{core} già selezionati, che quindi non introducono un pattern di verifica nuovo rispetto a quelli introdotti dall'isieme \textbf{core}.
+
+Sono stati infine \textbf{esclusi} due criteri, in entrambi i casi perché la loro verifica è quasi interamente riconducibile a un controllo sintattico tradizionale, per cui l'apporto di un LLM risulterebbe marginale: 1textbf{3.1.1 (Language of Page)}, la cui validità si riduce alla presenza e correttezza formale dell'attributo \texttt{lang}, e \textbf{4.1.1 (Parsing)}, interamente verificabile da un validatore sintattico HTML standard. Per quest'ultimo, l'esclusione è ulteriormente motivata dal fatto che il criterio è stato rimosso in WCAG 2.2~\footcite{w3c:wcag22-changes}, quindi pur essendo parte del riferimento normativo WCAG 2.1 Livello AA adottato in questo lavoro, non verrà analizzato oltre questa sezione. Entrambi i criteri sono comunque richiamati in questo lavoro come termine di paragone, a evidenziare che non tutti i criteri traggono lo stesso beneficio da un'architettura basata su LLM.
+
+Nella scelta ha pesato anche la complessità implementativa dei singoli criteri, non solo il loro numero. Alcuni dei criteri \textbf{core}, come \textbf{1.3.1}, richiedono la gestione di numerosi sotto-casi (intestazioni, liste, tabelle, relazioni implicite fra elementi) e quindi un \emph{prompt engineering} più articolato; altri, come \textbf{2.4.7}, presuppongono l'acquisizione automatizzata dello stato visivo della pagina in condizioni diverse (ad esempio schermate a fuoco spostato fra i vari elementi interattivi), il che richiede funzionalità di automazione del browser aggiuntive rispetto alla sola interrogazione dell'LLM sul markup statico; altri ancora, come \textbf{2.4.4} o \textbf{3.3.2}, si prestano invece a un controllo prevalentemente testuale, con un costo di implementazione contenuto. L'insieme finale di otto criteri è stato quindi calibrato per restare realizzabile entro i tempi previsti, includendo comunque una rappresentanza di criteri a complessità implementativa eterogenea, in modo da non limitare la validazione ai soli casi più semplici.
 \FloatBarrier
