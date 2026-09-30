@@ -121,7 +121,7 @@ Per ciascun criterio è stato quindi verificato in quanti di questi tre report c
 \end{longtable}
 }
 
-Tale confronto ha scaturito due principali osservazioni. In primo luogo, i tre report non sono equivalenti fra loro: il WebAIM Million e il monitoraggio semplificato AGID, basandosi esclusivamente su motori automatici, possono riportare soltanto le problematiche rilevabili senza interazione con la pagina. Di conseguenza, un criterio come il \textbf{2.4.1 (\emph{Bypass Blocks})}, la cui verifica richiede di valutare se i landmark presenti coprono effettivamente tutte le sezioni ripetute, può essere verificato solo grazie al monitoraggio approfondito, che essendo condotto da da un gruppo di esperti, copre anche questi casi  pur con un campione di siti più ristretto rispetto al milione di \emph{home page} del WebAIM Million.Le tre fonti sono quindi complementari: le prime due forniscono un'indicazione quantitativa su scala molto ampia mediante la rilevazione automatica, mentre la terza permette di stimare la frequenza anche dei criteri che sfuggono a una rilevazione di questo tipo.
+Tale confronto ha scaturito due principali osservazioni. In primo luogo, i tre report non sono equivalenti fra loro: il WebAIM Million e il monitoraggio semplificato AGID, basandosi esclusivamente su motori automatici, possono riportare soltanto le problematiche rilevabili senza interazione con la pagina. Di conseguenza, un criterio come il \textbf{2.4.1 (\emph{Bypass Blocks})}, la cui verifica richiede di valutare la presenza di un meccanismo che consenta di superare i blocchi di contenuto ripetuti (ad esempio mediante un'adeguata struttura di \emph{landmark}), può essere verificato solo grazie al monitoraggio approfondito, che, essendo condotto da un gruppo di esperti, copre anche questi casi, pur con un campione di siti più ristretto rispetto al milione di \emph{home page} del WebAIM Million. Le tre fonti sono quindi complementari: le prime due forniscono un'indicazione quantitativa su scala molto ampia mediante la rilevazione automatica, mentre la terza permette di stimare la frequenza anche dei criteri che sfuggono a una rilevazione di quel tipo.
 
 In secondo luogo, il confronto diretto fra le percentuali del monitoraggio semplificato e di quello approfondito evidenzia un fenomeno rilevante ai fini della selezione: per alcuni criteri la quota di errore rilevata dal controllo manuale è nettamente superiore a quella rilevata dal solo controllo automatico; per altri vale l'opposto. I due casi hanno un peso molto diverso ai fini della selezione, e vengono perciò discussi separatamente.
 
@@ -133,7 +133,7 @@ Il secondo caso, \textbf{automatico nettamente superiore a manuale}, riguarda in
 
 \subsection{Analisi dei criteri riscontrati nei report}
 
-Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un'analisi in termini di verificabilità a partire dal solo markup HTML statico (Sì, No, Parziale); classificazione del controllo (automatico, semi-automatico, manuale), con relativa motivazione; possibilità di integrare un LLM nel controllo (Sì, No, Parziale), con relativa spiegazione; le tecniche sufficienti WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C nelle quali ogni criterio ha un elenco di metodi concreti già collaudati per soddisfarlo, ciascuno con un codice identificativo ((lettera = tecnologia: H=HTML, ARIA=ARIA, C=CSS, G=General) + numero), e una pagina propria che spiega esattamente come implementarlo.][]{w3c:techniques}; e le condizioni d'uso (permanenti, temporanee o situazionali) che il criterio contribuisce a coprire. 
+Per ciascuno dei 13 criteri riscontrati in almeno un report è stata condotta un'analisi in termini di verificabilità a partire dal solo markup HTML statico (Sì, No, Parziale); classificazione del controllo (automatico, semi-automatico, manuale), con relativa motivazione; possibilità di integrare un LLM nel controllo (Sì, No, Parziale), con relativa spiegazione; le tecniche sufficienti WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C, che raccolgono tecniche considerate sufficienti per soddisfare specifici criteri di successo in determinate condizioni. Ciascuna tecnica è identificata da un codice (lettera = tecnologia o categoria: H=HTML, ARIA=ARIA, C=CSS, G=General) seguito da un numero e dispone di una pagina dedicata che ne descrive l'applicazione e le modalità di verifica.][]{w3c:techniques}; e le condizioni d'uso (permanenti, temporanee o situazionali) che il criterio contribuisce a coprire. 
 
 L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagine \emph{Understanding} e le tecniche sufficienti associate a ciascun criterio\footcite{w3c:understanding-intro,w3c:quickref}. I criteri sono presentati nello stesso ordine di copertura della tabella~\ref{tab:frequenza-errori}, e una tabella riassuntiva al termine della sezione (tabella~\ref{tab:sintesi-analisi}) ne riepiloga i risultati.
 
@@ -148,7 +148,7 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
         \item Confronto visivo-testuale, in cui un LLM multimodale confronta il contenuto reale dell'immagine con l'\texttt{alt} dichiarato, individuando testi alternativi mancanti, generici (ad esempio il nome del file, o \enquote{immagine}) o incoerenti con quanto raffigurato. 
         \item Valutazione contestuale guidata da prompt: il modello riceve l'immagine, l'\texttt{alt} dichiarato e il testo circostante nella pagina, e deduce autonomamente quale sia il messaggio funzionale che l'immagine dovrebbe veicolare in quel punto della pagina, orientato da indicazioni specifiche per tipologia di sito (ad esempio e-commerce, hôtellerie, editoria) forniti tramite prompt. Sulla base di questa inferenza il modello produce un giudizio, oppure, quando l'inferenza è incerta, domande guida per chi effettua la verifica manuale, ricalcando la logica del Decision Tree del W3C\footcite{w3c:decisional-tree}.
     \end{enumerate}
-\item[Tecniche di riferimento] \emph{Using \texttt{alt} attributes on \texttt{img} elements} (H37); \emph{using \texttt{aria-label} to provide labels for objects} (ARIA6/ARIA10); \emph{using null \texttt{alt} text for decorative images} (H67); \emph{using CSS to include decorative images} (C9).
+\item[Tecniche di riferimento] \emph{Using alt attributes on img elements} (H37); \emph{Using aria-label to provide labels for objects} (ARIA6); \emph{Using aria-labelledby to provide a text alternative for non-text content} (ARIA10); \emph{Using null alt text and no title attribute on img elements for images that assistive technology should ignore} (H67); \emph{Using CSS to include decorative images} (C9).
 \item[Condizioni d'uso coperte] Permanenti: ciechi e ipovedenti che usano uno \emph{screen reader}. Temporanee: infortunio o bendaggio che impedisce di vedere lo schermo. Situazionali: immagini non caricate per banda scarsa, schermo con riflessi o scarsa luminosità, uso a \enquote{mani libere/occhi altrove} (ad esempio alla guida, con audio).
 \end{description}
 
@@ -157,7 +157,7 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. Se lo sfondo è un colore CSS solido dichiarato, il contrasto è calcolabile interamente da markup e CSS statici, applicando la formula di \gls{luminanza-relativa} (soglie 4{,}5:1 per il testo normale, 3:1 per il testo grande). Se lo sfondo è un'immagine, un gradiente, o dipende da stili calcolati a runtime, serve invece il rendering effettivo per campionare il colore realmente visualizzato dietro al testo; restano inoltre da valutare le eccezioni (testo decorativo, loghi, testo incidentale in una fotografia).
 \item[Integrabile con LLM?] Sì, soprattutto per le eccezioni: un LLM multimodale può giudicare se un testo è decorativo, un logo o testo incidentale dentro una foto, casi che il solo calcolo matematico non distingue, e può inoltre stimare il contrasto su sfondi complessi quando il calcolo esatto non è applicabile.
-\item[Tecniche di riferimento] \emph{Ensuring a contrast ratio of at least 4.5:1} (G18); \emph{ensuring a contrast ratio of at least 3:1 for large text} (G145); non specificare colori di sfondo/testo che impediscano all'utente di cambiarli (G148); fornire un controllo per passare a una presentazione ad alto contrasto (G174).
+\item[Tecniche di riferimento] \emph{Ensuring that a contrast ratio of at least 4.5:1 exists between text (and images of text) and background behind the text} (G18); \emph{Ensuring that a contrast ratio of at least 3:1 exists between text (and images of text) and background behind the text} (G145); \emph{Not specifying background color, not specifying text color, and not using technology features that change those defaults} (G148); \emph{Providing a control with a sufficient contrast ratio that allows users to switch to a presentation that uses sufficient contrast} (G174).
 \item[Condizioni d'uso coperte] Permanenti: ipovedenti e persone con bassa sensibilità al contrasto per patologie oculari (degenerazione maculare, cataratta). Temporanee: recupero post-operatorio oculare, fotosensibilità da emicrania. Situazionali: luce solare diretta sullo schermo, schermi di scarsa qualità o luminosità.
 \end{description}
 
@@ -186,7 +186,7 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. Molti aspetti sono rilevabili dal solo markup (etichette associate, \texttt{th}/\texttt{scope} nelle tabelle, gerarchia di intestazioni, \texttt{ul}/\texttt{ol} per le liste); capire se il markup rispecchia davvero ciò che è percepibile visivamente, ad esempio testo formattato visivamente come lista ma senza \texttt{ul} o tabelle di layout usate al posto di \texttt{table}, richiede invece di confrontare il rendering con il DOM.
 \item[Integrabile con LLM?] Sì: un LLM multimodale può confrontare uno screenshot del rendering con il DOM/markup per individuare discrepanze, sia contenuto che appare strutturato (lista, tabella, intestazione) ma non lo è nel markup, sia markup semantico usato solo per ottenere uno stile visivo (ad esempio una \texttt{table} usata per il layout).
-\item[Tecniche di riferimento] \emph{Using h1-h6 to identify headings} (H42); \emph{using \texttt{ol}, \texttt{ul}, \texttt{dl} for lists} (H48); \emph{using table markup to present tabular information} (H51); \emph{using HTML structural elements} (H97/G115); ruoli ARIA per tabelle e landmark (ARIA11-26).
+\item[Tecniche di riferimento] \emph{Using h1-h6 to identify headings} (H42); \emph{using \texttt{ol}, \texttt{ul}, \texttt{dl} for lists} (H48); \emph{using table markup to present tabular information} (H51); \emph{using HTML structural elements} (H97/G115); ruoli ARIA per tabelle e landmark (ARIA11, ARIA12, ARIA13, ARIA16, ARIA17, ARIA20, ARIA24, ARIA26).
 \item[Condizioni d'uso coperte] Permanenti: ciechi e ipovedenti che usano uno \emph{screen reader} e che si affidano alla struttura per navigare; persone con disabilità cognitive che usano la struttura per orientarsi. Situazionali: navigazione vocale; \emph{reflow} su schermi piccoli, che dipende dalla struttura semantica per riorganizzare il contenuto.
 \end{description}
 
@@ -217,7 +217,7 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \item[Condizioni d'uso coperte] Permanenti: disabilità cognitive; utenti che usano \emph{screen reader}, per cui l'etichetta è l'unica informazione disponibile senza il contesto visivo del modulo. Situazionali: compilazione di moduli in mobilità o in condizioni di distrazione, dove istruzioni chiare riducono gli errori.
 \end{description}
 
-\paragraph*{4.1.1 -- Parsing (Livello A, Robusto)}
+\paragraph{4.1.1 -- Parsing (Livello A, Robusto)}
 
 \textit{Nota:} il criterio 4.1.1 è stato rimosso in WCAG 2.2~\footcite{w3c:wcag22-changes}, che lo ha giudicato ridondante rispetto alla gestione degli errori di parsing ormai garantita dai browser e dalle tecnologie assistive moderne. Questo lavoro fa riferimento a WCAG 2.1 Livello AA (v.~sezione~\ref{sec:livello-aa}), motivo per cui il criterio è comunque incluso in questa analisi preliminare; non sarà tuttavia oggetto di ulteriore sviluppo nei capitoli successivi, essendo già escluso dall'insieme \emph{core} per le ragioni discusse più avanti in questa sezione.
 \begin{description}
@@ -233,7 +233,7 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \paragraph{1.4.10 Reflow (Livello AA, Percepibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
-\item[Classificazione] Semi-automatica. Alcuni indizi di possibili problemi sono rilevabili attraverso un'analisi statica del CSS, come la presenza di larghezze fisse espresse in unità assolute (\texttt{px}) o l'assenza di \emph{*media query*} per la gestione del layout responsive. Tuttavia, accertare se il contenuto possa essere utilizzato senza dover scorrere la pagina sia orizzontalmente che verticalmente, quando la finestra di visualizzazione ha una larghezza equivalente a 320~CSS px (o al 400\% di zoom), richiede il rendering effettivo della pagina a quella dimensione.
+\item[Classificazione] Semi-automatica. Alcuni indizi di possibili problemi sono rilevabili attraverso un'analisi statica del CSS, come la presenza di larghezze fisse espresse in unità assolute (\texttt{px}) o l'assenza di \emph{media query} per la gestione del layout responsive. Tuttavia, accertare se il contenuto possa essere utilizzato senza dover scorrere la pagina sia orizzontalmente che verticalmente, quando la finestra di visualizzazione ha una larghezza equivalente a 320~CSS px (o al 400\% di zoom), richiede il rendering effettivo della pagina a quella dimensione.
 \item[Integrabile con LLM?] Sì, se abbinato ad automazione del browser che renderizzi la pagina alla larghezza equivalente e ne catturi uno screenshot, un LLM multimodale può individuare contenuto tagliato o uno scorrimento orizzontale non necessario. Senza automazione del rendering, il controllo resta limitato ai soli indizi statici nel CSS.
 \item[Tecniche di riferimento] \emph{Reflow} (C32, C31, C33, C38); \emph{using percentage values or relative units for container sizing} (G206).
 \item[Condizioni d'uso coperte] Permanenti: ipovedenti che utilizzano l'ingrandimento del browser fino al 400\% per leggere il testo. Situazionali: consultazione da dispositivo mobile con schermo di piccole dimensioni, o da una finestra desktop ridotta/affiancata ad altre.
@@ -244,11 +244,11 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica, con lo stesso schema già visto per 1.4.3: se i colori di sfondo e degli elementi grafici sono valori CSS solidi dichiarati, il contrasto dei bordi dei componenti dell'interfaccia (campi di input, pulsanti, indicatori di stato) e delle parti grafiche essenziali alla comprensione è calcolabile staticamente. Prima del calcolo è però necessario individuare quali elementi della pagina rientrino effettivamente nell'ambito del criterio, distinguendo i componenti dell'interfaccia e le parti grafiche essenziali alla comprensione dagli elementi che ne sono esclusi; questa valutazione non può essere determinata in modo affidabile dal solo codice CSS.
 \item[Integrabile con LLM?] Sì: analogamente a 1.4.3, un LLM multimodale può sia identificare quali elementi dell'interfaccia rientrano nell'ambito del criterio, sia stimare il contrasto su sfondi complessi non calcolabili staticamente, riutilizzando in larga parte la stessa pipeline di analisi già prevista per 1.4.3.
-\item[Tecniche di riferimento] G195 (indicatore di focus visibile, esteso al contrasto); G207 (contrasto sufficiente dei bordi dei componenti dell'interfaccia); tecnica analoga a G183, applicata agli elementi non testuali.
+\item[Tecniche di riferimento] G195 (indicatore di focus visibile, esteso al contrasto); G207 (contrasto sufficiente dei bordi dei componenti dell'interfaccia).
 \item[Condizioni d'uso coperte] Permanenti: ipovedenti e persone con bassa sensibilità al contrasto, per le stesse patologie oculari già indicate per 1.4.3, qui applicate a icone, controlli di modulo e altri componenti grafici dell'interfaccia. Situazionali: luce solare diretta sullo schermo, schermi di scarsa qualità.
 \end{description}
 
-\paragraph*{2.4.1 -- Bypass Blocks (Livello A, Utilizzabile)}
+\paragraph{2.4.1 -- Bypass Blocks (Livello A, Utilizzabile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Parziale.
 \item[Classificazione] Semi-automatica. La presenza di un meccanismo per saltare i blocchi di contenuto ripetuti un collegamento di salto (\emph{skip link}) o un'adeguata struttura di landmark ARIA/HTML5 (\texttt{main}, \texttt{nav}) è rilevabile dal markup; giudicare se il meccanismo è effettivamente sufficiente (landmark che coprono davvero tutte le sezioni ripetute, etichette distintive quando sono presenti più landmark dello stesso tipo) richiede invece un giudizio più fine.
@@ -260,10 +260,10 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \paragraph{3.1.1 Language of Page (Livello A, Comprensibile)}
 \begin{description}
 \item[Verificabile via HTML statico?] Sì.
-\item[Classificazione] Automatica. La presenza dell'attributo \texttt{lang} e la validità del relativo tag lingua (ad esempio \texttt{it}, \texttt{en-US}, secondo BCP~47) sono verifiche di solo markup. Resta un sotto-caso semi-automatico: verificare che la lingua dichiarata corrisponda davvero al contenuto reale della pagina.
+\item[Classificazione] (Prevalentemente) automatica. La presenza dell'attributo \texttt{lang} e la validità del relativo tag lingua (ad esempio \texttt{it}, \texttt{en-US}, secondo BCP~47) sono verifiche di solo markup. Resta un sotto-caso semi-automatico accessorio: verificare che la lingua dichiarata corrisponda davvero al contenuto reale della pagina.
 \item[Integrabile con LLM?] Parziale: il controllo di base non necessita di LLM, trattandosi di puro parsing sintattico. Un LLM è utile solo per il sotto-caso della corrispondenza fra lingua dichiarata e contenuto reale (rilevazione della lingua del testo e confronto con l'attributo \texttt{lang}), un compito semplice ma marginale rispetto al criterio nel suo complesso.
 \item[Tecniche di riferimento] \emph{Specifying the human language of Web pages (H57)}.
-\item[Condizioni d'uso coperte] Permanenti: utenti che usano \emph{screen reader}, per cui l'attributo serve alla pronuncia corretta da parte del sintetizzatore vocale. Situazionali: utenti udi strumenti di traduzione automatica della pagina.
+\item[Condizioni d'uso coperte] Permanenti: utenti che usano \emph{screen reader}, per cui l'attributo serve alla pronuncia corretta da parte del sintetizzatore vocale. Situazionali: utenti che utilizzano strumenti di traduzione automatica della pagina.
 \end{description}
 
 {\small
@@ -322,23 +322,23 @@ L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagi
 \end{longtable}
 }
 
-\subsection*{Selezione finale: criteri core, opzionali ed esclusi}
+\subsection{Selezione finale: criteri core, opzionali ed esclusi}
 
 Incrociando i risultati dell'analisi con i criteri di selezione introdotti in apertura di sezione (frequenza, integrabilità con LLM e copertura delle condizioni d'uso) a cui si aggiunge, per i criteri con dati disponibili in entrambe le rilevazioni AGID, l'ampiezza del divario fra la quota di errore rilevata automaticamente e quella confermata dal controllo manuale discussa sopra, i 13 criteri riscontrati nei report sono stati infine suddivisi in tre gruppi: \textbf{core}, \textbf{opzionali} ed \textbf{esclusi}.
 
 Sono stati selezionati come \textbf{core} otto criteri, riassunti nella tabella~\ref{tab:criteri-core}. 
 
 {\small
-\begin{longtable}{|p{1.4cm}|p{2.2cm}|p{2.1cm}|p{1.8cm}|p{4.5cm}|}
+\begin{longtable}{|p{0.8cm}|p{2.2cm}|p{2.1cm}|p{1.8cm}|p{5.5cm}|}
 \caption{Criteri di successo selezionati per la verifica sperimentale (insieme \textbf{core}).}
 \label{tab:criteri-core} \\
 \hline
-\textbf{Criterio} & \textbf{Nome} & \textbf{Principio} & \textbf{Classific.} & \textbf{Motivazione sintetica} \\
+\textbf{Crit.} & \textbf{Nome} & \textbf{Principio} & \textbf{Classific.} & \textbf{Motivazione sintetica} \\
 \hline
 \endfirsthead
 \multicolumn{5}{l}{\textit{Tabella~\ref{tab:criteri-core} -- segue dalla pagina precedente}} \\
 \hline
-\textbf{Criterio} & \textbf{Nome} & \textbf{Principio} & \textbf{Classific.} & \textbf{Motivazione sintetica} \\
+\textbf{Crit.} & \textbf{Nome} & \textbf{Principio} & \textbf{Classific.} & \textbf{Motivazione sintetica} \\
 \hline
 \endhead
 \hline
@@ -365,9 +365,9 @@ Sono stati selezionati come \textbf{core} otto criteri, riassunti nella tabella~
 \end{longtable}
 }
 
-Un secondo gruppo di criteri è stato classificato come \textbf{opzionale}: \textbf{1.4.1 (Use of Color)}, \textbf{1.4.10 (Reflow)} e \textbf{1.4.11 (Non-text Contrast)}. Si tratta, in ciascun caso, di criteri appartenenti alla stessa famiglia tecnica di uno dei criteri \textbf{core} già selezionati, che quindi non introducono un pattern di verifica nuovo rispetto a quelli introdotti dall'isieme \textbf{core}.
+Un secondo gruppo di criteri è stato classificato come \textbf{opzionale}: \textbf{1.4.1 (Use of Color)}, \textbf{1.4.10 (Reflow)} e \textbf{1.4.11 (Non-text Contrast)}. Si tratta, in ciascun caso, di criteri che, dal punto di vista della metodologia adottata, appartengono alla stessa famiglia tecnica di uno dei criteri \textbf{core} già selezionati e che quindi non introducono un pattern di verifica completamente nuovo rispetto a quelli introdotti dall'insieme \textbf{core}.
 
-Sono stati infine \textbf{esclusi} due criteri, in entrambi i casi perché la loro verifica è quasi interamente riconducibile a un controllo sintattico tradizionale, per cui l'apporto di un LLM risulterebbe marginale: 1textbf{3.1.1 (Language of Page)}, la cui validità si riduce alla presenza e correttezza formale dell'attributo \texttt{lang}, e \textbf{4.1.1 (Parsing)}, interamente verificabile da un validatore sintattico HTML standard. Per quest'ultimo, l'esclusione è ulteriormente motivata dal fatto che il criterio è stato rimosso in WCAG 2.2~\footcite{w3c:wcag22-changes}, quindi pur essendo parte del riferimento normativo WCAG 2.1 Livello AA adottato in questo lavoro, non verrà analizzato oltre questa sezione. Entrambi i criteri sono comunque richiamati in questo lavoro come termine di paragone, a evidenziare che non tutti i criteri traggono lo stesso beneficio da un'architettura basata su LLM.
+Sono stati infine \textbf{esclusi} due criteri, in entrambi i casi perché la loro verifica è quasi interamente riconducibile a un controllo sintattico tradizionale, per cui l'apporto di un LLM risulterebbe marginale: \textbf{3.1.1 (Language of Page)}, la cui validità si riduce alla presenza e correttezza formale dell'attributo \texttt{lang}, e \textbf{4.1.1 (Parsing)}, interamente verificabile da un validatore sintattico HTML standard. Per quest'ultimo, l'esclusione è ulteriormente motivata dal fatto che il criterio è stato rimosso in WCAG 2.2~\footcite{w3c:wcag22-changes}, quindi pur essendo parte del riferimento normativo WCAG 2.1 Livello AA adottato in questo lavoro, non verrà analizzato oltre questa sezione. Entrambi i criteri sono comunque richiamati in questo lavoro come termine di paragone, a evidenziare che non tutti i criteri traggono lo stesso beneficio da un'architettura basata su LLM.
 
 Nella scelta ha pesato anche la complessità implementativa dei singoli criteri, non solo il loro numero. Alcuni dei criteri \textbf{core}, come \textbf{1.3.1}, richiedono la gestione di numerosi sotto-casi (intestazioni, liste, tabelle, relazioni implicite fra elementi) e quindi un \emph{prompt engineering} più articolato; altri, come \textbf{2.4.7}, presuppongono l'acquisizione automatizzata dello stato visivo della pagina in condizioni diverse (ad esempio schermate a fuoco spostato fra i vari elementi interattivi), il che richiede funzionalità di automazione del browser aggiuntive rispetto alla sola interrogazione dell'LLM sul markup statico; altri ancora, come \textbf{2.4.4} o \textbf{3.3.2}, si prestano invece a un controllo prevalentemente testuale, con un costo di implementazione contenuto. L'insieme finale di otto criteri è stato quindi calibrato per restare realizzabile entro i tempi previsti, includendo comunque una rappresentanza di criteri a complessità implementativa eterogenea, in modo da non limitare la validazione ai soli casi più semplici.
 \FloatBarrier
