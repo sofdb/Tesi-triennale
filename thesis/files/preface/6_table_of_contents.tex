@@ -3,13 +3,17 @@
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}     
 
-\tableofcontents
+\begingroup
+    \hypersetup{linkcolor=black} % nell'indice il testo resta nero anche se cliccabile
+    \tableofcontents
+\endgroup
 \clearpage
 
 \begingroup
     \let\clearpage\relax
     \let\cleardoublepage\relax
     \let\cleardoublepage\relax
+    \hypersetup{linkcolor=black} % come nell'indice, testo nero anche se cliccabile
 
     % Figures list
     \phantomsection
@@ -24,6 +28,7 @@
 \endgroup
 
 \begingroup
+    \hypersetup{linkcolor=black} % come nell'indice, testo nero anche se cliccabile
     % Code list
     \phantomsection
     \pdfbookmark{\listoflistingscaption}{lol}

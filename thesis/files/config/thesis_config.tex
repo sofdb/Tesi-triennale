@@ -3,12 +3,22 @@
 \input{references/glossary_acronyms}
 
 % Define custom colors
-\definecolor{hyperColor}{HTML}{0B3EE3}
+\definecolor{hyperColor}{HTML}{7D0767}
 \definecolor{tableGray}{HTML}{F5F5F7}
 \definecolor{veryPeri}{HTML}{6667ab}
 
 % Set line height
 \linespread{1.5}
+
+% La classe "book", essendo "twoside", usa di default \flushbottom: per far
+% terminare ogni pagina esattamente al margine inferiore, LaTeX allunga gli
+% spazi elastici disponibili nella pagina. Poiché "parskip" (v. packages.tex)
+% separa i paragrafi con uno spazio elastico anziché fisso, nelle pagine con
+% pochi paragrafi questo allungamento diventa molto vistoso (spazi enormi e
+% disuguali fra un paragrafo e l'altro). \raggedbottom disattiva questo
+% comportamento: il margine inferiore può variare leggermente da pagina a
+% pagina, ma lo spazio fra i paragrafi resta uniforme.
+\raggedbottom
 
 % Custom hyphenation rules
 \hyphenation {
@@ -27,12 +37,93 @@
 \setlength{\skip\footins}{5mm}
 \setlength{\footnotesep}{5mm}
 
+% Numerazione delle note a piè di pagina continua su tutto il documento:
+% di default la classe "book" azzera il contatore "footnote" ad ogni
+% \chapter (v. \@startsection / \chapter in book.cls). Con \counterwithout
+% (da "chngcntr", v. packages.tex) si rimuove questo reset, cosicché le
+% note continuino a crescere dal capitolo 1 fino all'ultimo.
+\counterwithout{footnote}{chapter}
+
+% Stile delle tabelle: linee di contorno più sottili di quelle di default
+% (0.4pt) e un po' di spazio in più sopra e sotto il contenuto di ogni
+% cella, in modo che il testo non tocchi la riga superiore/inferiore. Si usa
+% \extrarowheight (da "array", v. packages.tex) anziché \arraystretch perché
+% aggiunge un padding fisso sopra e sotto ogni riga senza alterare
+% l'interlinea interna alle celle con testo su più righe (colonne "p{}").
+\setlength{\arrayrulewidth}{0.3pt}
+\setlength{\extrarowheight}{3pt}
+
 \setlength{\headheight}{14.5pt}
 \setlength{\headsep}{1.2cm} % più margine tra la riga di intestazione e il testo
 \addtolength{\topmargin}{-2.45pt}
 
 % Add a subscript G to a glossary entry
 \newcommand{\glox}{\textsubscript{\textbf{\textit{G}}}}
+
+% Placeholder visibile per le parti non ancora scritte
+\newcommand{\todoplaceholder}[1]{\par\noindent\textcolor{red!65!black}{\textbf{[DA COMPLETARE]} #1}\par}
+
+% Comando di citazione per le fonti giuridiche (leggi, decreti, direttive):
+% stampa il campo "usera" del file .bib (tipo di atto, data completa, numero)
+% invece della citazione autore-anno/numerica, mantenendo comunque il
+% collegamento bibliografico e il backref standard di biblatex.
+% Si usa il campo generico "usera" (e non "shorthand") perché "shorthand" è
+% un campo riservato di biblatex: se un'entry lo definisce, gli stili
+% numerici (incluso "ieee") lo utilizzano al posto del numero progressivo
+% come "labelnumber", rompendo la numerazione IEEE e la relativa gabbia di
+% impaginazione (hanging indent) della bibliografia. "usera" non ha invece
+% alcun significato predefinito per biblatex ed è quindi sicuro da riusare.
+% Uso identico a \footcite: \legfootcite[postnote]{chiave-bib}
+\DeclareCiteCommand{\legfootcite}[\mkbibfootnote]
+  {}
+  {\usebibmacro{citeindex}%
+   \thefield{usera}%
+   \iffieldundef{postnote}
+     {}
+     {\addcomma\space\printfield{postnote}}}
+  {\multicitedelim}
+  {\addperiod}
+
+% Ridefinizione di \footcite per le fonti non giuridiche in stile IEEE:
+% lo stile "ieee" (biblatex-ieee) definisce di default \footcite senza le
+% parentesi quadre che invece usa per \cite nel corpo del testo (assume che
+% la nota a piè di pagina renda già evidente il rimando). Qui si vuole che
+% SOLO il numero della fonte sia racchiuso tra parentesi quadre, mentre
+% l'eventuale postnote (capitolo, paragrafo, pagina) resta fuori dalle
+% parentesi, secondo il formato:
+%   [3], cap. 4, § 4.2.
+% invece di "[3, cap. 4, § 4.2]" o di "3, cap. 4, § 4.2" senza parentesi.
+% NOTA DI PORTABILITÀ: "ieee.cbx" (biblatex-ieee) sceglie internamente quale
+% variante di stile citazionale caricare per implementare \cite/\footcite
+% (tipicamente "numeric-comp", che comprime intervalli di citazioni multiple
+% del tipo [3]-[5]); tale variante può differire fra installazioni/versioni
+% diverse di biblatex-ieee (ad es. TeX Live vs. MiKTeX), e con essa cambiano
+% anche i nomi dei bibmacro interni usati per assemblare la citazione
+% (bibmacro come "cite:init"/"cite:comp"/"cite:dump" esistono infatti SOLO
+% nella variante "numeric-comp"/"numeric-icomp", non ad esempio in
+% "numeric-verb", dove "\footcite" è invece assemblato con un bibmacro
+% generico chiamato semplicemente "cite"). Per evitare che questa
+% ridefinizione smetta di funzionare a seconda della variante caricata,
+% qui non ci si appoggia a NESSUNO di questi bibmacro interni: il numero
+% viene stampato direttamente con \printfield{labelnumber} (preceduto dal
+% campo, anch'esso opzionale, "labelprefix"), racchiuso in
+% \printtext[bibhyperref]{...} per mantenere il collegamento ipertestuale
+% e il backref verso la bibliografia. "citeindex", "labelnumber",
+% "labelprefix" e il field-format "bibhyperref" sono infatti definiti in
+% modo generico in biblatex stesso (non in uno specifico file di stile),
+% e sono quindi stabili su qualunque variante/versione di biblatex-ieee.
+% Nota: questa versione non comprime in intervalli citazioni multiple nello
+% stesso \footcite (es. \footcite{a,b,c}), a differenza della variante
+% "numeric-comp": non è un problema per il presente lavoro, dove ogni nota
+% a piè di pagina cita di norma una sola fonte per volta.
+\DeclareCiteCommand{\footcite}[\mkbibfootnote]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \bibopenbracket
+   \printtext[bibhyperref]{\printfield{labelprefix}\printfield{labelnumber}}
+   \bibclosebracket}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
 
 % Titolo di capitolo: numero e titolo sulla stessa riga (niente "Capitolo N" a capo)
 \titleformat{\chapter}[hang]{\normalfont\Huge\bfseries}{\thechapter}{1em}{}
@@ -101,23 +192,52 @@
 \endgroup
 }
 
-% Adds a blank page while increasing the page number
-\newcommand\blankpagewithnumber{ 
-  \clearpage
-  \thispagestyle{plain} % Use plain page style to keep the page number
-  \null
-  \clearpage
-}
-
-% Increase page numbering
-\newcommand\increasepagenumbering{
-    \addtocounter{page}{+1}
-}
-
 % Make glossaries and bibliography
 \makeglossaries
-% Redefine the format for the glossary entries to be italic
-\renewcommand*{\glstextformat}[1]{\textit{#1}\glox}
+
+\colorlet{acronymColor}{hyperColor}
+
+% Tre comandi distinti, uno per ciascuna delle categorie descritte in
+% preface/convenzioni_tipografiche.tex ("Termini del glossario"), ognuno
+% con una resa tipografica propria che ne rende riconoscibile la
+% categoria senza dover leggere il testo espanso:
+%  - \gls{...}      Glossario vero e proprio (voci di tipo "main"):
+%                    corsivo + apice G (v. \glox sopra).
+%  - \acrshort{...} Acronimi e abbreviazioni, forma breve: stampa sempre
+%                    e solo la sigla, senza mai espanderla (comportamento
+%                    nativo del pacchetto "glossaries"); colorato come
+%                    \acr, mai in corsivo, senza apice G.
+% \acr è un semplice alias di \gls (stesso comportamento di espansione),
+% con un nome distinto per chiarezza nel sorgente: rende esplicito, a chi
+% scrive, che il comando va usato solo sulle voci di tipo "acronym" (per
+% le quali \gls resta comunque utilizzabile, v. nota tecnica sotto), mai
+% su quelle di Glossario.
+\newcommand{\acr}[2][]{\gls[#1]{#2}}
+
+% Formattazione dei riferimenti \gls/\acr/\acrshort (e delle rispettive
+% varianti automatiche del pacchetto "glossaries", che richiamano tutte la
+% stessa macro \glstextformat): la resa dipende dal tipo della voce di
+% glossario richiamata (\glsentrytype), non dal nome del comando con cui è
+% stata richiamata. In questo modo la formattazione resta corretta anche
+% nell'eventualità in cui, per errore, \gls venga usato su una voce di
+% tipo "acronym" invece di \acr/\acrshort (verrebbe comunque colorata come
+% un acronimo, mai in corsivo con apice G).
+% Nota tecnica: il tipo va prima "pre-espanso" con \edef in una macro di
+% appoggio (\glscurrenttype) e SOLO DOPO confrontato con \ifdefstring:
+% confrontare direttamente \ifstrequal{\glsentrytype{\glslabel}}{main}{…}{…}
+% non funziona, perché \ifstrequal non espande a sufficienza una chiamata
+% annidata come \glsentrytype{\glslabel} (il confronto risulta sempre
+% "falso" anche quando il tipo è realmente "main"). La macro di appoggio non
+% deve contenere la chiocciola "@" nel nome: usata qui, il valore risultava
+% corrotto (verificato con \meaning) — probabilmente per un'interazione con
+% il modo in cui \gls memorizza \glslabel; con un nome senza "@" il
+% confronto funziona in modo affidabile.
+\renewcommand*{\glstextformat}[1]{%
+  \edef\glscurrenttype{\glsentrytype{\glslabel}}%
+  \ifdefstring{\glscurrenttype}{main}
+    {\textit{#1}\glox}
+    {\textcolor{acronymColor}{#1}}%
+}
 %\glsaddall
 
 \bibliography{references/bibliography}
@@ -149,7 +269,7 @@
 % Set up hyperlinks
 \hypersetup{
     colorlinks=true,
-    linktocpage=true,
+    linktoc=all, % nell'indice l'intera riga è cliccabile, non solo il numero di pagina
     pdfstartpage=1,
     pdfstartview=,
     breaklinks=true,
@@ -164,6 +284,15 @@
     pdfhighlight=/O,
     allcolors = hyperColor
 }
+
+% I riferimenti a termini di Glossario, Acronimi e abbreviazioni (\gls, \acrshort, ecc.)
+% restano cliccabili: il collegamento ipertestuale rimanda alla voce
+% corrispondente nell'elenco (Acronimi e abbreviazioni / Glossario) in fondo
+% al documento, dove si trova la relativa spiegazione. Questo è il
+% comportamento predefinito del pacchetto "glossaries" quando "hyperref" è
+% caricato prima di esso (v. config/packages.tex): non è quindi necessaria
+% alcuna istruzione aggiuntiva; in precedenza tali link erano disattivati con
+% \glsdisablehyper, ora rimosso.
 
 % Set up captions
 \captionsetup{

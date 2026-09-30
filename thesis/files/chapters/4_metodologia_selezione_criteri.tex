@@ -1,0 +1,461 @@
+\chapter{Metodologia di lavoro e selezione dei criteri WCAG}
+\label{chap:metodologia-selezione}
+
+Questo capitolo tratta la definizione del metodo di lavoro adottato e la selezione del sottoinsieme di criteri WCAG~2.1 livello A e AA su cui è stata concentrata la verifica automatica. Le fasi successive del lavoro (progettazione e sviluppo del prototipo (capitolo~\ref{chap:progettazione-prototipo}) e validazione sperimentale (capitolo~\ref{chap:validazione-benchmark})) si basano direttamente sui criteri individuati in questo capitolo.
+
+\section{Metodo di lavoro}
+\label{sec:metodo-lavoro}
+
+\todoplaceholder{pianificazione, interazioni con il tutor, strumenti di tracciamento.}
+
+% TODO: pianificazione delle attività, modalità di interazione con il tutor aziendale,
+% cadenza delle revisioni di progresso, strumenti usati per tracciare requisiti e progressi.
+
+\section{Selezione dei criteri}
+\label{sec:selezione-criteri}
+
+La selezione del sottoinsieme di criteri di successo WCAG~2.1 di livello A e AA da sottoporre a verifica automatica è stata condotta a partire dall'insieme dei criteri applicabili alle pagine web, attraverso un percorso articolato in cinque fasi:
+
+\begin{enumerate}
+
+\item individuazione dell'insieme completo dei 50 criteri applicabili alle pagine web;
+
+\item distinzione dei criteri in base al principio POUR e al livello di conformità;
+
+\item verifica della presenza dei criteri nei tre \emph{report} di riferimento, assunti come indicatori della frequenza con cui le diverse problematiche di accessibilità emergono nel web reale: il WebAIM Million\footcite{webaim:million2026}, il monitoraggio semplificato\footcite{agid:errori-semplificato} e il monitoraggio approfondito\footcite{agid:errori-approfondito} condotti da AGID;
+
+\item analisi dei soli criteri riscontrati in almeno un \emph{report}, considerando la verificabilità statica; la classificazione in base alla possibilità di effettuare controlli automatici, semi-automatici o manuali; la valutazione della loro integrabilità con gli LLM; l'individuazione delle \emph{Sufficient Techniques} WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C nelle quali ogni criterio ha un elenco di metodi concreti già collaudati per soddisfarlo, ciascuno con un codice (lettera = tecnologia: H=HTML, ARIA=ARIA, C=CSS, G=General) + numero, e una pagina propria che spiega esattamente come implementarlo.][]{w3c:techniques} e le condizioni d'uso coperte;
+
+\item selezione finale dei criteri \textbf{\emph{core}}, \textbf{opzionali} ed \textbf{esclusi}, rapportata alla fattibilità della verifica automatica e al tempo disponibile per la realizzazione del progetto.
+\end{enumerate}
+
+\subsection{I 50 criteri di riferimento, per principio e livello di conformità}
+
+Come richiamato nella sezione~\ref{sec:livello-aa}, i criteri di successo di livello A e AA delle WCAG~2.1 applicabili alle pagine web sono complessivamente 50. La tabella~\ref{tab:distribuzione-pour} ne riporta la distribuzione per principio POUR e per livello di conformità.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Distribuzione dei 50 criteri di successo di livello A e AA per principio POUR e livello di conformità.}
+\label{tab:distribuzione-pour}
+\begin{tabular}{|l|r|r|r|}
+\hline
+\textbf{Principio} & \textbf{Livello A} & \textbf{Livello AA} & \textbf{Totale} \\
+\hline
+Percepibile & 9 & 11 & 20 \\
+\hline
+Utilizzabile & 14 & 3 & 17 \\
+\hline
+Comprensibile & 5 & 5 & 10 \\
+\hline
+Robusto & 2 & 1 & 3 \\
+\hline
+\textbf{Totale} & \textbf{30} & \textbf{20} & \textbf{50} \\
+\hline
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+\subsection{Criteri di successo rilevati nei \emph{report}}
+
+A partire da questo insieme di 50 criteri, il passo successivo consiste nell'individuare quali di essi compaiono effettivamente, come categoria di errore rilevata, in almeno uno dei tre \emph{report} assunti come indicatori di frequenza sul web reale: 
+
+\begin{itemize}
+\item il \textbf{WebAIM Million}, già introdotto nella sezione~\ref{sec:problema-pratico}, che analizza mediante il motore automatico WAVE le \emph{home page} di un milione di siti \emph{web} e riporta, per l'edizione 2026, la percentuale di \emph{home page} in cui compaiono le categorie di errore più comuni\footcite{webaim:million2026}; 
+\item il \textbf{monitoraggio semplificato} di \gls{agid-descrizione}, condotto automaticamente da \gls{mauve-descrizione} sui siti web della Pubblica Amministrazione\footcite{agid:errori-semplificato}; 
+\item il \textbf{monitoraggio approfondito} di AGID, condotto invece da un gruppo di esperti di accessibilità\footcite{agid:errori-approfondito}. 
+\end{itemize}
+
+Per ciascun criterio è stato quindi verificato in quanti di questi tre \emph{report} compaia e la tabella~\ref{tab:frequenza-errori} riporta il risultato di questo confronto per i 13 criteri, ordinati per grado di copertura decrescente.
+
+{\small
+\begin{longtable}{|p{1.1cm}|p{3cm}|p{1.8cm}|p{1.8cm}|p{1.8cm}|p{0.8cm}|}
+\caption{Criteri di successo riscontrati nei tre \emph{report} di riferimento}
+\label{tab:frequenza-errori}\\
+\hline
+\textbf{Crit.} & \textbf{Nome} & \textbf{WebAIM Million} & \textbf{AGID sempl.} & \textbf{AGID appr.} & \textbf{Cop.} \\
+\hline
+\endfirsthead
+\multicolumn{6}{c}{\textit{Tabella~\ref{tab:frequenza-errori} -- segue dalla pagina precedente}} \\
+\hline
+\textbf{Crit.} & \textbf{Nome} & \textbf{WebAIM Million} & \textbf{AGID sempl.} & \textbf{AGID appr.} & \textbf{Cop.} \\
+\hline
+\endhead
+\hline
+\multicolumn{6}{r}{\textit{continua nella pagina successiva}} \\
+\endfoot
+\hline
+\endlastfoot
+\multicolumn{6}{|c|}{\textbf{Presenti in tutti e tre i \emph{report} (3/3)}} \\
+\hline
+1.1.1 & Non-text Content & 53,1\% & 9,7\% & 6,5\% & 3/3 \\
+\hline
+1.4.3 & Contrast (Minimum) & 83,9\% & 15,1\% & 11,4\% & 3/3 \\
+\hline
+2.4.4 & Link Purpose (In Context) & 46,3\% & 2,3\% & 11,1\% & 3/3 \\
+\hline
+4.1.2 & Name, Role, Value & 30,6\% & 1,1\% & 17,8\% & 3/3 \\
+\hline
+\multicolumn{6}{|c|}{\textbf{Presenti in due \emph{report} (2/3)}} \\
+\hline
+1.3.1 & Info and Relationships & --- & 1,6\% & 23,2\% & 2/3 \\
+\hline
+1.4.1 & Use of Color & --- & 17,4\% & 3,5\% & 2/3 \\
+\hline
+2.4.7 & Focus Visible & --- & 42,4\% & 2,6\% & 2/3 \\
+\hline
+3.3.2 & Labels or Instructions & 51\% & --- & 6,3\% & 2/3 \\
+\hline
+4.1.1 & Parsing & --- & 3,5\% & 3,3\% & 2/3 \\
+\hline
+\multicolumn{6}{|c|}{\textbf{Presenti in un solo \emph{report} (1/3)}} \\
+\hline
+1.4.10 & Reflow & --- & 1,5\% & --- & 1/3 \\
+\hline
+1.4.11 & Non-text Contrast & --- & 3,5\% & --- & 1/3 \\
+\hline
+2.4.1 & Bypass Blocks & --- & --- & 5,1\% & 1/3 \\
+\hline
+3.1.1 & Language of Page & 13,5\% & --- & --- & 1/3 \\
+\hline
+\end{longtable}
+}
+
+Tale confronto ha scaturito due principali osservazioni. In primo luogo, i tre \emph{report} non sono equivalenti fra loro: il WebAIM Million e il monitoraggio semplificato AGID, basandosi esclusivamente su motori automatici, possono riportare soltanto le problematiche rilevabili senza interazione con la pagina. Di conseguenza, un criterio come il \textbf{2.4.1 (\emph{Bypass Blocks})}, la cui verifica richiede di valutare la presenza di un meccanismo che consenta di superare i blocchi di contenuto ripetuti (ad esempio mediante un'adeguata struttura di \emph{landmark}), può essere verificato solo grazie al monitoraggio approfondito, che, essendo condotto da un gruppo di esperti, copre anche questi casi, pur con un campione di siti più ristretto rispetto al milione di \emph{home page} del WebAIM Million. Le tre fonti sono quindi complementari: le prime due forniscono un'indicazione quantitativa su scala molto ampia mediante la rilevazione automatica, mentre la terza permette di stimare la frequenza anche dei criteri che sfuggono a una rilevazione di quel tipo.
+
+In secondo luogo, il confronto diretto fra le percentuali del monitoraggio semplificato e di quello approfondito evidenzia un fenomeno rilevante ai fini della selezione: per alcuni criteri la quota di errore rilevata dal controllo manuale è nettamente superiore a quella rilevata dal solo controllo automatico; per altri vale l'opposto. I due casi hanno un peso molto diverso ai fini della selezione, e vengono perciò discussi separatamente.
+
+Il primo caso, \textbf{manuale nettamente superiore ad automatico}, è quello che si riscontra per i criteri: \textbf{1.3.1 (\emph{Info and Relationships})}, \textbf{4.1.2 (\emph{Name, Role, Value})} e \textbf{2.4.4 (\emph{Link Purpose})}. Il più marcato è \textbf{1.3.1}, che passa dall'1,6\% degli errori rilevati automaticamente al 23,2\% di quelli confermati dagli esperti, diventando la quota più alta fra tutti i criteri del monitoraggio approfondito, superiore anche a quella di \textbf{4.1.2} (17,8\%) e \textbf{2.4.4} (11,1\%). Questi tre criteri condividono una caratteristica: la loro verifica richiede un giudizio semantico che risponda a domande come “la struttura riflette davvero il contenuto?”, “il nome esposto corrisponde al comportamento reale?”, “il testo del collegamento è comprensibile fuori dal proprio contesto?” alle quali un motore di scansione puramente sintattico non può rispondere. Questo primo caso costituisce quindi un argomento solido, distinto dalla semplice frequenza, a favore dell'integrazione di un LLM: i criteri per cui il controllo manuale rileva sistematicamente più errori di quello automatico sono proprio quelli in cui un sistema capace di un giudizio semantico promette il maggiore valore aggiunto rispetto agli strumenti puramente sintattici oggi disponibili.
+    
+Il secondo caso, \textbf{automatico nettamente superiore a manuale}, riguarda invece \textbf{2.4.7 (\emph{Focus Visible}} e \textbf{1.4.1 (\emph{Use of Color})}, la cui quota crolla rispettivamente dal 42,4\% al 2,6\% e dal 17,4\% al 3,5\%. Un divario così ampio, nella direzione opposta al primo caso, ammette più di una spiegazione: può indicare una sovra-segnalazione da parte del controllo automatico, ma può derivare anche da altri fattori non distinguibili dai soli dati dei due \emph{report}, come una diversa composizione del campione di siti fra monitoraggio semplificato e approfondito. Non disponendo di dati sui singoli casi rilevati questa spiegazione resta un'ipotesi che la validazione sperimentale del capitolo~\ref{chap:validazione-benchmark} permetterà di verificare direttamente sul benchmark costituito. A differenza del primo caso, questo secondo fenomeno non è stato quindi considerato un argomento a favore dell'inclusione fra i criteri \textbf{\emph{core}}.
+
+
+
+\subsection{Analisi dei criteri riscontrati nei \emph{report}}
+
+Per ciascuno dei 13 criteri riscontrati in almeno un \emph{report} è stata condotta un'analisi in termini di verificabilità a partire dal solo markup HTML statico (Sì, No, Parziale); classificazione del controllo (automatico, semi-automatico, manuale), con relativa motivazione; possibilità di integrare un LLM nel controllo (Sì, No, Parziale), con relativa spiegazione; le tecniche sufficienti WCAG di riferimento\footcite[Sono le \emph{Sufficient Techniques} ufficiali del W3C, che raccolgono tecniche considerate sufficienti per soddisfare specifici criteri di successo in determinate condizioni. Ciascuna tecnica è identificata da un codice (lettera = tecnologia o categoria: H=HTML, ARIA=ARIA, C=CSS, G=\emph{General}) seguito da un numero e dispone di una pagina dedicata che ne descrive l'applicazione e le modalità di verifica.][]{w3c:techniques}; e le condizioni d'uso (permanenti, temporanee o situazionali) che il criterio contribuisce a coprire. 
+
+L'analisi si basa sulla documentazione ufficiale del W3C, in particolare le pagine \emph{Understanding} e le tecniche sufficienti associate a ciascun criterio\footcite{w3c:understanding-intro,w3c:quickref}. I criteri sono presentati nello stesso ordine di copertura della tabella~\ref{tab:frequenza-errori}, e una tabella riassuntiva al termine della sezione (tabella~\ref{tab:sintesi-analisi}) ne riepiloga i risultati.
+
+\paragraph{Criteri presenti in tutti e tre i \emph{report} (3/3)}
+
+\paragraph{1.1.1 Non-text Content (Livello A, Percepibile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+
+\item[Classificazione] Semi-automatica. La presenza o assenza dell'attributo \texttt{alt} è rilevabile dal solo markup; la sua adeguatezza (corrispondenza col contenuto reale, specificità del messaggio funzionale, distinzione fra immagine decorativa e informativa) richiede invece di valutare l'immagine e il suo contesto d'uso.
+
+\item[Integrabile con LLM?] Sì, secondo due modalità complementari:
+
+    \begin{enumerate}
+
+        \item Confronto visivo-testuale, in cui un LLM multimodale confronta il contenuto reale dell'immagine con l'\texttt{alt} dichiarato, individuando testi alternativi mancanti, generici (ad esempio il nome del file, o \enquote{immagine}) o incoerenti con quanto raffigurato. 
+
+        \item Valutazione contestuale guidata da prompt: il modello riceve l'immagine, l'\texttt{alt} dichiarato e il testo circostante nella pagina, e deduce autonomamente quale sia il messaggio funzionale che l'immagine dovrebbe veicolare in quel punto della pagina, orientato da indicazioni specifiche per tipologia di sito (ad esempio e-commerce, hôtellerie, editoria) forniti tramite prompt. Sulla base di questa inferenza il modello produce un giudizio, oppure, quando l'inferenza è incerta, domande guida per chi effettua la verifica manuale, ricalcando la logica del Decision Tree del W3C\footcite{w3c:decisional-tree}.
+
+    \end{enumerate}
+
+\item[Tecniche considerate] Le tecniche considerate riguardano la fornitura di alternative testuali per i contenuti non testuali e la corretta gestione delle immagini decorative: \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H37.html}{H37}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6.html}{ARIA6}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA10.html}{ARIA10}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H67.html}{H67}; \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C9.html}{C9}.
+
+\item[Condizioni d'uso coperte] Permanenti: ciechi e ipovedenti che usano uno \emph{screen reader}. Temporanee: infortunio o bendaggio che impedisce di vedere lo schermo. Situazionali: immagini non caricate per banda scarsa, schermo con riflessi o scarsa luminosità, uso a \enquote{mani libere/occhi altrove} (ad esempio alla guida, con audio).
+
+\end{description}
+
+\paragraph{1.4.3 Contrast (Minimum) (Livello AA, Percepibile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+
+\item[Classificazione] Semi-automatica. Se lo sfondo è un colore CSS solido dichiarato, il contrasto è calcolabile interamente da markup e CSS statici, applicando la formula di \gls{luminanza-relativa} (soglie 4{,}5:1 per il testo normale, 3:1 per il testo grande). Se lo sfondo è un'immagine, un gradiente, o dipende da stili calcolati a runtime, serve invece il rendering effettivo per campionare il colore realmente visualizzato dietro al testo; restano inoltre da valutare le eccezioni (testo decorativo, loghi, testo incidentale in una fotografia).
+
+\item[Integrabile con LLM?] Sì, soprattutto per le eccezioni: un LLM multimodale può giudicare se un testo è decorativo, un logo o testo incidentale dentro una foto, casi che il solo calcolo matematico non distingue, e può inoltre stimare il contrasto su sfondi complessi quando il calcolo esatto non è applicabile.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano il rispetto dei rapporti minimi di contrasto, la gestione dei colori di default e la possibilità di attivare una presentazione con contrasto sufficiente: \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G18.html}{G18}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G145.html}{G145}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G148.html}{G148}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G174.html}{G174}.
+
+\item[Condizioni d'uso coperte] Permanenti: ipovedenti e persone con bassa sensibilità al contrasto per patologie oculari (degenerazione maculare, cataratta). Temporanee: recupero post-operatorio oculare, fotosensibilità da emicrania. Situazionali: luce solare diretta sullo schermo, schermi di scarsa qualità o luminosità.
+
+\end{description}
+
+\paragraph{2.4.4 Link Purpose (In Context) (Livello A, Utilizzabile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+
+\item[Classificazione] Semi-automatica. Rilevare link vuoti o privi di testo accessibile è un controllo statico; giudicare se il testo è sufficientemente descrittivo, da solo o insieme al contesto (frase, elemento di lista, cella di tabella con relativa intestazione), richiede invece comprensione semantica.
+
+\item[Integrabile con LLM?] Sì: è un compito puramente testuale, che non richiede capacità di visione. Un LLM legge il testo del link e il contesto in cui è inserito, e giudica se lo scopo del link è chiaro, individuando pattern come \enquote{clicca qui} o \enquote{leggi di più} ripetuti senza un contesto che li distingua.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano la descrizione esplicita dello scopo del link e la possibilità di determinarlo attraverso il testo e il contesto programmaticamente associato: \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G91.html}{G91}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H30.html}{H30}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G53.html}{G53}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7.html}{ARIA7}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA8.html}{ARIA8}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H77.html}{H77}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H78.html}{H78}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H79.html}{H79}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H81.html}{H81}.
+
+\item[Condizioni d'uso coperte] Permanenti: utenti che usano \emph{screen reader}, che spesso navigano per elenco di link isolati dal contesto visivo. Situazionali: scansione rapida della pagina, navigazione vocale.
+
+\end{description}
+
+\paragraph{4.1.2 Name, Role, Value (Livello A, Robusto)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+
+\item[Classificazione] Semi-automatica. La presenza di un nome accessibile (\texttt{aria-label}, \texttt{aria-labelledby}, testo interno), la validità sintattica degli attributi ARIA e l'assegnazione dei ruoli sono rilevabili dal markup; la corretta corrispondenza semantica tra ruolo assegnato e comportamento del widget e la corretta trasmissione delle notifiche di cambiamento di stato richiedono, invece, l'esecuzione o l'interazione con una tecnologia assistiva.
+
+\item[Integrabile con LLM?] Sì: un LLM può confrontare il comportamento e l'aspetto visivo di un componente (ad esempio un elemento \texttt{div} con gestore di click che si comporta come un pulsante) con il ruolo ARIA effettivamente dichiarato, segnalando i disallineamenti.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano l'esposizione programmatica del nome, del ruolo, dello stato e delle proprietà dei componenti dell'interfaccia, attraverso WAI-ARIA e controlli HTML nativi: \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA14.html}{ARIA14}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16.html}{ARIA16}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G108.html}{G108}, in combinazione con \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H91.html}{H91}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H44.html}{H44}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H64.html}{H64}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H65.html}{H65} o \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H88.html}{H88}; per componenti personalizzati, \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G10.html}{G10}, \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA4.html}{ARIA4}, \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA5.html}{ARIA5} e \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16.html}{ARIA16}.
+
+\item[Condizioni d'uso coperte] Permanenti: ciechi e ipovedenti che usano uno \emph{screen reader} dato che è il criterio che rende possibile l'interazione stessa con qualunque controllo non nativo. Situazionali: navigazione vocale, tecnologie assistive di commutazione (\emph{switch access}).
+
+\end{description}
+
+\paragraph{Criteri presenti in due \emph{report} (2/3)}
+
+\paragraph{1.3.1 Info and Relationships (Livello A, Percepibile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+
+\item[Classificazione] Semi-automatica. Molti aspetti sono rilevabili dal solo markup (etichette associate, \texttt{th}/\texttt{scope} nelle tabelle, gerarchia di intestazioni, \texttt{ul}/\texttt{ol} per le liste); capire se il markup rispecchia davvero ciò che è percepibile visivamente, ad esempio testo formattato visivamente come lista ma senza \texttt{ul} o tabelle di layout usate al posto di \texttt{table}, richiede invece di confrontare il rendering con il DOM.
+
+\item[Integrabile con LLM?] Sì: un LLM multimodale può confrontare uno screenshot del rendering con il DOM/markup per individuare discrepanze, sia contenuto che appare strutturato (lista, tabella, intestazione) ma non lo è nel markup, sia markup semantico usato solo per ottenere uno stile visivo (ad esempio una \texttt{table} usata per il layout).
+
+\item[Tecniche considerate] Le tecniche considerate riguardano la codifica semantica di intestazioni, liste, tabelle e regioni della pagina, oltre all'uso di ruoli, proprietà e altri elementi semantici per rendere programmaticamente determinabili struttura e relazioni: \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H42.html}{H42}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H48.html}{H48}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H51.html}{H51}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11.html}{ARIA11}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H101.html}{H101}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA12.html}{ARIA12}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13.html}{ARIA13}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16.html}{ARIA16}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA17.html}{ARIA17}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA20.html}{ARIA20}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G115.html}{G115}, in combinazione con \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H49.html}{H49}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G117.html}{G117}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G140.html}{G140}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA24.html}{ARIA24}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA26.html}{ARIA26}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G138.html}{G138}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H39.html}{H39}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H63.html}{H63}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H43.html}{H43}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H44.html}{H44}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H65.html}{H65}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H71.html}{H71}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H85.html}{H85}.
+
+\item[Condizioni d'uso coperte] Permanenti: ciechi e ipovedenti che usano uno \emph{screen reader} e che si affidano alla struttura per navigare; persone con disabilità cognitive che usano la struttura per orientarsi. Situazionali: navigazione vocale; \emph{reflow} su schermi piccoli, che dipende dalla struttura semantica per riorganizzare il contenuto.
+
+\end{description}
+
+\paragraph{1.4.1 Use of Color (Livello A, Percepibile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+
+\item[Classificazione] Semi-automatica. Alcuni sotto-casi sono calcolabili da CSS/DOM senza screenshot, ad esempio il contrasto fra il colore di un link e il testo circostante, o l'assenza di uno stile o di un'icona aggiuntiva su campi obbligatori segnalati solo tramite \texttt{border-color}. Riconoscere in generale se il colore è l'unico mezzo usato per trasmettere un'informazione (ad esempio la legenda di un grafico, o un'etichetta di stato) richiede invece di vedere il rendering e interpretarne il significato semantico.
+
+\item[Integrabile con LLM?] Sì: un LLM multimodale può analizzare uno screenshot e verificare se un'informazione (stato, categoria, obbligatorietà) è distinguibile anche senza percezione del colore, individuando i casi di campi obbligatori o errori segnalati solo a colore, e di link non distinguibili se non per colore.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano la disponibilità di informazioni alternative al solo colore e l'uso di ulteriori indizi visivi per distinguere gli elementi: \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G14.html}{G14}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G205.html}{G205}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G182.html}{G182}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G183.html}{G183}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G111.html}{G111}.
+
+\item[Condizioni d'uso coperte] Permanenti: persone daltoniche e con altre forme di deficit della percezione cromatica. Situazionali: schermi con calibrazione scarsa o luce solare forte, che riducono la percezione dei contrasti cromatici; dispositivi o modalità in scala di grigi.
+
+\end{description}
+
+\paragraph{2.4.7 Focus Visible (Livello AA, Utilizzabile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] No.
+\item[Classificazione] Semi-automatica. Serve un'interazione reale (attivare il focus su ogni elemento) e l'osservazione del rendering per capire se compare un indicatore visibile e distinguibile. Uno strumento può rilevare se esistono regole CSS \texttt{:focus}/\texttt{:focus-visible} definite, o se sono state rimosse senza un sostituto (ad esempio \texttt{outline: none}), ma la sufficienza visiva e di contrasto dell'indicatore richiede l'ispezione del rendering effettivo.
+\item[Integrabile con LLM?] Sì, se abbinato ad automazione del browser che catturi lo screenshot con l'elemento a fuoco: un LLM multimodale può confrontare lo stato normale e quello a fuoco di un elemento e giudicare se l'indicatore è visibile e sufficientemente contrastato. Senza automazione che generi gli screenshot per ogni stato di focus, il controllo non è invece applicabile.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano la presenza e la visibilità dell'indicatore di focus, attraverso il comportamento predefinito dell'user agent, CSS o script: \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G149.html}{G149}; \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C15.html}{C15}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G165.html}{G165}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G195.html}{G195}; \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C40.html}{C40}; \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C45.html}{C45}; \href{https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR31.html}{SCR31}. La failure \href{https://www.w3.org/WAI/WCAG22/Techniques/failures/F78}{F78}, precedentemente considerata, non è una tecnica sufficiente ma un esempio di implementazione che può comportare una violazione del criterio.
+
+\item[Condizioni d'uso coperte] Permanenti: disabilità motorie, in particolare chi naviga solo da tastiera; ipovedenti. Situazionali: uso senza mouse, ad esempio con un dispositivo dotato di sola tastiera o di uno \emph{switch}.
+
+\end{description}
+
+\paragraph{3.3.2 Labels or Instructions (Livello A, Comprensibile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+
+\item[Classificazione] Semi-automatica. La presenza di etichette associate ai campi (tramite \texttt{for}/\texttt{id}, \texttt{aria-label} o \texttt{aria-labelledby}) è rilevabile dal markup; se l'etichetta sia effettivamente comprensibile, completa e adeguata al contesto (ad esempio, istruzioni sul formato atteso per campi complessi) richiede invece un giudizio.
+
+\item[Integrabile con LLM?] Sì: un LLM può giudicare se l'etichetta o l'istruzione associata a un campo è chiara, specifica e sufficiente rispetto a quanto il campo richiede (ad esempio, \enquote{Data} contro \enquote{Data di nascita (gg/mm/aaaa)}), individuando etichette generiche o ambigue e segnalando campi con formati complessi privi di istruzioni.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano la presenza di etichette descrittive, istruzioni sul formato atteso e associazioni programmatiche tra etichette, descrizioni e controlli del modulo: \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G131.html}{G131}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA1.html}{ARIA1}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA9.html}{ARIA9}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA17.html}{ARIA17}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G89.html}{G89}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G184.html}{G184}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G162.html}{G162}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G83.html}{G83}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H90.html}{H90}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H44.html}{H44}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H71.html}{H71}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G167.html}{G167}.
+
+\item[Condizioni d'uso coperte] Permanenti: disabilità cognitive; utenti che usano \emph{screen reader}, per cui l'etichetta è l'unica informazione disponibile senza il contesto visivo del modulo. Situazionali: compilazione di moduli in mobilità o in condizioni di distrazione, dove istruzioni chiare riducono gli errori.
+
+\end{description}
+
+\paragraph{4.1.1 -- Parsing (Livello A, Robusto)}
+
+\textit{Nota:} il criterio 4.1.1 è stato rimosso in WCAG 2.2\footcite{w3c:wcag22-changes}, poiché le specifiche e i browser hanno nel frattempo migliorato la gestione degli errori di parsing e le tecnologie assistive non necessitano più di effettuare direttamente il parsing dell'HTML; inoltre, gli eventuali problemi di accessibilità riconducibili a tali errori sono oggi in larga parte ricondotti ad altri criteri. Questo lavoro fa riferimento a WCAG 2.1 Livello AA (v.~sezione~\ref{sec:livello-aa}), motivo per cui il criterio è comunque incluso in questa analisi preliminare; non sarà tuttavia oggetto di ulteriore sviluppo nei capitoli successivi, essendo già escluso dall'insieme \emph{core} per le ragioni discusse più avanti in questa sezione.
+
+\begin{description}
+\item[Verificabile via HTML statico?] Sì.
+
+\item[Classificazione] Automatica. I requisiti originariamente associati al criterio riguardano la corretta struttura del markup: elementi con tag di apertura e chiusura completi, correttamente annidati, senza attributi duplicati e con \texttt{id} univoci; tali condizioni sono verificabili in modo deterministico da un validatore sintattico standard (ad esempio il W3C Markup Validator).
+
+\item[Integrabile con LLM?] No, il suo eventuale intervento non aggiungerebbe alcun valore rispetto a un parser tradizionale.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano la validazione e la conformità del markup alle specifiche, inclusa la corretta apertura e chiusura dei tag, l'unicità degli \texttt{id} e l'assenza di attributi duplicati: \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G134.html}{G134}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G192.html}{G192}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H88.html}{H88}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H74.html}{H74}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H93.html}{H93}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H94.html}{H94}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H75.html}{H75}.
+
+\item[Condizioni d'uso coperte] Permanenti: utenti che usano \emph{screen reader} e di altre tecnologie assistive, il cui corretto funzionamento presuppone un markup analizzabile senza ambiguità dal motore di parsing sottostante.
+
+\end{description}
+
+\paragraph{Criteri presenti in un solo \emph{report} (1/3)}
+
+\paragraph{1.4.10 Reflow (Livello AA, Percepibile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+\item[Classificazione] Semi-automatica. Alcuni indizi di possibili problemi sono rilevabili attraverso un'analisi statica del CSS, come la presenza di larghezze fisse espresse in unità assolute (\texttt{px}) o alcune scelte CSS che possono ostacolare il riadattamento del layout. Tuttavia, accertare se il contenuto possa essere utilizzato senza perdita di informazioni o funzionalità e senza richiedere lo scorrimento in due dimensioni, quando la finestra di visualizzazione ha una larghezza equivalente a 320 CSS px per i contenuti a scorrimento verticale (o un'altezza equivalente a 256 CSS px per i contenuti a scorrimento orizzontale), richiede il rendering effettivo della pagina a quella dimensione.
+\item[Integrabile con LLM?] Sì, se abbinato ad automazione del browser che renderizzi la pagina alla larghezza equivalente e ne catturi uno screenshot, un LLM multimodale può individuare contenuto tagliato o uno scorrimento orizzontale non necessario. Senza automazione del rendering, il controllo resta limitato ai soli indizi statici nel CSS.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano il riadattamento del layout mediante media query, Flexbox e gestione delle stringhe e dei controlli, oltre a soluzioni che consentano di evitare lo scorrimento orizzontale non necessario: \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C32.html}{C32}; \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C31.html}{C31}; \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C33.html}{C33}; \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C38.html}{C38}; \href{https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR34.html}{SCR34}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G206.html}{G206}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G224.html}{G224}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G225.html}{G225}.
+
+\item[Condizioni d'uso coperte] Permanenti: ipovedenti che necessitano di un forte ingrandimento del contenuto per leggere il testo. Situazionali: consultazione da dispositivo mobile con schermo di piccole dimensioni, o da una finestra desktop ridotta/affiancata ad altre.
+
+\end{description}
+
+\paragraph{1.4.11 Non-text Contrast (Livello AA, Percepibile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+
+\item[Classificazione] Semi-automatica, con lo stesso schema già visto per 1.4.3: se i colori di sfondo e degli elementi grafici sono valori CSS solidi dichiarati, il contrasto dei bordi dei componenti dell'interfaccia (campi di \emph{input}, pulsanti, indicatori di stato) e delle parti grafiche essenziali alla comprensione è calcolabile staticamente. Prima del calcolo è però necessario individuare quali elementi della pagina rientrino effettivamente nell'ambito del criterio, distinguendo i componenti dell'interfaccia e le parti grafiche essenziali alla comprensione dagli elementi che ne sono esclusi; questa valutazione non può essere determinata in modo affidabile dal solo codice CSS.
+
+\item[Integrabile con LLM?] Sì: analogamente a 1.4.3, un LLM multimodale può sia identificare quali elementi dell'interfaccia rientrano nell'ambito del criterio, sia stimare il contrasto su sfondi complessi non calcolabili staticamente, riutilizzando in larga parte la stessa pipeline di analisi già prevista per 1.4.3.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano il contrasto sufficiente dei componenti dell'interfaccia, degli indicatori di focus, delle icone e dei confini tra colori adiacenti: \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G174.html}{G174}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G195.html}{G195}; \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C40.html}{C40}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G207.html}{G207}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G209.html}{G209}.
+
+\item[Condizioni d'uso coperte] Permanenti: ipovedenti e persone con bassa sensibilità al contrasto, per le stesse patologie oculari già indicate per 1.4.3, qui applicate a icone, controlli di modulo e altri componenti grafici dell'interfaccia. Situazionali: luce solare diretta sullo schermo, schermi di scarsa qualità.
+
+\end{description}
+
+\paragraph{2.4.1 -- Bypass Blocks (Livello A, Utilizzabile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Parziale.
+
+\item[Classificazione] Semi-automatica. La presenza di un meccanismo per saltare i blocchi di contenuto ripetuti tramite un collegamento di salto (\emph{skip link}) o un'adeguata struttura di \emph{landmark} ARIA/HTML5 (\texttt{main}, \texttt{nav}) è rilevabile dal markup; giudicare se il meccanismo è effettivamente sufficiente (\emph{landmark} che coprono davvero tutte le sezioni ripetute, etichette distintive quando sono presenti più \emph{landmark} dello stesso tipo) richiede invece un giudizio più fine.
+
+\item[Integrabile con LLM?] Sì: un LLM può analizzare la struttura di \emph{landmark} e di intestazioni di una pagina e giudicare se copre in modo adeguato e distinguibile i blocchi di contenuto ripetuti, individuando casi limite, ad esempio più elementi \texttt{nav} privi di \texttt{aria-label} che li distingua che una semplice verifica di presenza/assenza non coglierebbe.
+
+\item[Tecniche considerate] Le tecniche considerate riguardano la possibilità di saltare i blocchi di contenuto ripetuti attraverso skip link, collegamenti tra aree della pagina, \emph{landmark}, intestazioni o meccanismi di navigazione alternativi: \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G1.html}{G1}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G123.html}{G123}; \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G124.html}{G124}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11.html}{ARIA11}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H69.html}{H69}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H64.html}{H64}; \href{https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR28.html}{SCR28}.
+
+\item[Condizioni d'uso coperte] Permanenti: utenti che usano \emph{screen reader} e utenti che navigano esclusivamente da tastiera, per cui saltare i blocchi ripetuti (intestazione, menu di navigazione) ad ogni pagina evita un onere significativo. Situazionali: navigazione vocale.
+
+\end{description}
+
+\paragraph{3.1.1 Language of Page (Livello A, Comprensibile)}
+
+\begin{description}
+
+\item[Verificabile via HTML statico?] Sì.
+\item[Classificazione] (Prevalentemente) automatica. La presenza dell'attributo \texttt{lang} e la validità del relativo tag lingua (ad esempio \texttt{it}, \texttt{en-US}, secondo BCP~47) sono verifiche di solo markup. Resta un sotto-caso semi-automatico accessorio: verificare che la lingua dichiarata corrisponda davvero al contenuto reale della pagina.
+\item[Integrabile con LLM?] Parziale: il controllo di base non necessita di LLM, trattandosi di puro parsing sintattico. Un LLM è utile solo per il sotto-caso della corrispondenza fra lingua dichiarata e contenuto reale (rilevazione della lingua del testo e confronto con l'attributo \texttt{lang}), un compito semplice ma marginale rispetto al criterio nel suo complesso.
+
+\item[Tecniche considerate] La tecnica considerata riguarda la specificazione della lingua principale della pagina attraverso l'attributo \texttt{lang} dell'elemento HTML: \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H57.html}{H57}.
+
+\item[Condizioni d'uso coperte] Permanenti: utenti che usano \emph{screen reader}, per cui l'attributo serve alla pronuncia corretta da parte del sintetizzatore vocale. Situazionali: utenti che utilizzano strumenti di traduzione automatica della pagina.
+
+\end{description}
+
+{\small
+\begin{longtable}{|p{1.2cm}|p{4.3cm}|p{1.6cm}|p{1.1cm}|p{1.6cm}|p{1.2cm}|}
+\caption{Sintesi dell'analisi dei 13 criteri riscontrati nei \emph{report}} 
+\label{tab:sintesi-analisi} \\ 
+[-0.3em] 
+\multicolumn{6}{p{\dimexpr\linewidth-6\tabcolsep}}{\footnotesize \textit{Nota.} Classificazione: A = automatica, S = semi-automatica, M = manuale. Copertura utenza: P = permanenti, T = temporanee, S = situazionali. } \\
+[0.6em] 
+\hline
+\textbf{Crit.} & \textbf{Nome} & \textbf{Verific.} & \textbf{Class.} & \textbf{Integr. LLM} & \textbf{Copert.} \\
+\hline
+\endfirsthead
+\multicolumn{6}{c}{\textit{Tabella~\ref{tab:sintesi-analisi} -- segue dalla pagina precedente}} \\
+\hline
+\textbf{Crit.} & \textbf{Nome} & \textbf{Verific.} & \textbf{Class.} & \textbf{Integr. LLM} & \textbf{Copert.} \\
+\hline
+\endhead
+\hline
+\multicolumn{6}{r}{\textit{continua nella pagina successiva}} \\
+\endfoot
+\hline
+\endlastfoot
+\multicolumn{6}{|c|}{\textbf{Presenti in tutti e tre i \emph{report} (3/3)}} \\
+\hline
+1.1.1 & Non-text Content & Parziale & S & Sì & P, T, S \\
+\hline
+1.4.3 & Contrast (Minimum) & Parziale & S & Sì & P, T, S \\
+\hline
+2.4.4 & Link Purpose (In Context) & Parziale & S & Sì & P, S \\
+\hline
+4.1.2 & Name, Role, Value & Parziale & S & Sì & P, S \\
+\hline
+\multicolumn{6}{|l|}{\textbf{Presenti in due \emph{report} (2/3)}} \\
+\hline
+1.3.1 & Info and Relationships & Parziale & S & Sì & P, S \\
+\hline
+1.4.1 & Use of Color & Parziale & S & Sì & P, S \\
+\hline
+2.4.7 & Focus Visible & No & S & Sì & P, S \\
+\hline
+3.3.2 & Labels or Instructions & Parziale & S & Sì & P, S \\
+\hline
+4.1.1 & Parsing & Sì & A & No & P \\
+\hline
+\multicolumn{6}{|l|}{\textbf{Presenti in un solo \emph{report} (1/3)}} \\
+\hline
+1.4.10 & Reflow & Parziale & S & Sì & P, S \\
+\hline
+1.4.11 & Non-text Contrast & Parziale & S & Sì & P, S \\
+\hline
+2.4.1 & Bypass Blocks & Parziale & S & Sì & P, S \\
+\hline
+3.1.1 & Language of Page & Sì & A & Parziale & P, S \\
+\hline
+\end{longtable}
+}
+
+\subsection{Selezione finale: criteri \emph{core}, opzionali ed esclusi}
+
+Incrociando i risultati dell'analisi con i criteri di selezione introdotti in apertura di sezione (frequenza, integrabilità con LLM e copertura delle condizioni d'uso) a cui si aggiunge, per i criteri con dati disponibili in entrambe le rilevazioni AGID, l'ampiezza del divario fra la quota di errore rilevata automaticamente e quella confermata dal controllo manuale discussa sopra, i 13 criteri riscontrati nei \emph{report} sono stati infine suddivisi in tre gruppi: \textbf{\emph{core}}, \textbf{opzionali} ed \textbf{esclusi}.
+
+Sono stati selezionati come \textbf{\emph{core}} otto criteri, riassunti nella tabella~\ref{tab:criteri-core}. 
+
+{\small
+\begin{longtable}{|p{0.8cm}|p{2.2cm}|p{2.1cm}|p{1.8cm}|p{5.5cm}|}
+\caption{Criteri di successo selezionati per la verifica sperimentale (insieme \textbf{\emph{core}}).}
+\label{tab:criteri-core} \\
+\hline
+\textbf{Crit.} & \textbf{Nome} & \textbf{Principio} & \textbf{Classific.} & \textbf{Motivazione sintetica} \\
+\hline
+\endfirsthead
+\multicolumn{5}{l}{\textit{Tabella~\ref{tab:criteri-core} -- segue dalla pagina precedente}} \\
+\hline
+\textbf{Crit.} & \textbf{Nome} & \textbf{Principio} & \textbf{Classific.} & \textbf{Motivazione sintetica} \\
+\hline
+\endhead
+\hline
+\multicolumn{5}{r}{\textit{continua nella pagina successiva}} \\
+\endfoot
+\hline
+\endlastfoot
+1.1.1 & Non-text Content & Percepibile & Semi-automatica & Frequenza altissima; copertura utenza completa; caso più ricco di integrazione LLM (confronto visivo-testuale e deduzione del messaggio funzionale). \\
+\hline
+1.4.3 & Contrast (Minimum) & Percepibile & Semi-automatica & Frequenza altissima; quasi interamente calcolabile con formula deterministica, funge da controllo metodologico rispetto ai criteri valutati dall'LLM. \\
+\hline
+1.3.1 & Info and Relationships & Percepibile & Semi-automatica & Divario più marcato fra tutti i criteri dal controllo automatico (1,6\%) a quello manuale (23,2\%, il valore più alto del monitoraggio approfondito); massimo valore aggiunto atteso da un giudizio semantico assistito da LLM, nonostante il maggior costo di scomposizione in sotto-casi. \\
+\hline
+4.1.2 & Name, Role, Value & Robusto & Semi-automatica & Frequenza alta, in forte crescita dall'automatico (1,1\%) al manuale (17,8\%); criterio cardine per l'interazione via screen reader con qualunque widget non nativo. \\
+\hline
+2.4.4 & Link Purpose (In Context) & Utilizzabile & Semi-automatica & Frequenza alta, in crescita dall'automatico (2,3\%) al manuale (11,1\%); compito puramente testuale per l'LLM, basso costo implementativo. \\
+\hline
+3.3.2 & Labels or Instructions & Comprensibile & Semi-automatica & Frequenza alta; stesso pattern LLM di 1.1.1 applicato ai moduli, ne dimostra la generalizzabilità. \\
+\hline
+2.4.7 & Focus Visible & Utilizzabile & Semi-automatica & Criterio con la quota di errore più alta in assoluto fra tutti quelli rilevati (42,4\% nel monitoraggio semplificato AGID); il forte divario con il manuale (2,6\%) resta un'ipotesi da verificare in sede di validazione, non ancora una causa accertata. \\
+\hline
+2.4.1 & Bypass Blocks & Utilizzabile & Semi-automatica & Unico criterio presente esclusivamente nel monitoraggio approfondito (5,1\%), assente dai \emph{report} basati su motori automatici; integrabile con LLM, colma un'ulteriore lacuna dell'automazione. \\
+\hline
+\end{longtable}
+}
+
+Un secondo gruppo di criteri è stato classificato come \textbf{opzionale}: \textbf{1.4.1 (Use of Color)}, \textbf{1.4.10 (Reflow)} e \textbf{1.4.11 (Non-text Contrast)}. Si tratta, in ciascun caso, di criteri che, dal punto di vista della metodologia adottata, appartengono alla stessa famiglia tecnica di uno dei criteri \textbf{\emph{core}} già selezionati e che quindi non introducono un pattern di verifica completamente nuovo rispetto a quelli introdotti dall'insieme \textbf{\emph{core}}.
+
+Sono stati infine \textbf{esclusi} due criteri, in entrambi i casi perché la loro verifica è quasi interamente riconducibile a un controllo sintattico tradizionale, per cui l'apporto di un LLM risulterebbe marginale: \textbf{3.1.1 (Language of Page)}, la cui verifica è prevalentemente riconducibile alla presenza e correttezza formale dell'attributo \texttt{lang}, con un sotto-caso relativo alla corrispondenza fra lingua dichiarata e contenuto reale, e \textbf{4.1.1 (Parsing)}, interamente verificabile da un validatore sintattico HTML standard. Per quest'ultimo, l'esclusione è ulteriormente motivata dal fatto che il criterio è stato rimosso in WCAG 2.2~\footcite{w3c:wcag22-changes}, quindi pur essendo parte del riferimento normativo WCAG 2.1 Livello AA adottato in questo lavoro, non verrà analizzato oltre questa sezione. Entrambi i criteri sono comunque richiamati in questo lavoro come termine di paragone, a evidenziare che non tutti i criteri traggono lo stesso beneficio da un'architettura basata su LLM.
+
+Nella scelta ha pesato anche la complessità implementativa dei singoli criteri, non solo il loro numero. Alcuni dei criteri \textbf{\emph{core}}, come \textbf{1.3.1}, richiedono la gestione di numerosi sotto-casi (intestazioni, liste, tabelle, relazioni implicite fra elementi) e quindi un \emph{prompt engineering} più articolato; altri, come \textbf{2.4.7}, presuppongono l'acquisizione automatizzata dello stato visivo della pagina in condizioni diverse (ad esempio schermate a fuoco spostato fra i vari elementi interattivi), il che richiede funzionalità di automazione del browser aggiuntive rispetto alla sola interrogazione dell'LLM sul markup statico; altri ancora, come \textbf{2.4.4} o \textbf{3.3.2}, si prestano invece a un controllo prevalentemente testuale, con un costo di implementazione contenuto. L'insieme finale di otto criteri è stato quindi calibrato per restare realizzabile entro i tempi previsti, includendo comunque una rappresentanza di criteri a complessità implementativa eterogenea, in modo da non limitare la validazione ai soli casi più semplici.
+\FloatBarrier
