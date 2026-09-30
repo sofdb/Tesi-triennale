@@ -1,23 +1,34 @@
 % Acronyms
-\newacronym{api}{API}{Application Program Interface}
-\newacronym{uml}{UML}{Unified Modeling Language}
+% Queste voci (tipo "acronym") non vanno richiamate con \gls{}, ma con
+% \acr{} o \acrg{} (v. config/thesis_config.tex): tali comandi non usano
+% mai il collegamento ipertestuale nativo di \gls verso l'elenco "Acronimi
+% e abbreviazioni" (per gli acronimi puri non c'è alcun link; per quelli
+% con voce di Glossario associata il link punta invece, "a mano", alla
+% relativa voce "<label>-descrizione", tramite \glshyperlink).
+% La forma estesa (terzo argomento) è racchiusa in \emph{} quando è un
+% termine inglese, per coerenza con la convenzione dei "Termini stranieri"
+% (v. preface/.../convenzioni_tipografiche.tex): l'acronimo/sigla in sé
+% (\glsentryshort) non va mai in corsivo, solo l'eventuale forma estesa
+% inglese che lo accompagna alla prima occorrenza.
+\newacronym{api}{API}{\emph{Application Program Interface}}
+\newacronym{uml}{UML}{\emph{Unified Modeling Language}}
 \newacronym{tsa}{TSA}{Termine solo acronimo}
-\newacronym{wcag}{WCAG}{Web Content Accessibility Guidelines}
+\newacronym{wcag}{WCAG}{\emph{Web Content Accessibility Guidelines}}
 \newacronym{agid}{AGID}{Agenzia per l'Italia Digitale}
-\newacronym{llm}{LLM}{Large Language Model}
-\newacronym{eaa}{EAA}{European Accessibility Act}
-\newacronym{ict}{ICT}{Information and Communication Technology}
-\newacronym{w3c}{W3C}{World Wide Web Consortium}
+\newacronym{llm}{LLM}{\emph{Large Language Model}}
+\newacronym{eaa}{EAA}{\emph{European Accessibility Act}}
+\newacronym{ict}{ICT}{\emph{Information and Communication Technology}}
+\newacronym{w3c}{W3C}{\emph{World Wide Web Consortium}}
 \newacronym{pour}{POUR}{Percepibile, Operabile, Comprensibile, Robusto}
-\newacronym{iso}{ISO}{International Organization for Standardization}
+\newacronym{iso}{ISO}{\emph{International Organization for Standardization}}
 \newacronym{ue}{UE}{Unione Europea}
 \newacronym{uni}{UNI}{Ente Italiano di Normazione}
 \newacronym{cei}{CEI}{Comitato Elettrotecnico Italiano}
 \newacronym{dlgs}{D.Lgs.}{Decreto Legislativo}
-\newacronym{wave}{WAVE}{Web Accessibility Evaluation Tool}
-\newacronym{mauve}{MAUVE}{Multiguideline Accessibility and Usability Validation Environment}
+\newacronym{wave}{WAVE}{\emph{Web Accessibility Evaluation Tool}}
+\newacronym{mauve}{MAUVE}{\emph{Multiguideline Accessibility and Usability Validation Environment}}
 \newacronym{pa}{PA}{Pubblica Amministrazione}
-\newacronym{wcag-em}{WCAG-EM}{Website Accessibility Conformance Evaluation Methodology}
+\newacronym{wcag-em}{WCAG-EM}{\emph{Website Accessibility Conformance Evaluation Methodology}}
 
 % Glossary
 \newglossaryentry{tranco}{
