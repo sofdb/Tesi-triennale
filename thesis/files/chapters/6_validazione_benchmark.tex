@@ -1,12 +1,75 @@
 \chapter{Validazione sperimentale e benchmark}
 \label{chap:validazione-benchmark}
 
-Questo capitolo copre la quarta e ultima settimana del blocco principale dello stage: la validazione sperimentale del prototipo consolidato nel capitolo~\ref{chap:progettazione-prototipo}, a partire dalla costituzione di un benchmark di pagine web su cui condurre i test, fino all'analisi dei risultati ottenuti, dei falsi positivi e falsi negativi, e delle \emph{hallucination} prodotte dai modelli linguistici impiegati.
+Questo capitolo copre la validazione sperimentale del prototipo consolidato nel capitolo~\ref{chap:progettazione-prototipo}, a partire dalla costituzione di un benchmark di pagine web su cui condurre i test, fino all'analisi dei risultati ottenuti, dei falsi positivi e falsi negativi, e delle \emph{hallucination} prodotte dai modelli linguistici impiegati.
 
 \section{Metodologia di validazione e costituzione del benchmark}
 \label{sec:metodologia-validazione}
 
-\todoplaceholder{metodologia di validazione adottata e criteri di costituzione del benchmark di pagine web.}
+\subsection{Selezione dei casi di studio e raccolta dei dati automatici}
+\label{sec:selezione-siti-strumenti}
+
+Il benchmark è composto da 20 pagine web, suddivise in due campioni di pari numerosità.
+
+Il primo campione, di \textbf{10 pagine della \gls{pa}}, è stato selezionato dal patrimonio dati (\emph{open data}) del monitoraggio sull'accessibilità di AGID\footcite{agid:opendata-monitoraggio}, scegliendo pagine appartenenti alle stesse categorie di soggetti monitorati da AGID: comuni, scuole/università e altri enti pubblici. Il secondo campione, di \textbf{10 pagine non-PA}, è stato selezionato fra i domini censiti dal WebAIM Million tramite lo strumento Site Lookup\footcite{webaim:sitelookup}, scegliendo pagine distribuite su categorie eterogenee (\emph{e-commerce}, \emph{news}/\emph{media}, tecnologia, istruzione non-PA, sanità non-PA) in modo da non limitare il confronto a un singolo settore.
+
+Su entrambi i campioni sono stati eseguiti controlli con gli stessi due strumenti automatici usati nei tre \emph{report} di riferimento del capitolo~\ref{chap:metodologia-selezione}, per garantire la comparabilità metodologica dei dati raccolti nel benchmark con quelli dei \emph{report}: \textbf{WAVE}, lo stesso strumento con cui è condotto il WebAIM Million\footcite{wave:extension}, e \textbf{MAUVE}, lo stesso strumento con cui AGID conduce il monitoraggio semplificato\footcite{mauve:extension}. Entrambi sono stati utilizzati nella forma di estensione del browser, in modo da operare sul DOM effettivamente renderizzato dalla pagina e non su un semplice recupero lato server del codice sorgente.
+
+Nel corso della raccolta è emersa una problematica metodologica ricorrente: su alcune pagine, in particolare quelle con contenuto iniettato lato client o con DOM di dimensioni elevate, l'estensione di MAUVE sottostima sensibilmente il numero di errori rilevati rispetto a WAVE, restituendo un numero anomalo di criteri \emph{Not evaluated} a fronte di problemi che WAVE individua correttamente sulla stessa pagina. Per questi casi è stato adottato un protocollo di \emph{fallback}: il DOM renderizzato viene copiato manualmente dal pannello \emph{Elements} degli strumenti di sviluppo del browser (F12) e incollato nella modalità di validazione del codice del validatore web ufficiale di MAUVE\footcite{mauve:single-validation}, anziché affidarsi all'estensione o all'invio diretto dell'URL.
+
+\subsection{Verifica manuale di riferimento}
+\label{sec:verifica-manuale-riferimento}
+
+Per stabilire un \emph{ground truth} su cui misurare l'accuratezza del prototipo, ciascuna pagina del benchmark è stata sottoposta, oltre ai controlli automatici di WAVE e MAUVE, anche a una verifica manuale mirata agli otto criteri \emph{core} e ai tre criteri opzionali individuati nel capitolo~\ref{chap:metodologia-selezione}. La combinazione di controllo automatico e verifica manuale segue l'impostazione della \gls{wcag-em} del W3C, che individua nella verifica umana un passaggio necessario per i casi in cui uno strumento automatico non può accertare la conformità con certezza\footcite{w3c:wcag-em}.
+
+Per ciascun criterio, il protocollo di verifica manuale adottato è derivato direttamente dalle tecniche sufficienti indicate nella documentazione ufficiale del W3C\footcite{w3c:understanding-intro,w3c:quickref}, già richiamate nell'analisi del capitolo~\ref{chap:metodologia-selezione}, qui declinate in un controllo operativo eseguibile su ciascuna pagina del benchmark. La tabella~\ref{tab:protocollo-manuale} riassume, per ogni criterio, in cosa consiste il controllo e la relativa fonte tecnica di riferimento.
+
+{\small
+\begin{longtable}{|p{0.8cm}|p{2.2cm}|p{7cm}|p{2.5cm}|}
+\caption{Protocollo di verifica manuale di riferimento per i criteri \emph{core} e opzionali.}
+\label{tab:protocollo-manuale} \\
+\hline
+\textbf{Crit.} & \textbf{Nome} & \textbf{Controllo manuale di riferimento} & \textbf{Tecniche} \\
+\hline
+\endfirsthead
+\multicolumn{4}{l}{\textit{Tabella~\ref{tab:protocollo-manuale} -- segue dalla pagina precedente}} \\
+\hline
+\textbf{Crit.} & \textbf{Nome} & \textbf{Controllo manuale di riferimento} & \textbf{Tecniche} \\
+\hline
+\endhead
+\hline
+\multicolumn{4}{r}{\textit{continua nella pagina successiva}} \\
+\endfoot
+\hline
+\endlastfoot
+1.1.1 & Non-text Content & Per ogni immagine, verificare che il testo alternativo dichiarato (quando presente) trasmetta lo stesso scopo funzionale dell'immagine nel contesto della pagina, distinguendo i casi di immagine decorativa, informativa o funzionale. & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G94.html}{G94}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H37.html}{H37}, \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6.html}{ARIA6} \\
+\hline
+1.4.3 & Contrast (Minimum) & Individuare la coppia testo/sfondo effettivamente resa a schermo quando lo sfondo non è un colore solido dichiarato (immagini, gradienti, stili calcolati a runtime), e campionare il colore realmente visualizzato per applicare la formula di \gls{luminanza-relativa}. & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G18.html}{G18}, \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G145.html}{G145} \\
+\hline
+1.3.1 & Info and Relationships & Verificare che intestazioni, liste, tabelle e relazioni label/campo percepibili visivamente siano rappresentate correttamente anche a livello semantico nel markup, non solo in modo sintatticamente valido. & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G115.html}{G115}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H42.html}{H42}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H44.html}{H44} \\
+\hline
+4.1.2 & Name, Role, Value & Per ogni componente interattivo non nativo, eseguire l'interazione e verificare che nome accessibile, ruolo e stato (ad esempio \texttt{aria-expanded}, \texttt{aria-checked}) siano esposti e si aggiornino correttamente, non solo che siano dichiarati nel markup statico. & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G108.html}{G108}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H91.html}{H91}, \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16.html}{ARIA16} \\
+\hline
+2.4.4 & Link Purpose (In Context) & Leggere il testo del link nel contesto immediato (frase, paragrafo, cella) e giudicare se lo scopo resta comprensibile anche isolato, come nella modalità \enquote{elenco link} di uno \emph{screen reader}. & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G91.html}{G91}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H30.html}{H30} \\
+\hline
+3.3.2 & Labels or Instructions & Per ogni campo di un modulo, verificare presenza e corretta associazione dell'etichetta (\texttt{<label for>}, \texttt{aria-label}/\texttt{aria-labelledby}) e che le istruzioni (formato richiesto, campi obbligatori) siano esposte in modo programmatico e non solo visivo. & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G131.html}{G131}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H90.html}{H90} \\
+\hline
+2.4.7 & Focus Visible & Navigare l'intera pagina esclusivamente da tastiera (\emph{Tab}/\emph{Shift+Tab}) su ogni elemento interattivo e verificare visivamente che l'indicatore di focus sia presente e sufficientemente distinguibile dallo stato non attivo. & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G149.html}{G149}, \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C15.html}{C15} \\
+\hline
+2.4.1 & Bypass Blocks & Verificare non solo la presenza tecnica di un meccanismo di salto (link \enquote{skip to content}, \emph{landmark} ARIA/HTML5), ma la sua reale utilizzabilità: visibilità al focus, correttezza della destinazione, presenza coerente su tutte le pagine del sito. & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G1.html}{G1}, \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H69.html}{H69} \\
+\hline
+1.4.1 & Use of Color & Individuare i casi in cui un'informazione (stato di errore, campo obbligatorio, link nel testo) è veicolata solo dal colore, senza un secondo indicatore non cromatico (icona, sottolineatura, testo). & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G14.html}{G14}, \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G182.html}{G182} \\
+\hline
+1.4.10 & Reflow & Ridimensionare il \emph{viewport} a 320px (equivalente a zoom 400\%) e verificare l'assenza di scorrimento bidirezionale e di perdita di contenuto o funzionalità. & \href{https://www.w3.org/WAI/WCAG21/Techniques/css/C32.html}{C32}, \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G206.html}{G206} \\
+\hline
+1.4.11 & Non-text Contrast & Stessa logica di 1.4.3, applicata però a componenti d'interfaccia ed elementi grafici essenziali (bordi di campo, icone informative, indicatore di focus). & \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G195.html}{G195}, \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G207.html}{G207} \\
+\hline
+\end{longtable}
+}
+
+Per la maggior parte dei criteri il controllo manuale di riferimento è stato eseguito da chi scrive, ispezionando pagina e markup nel browser; per i criteri 2.4.7 e 1.4.10, che richiedono l'osservazione di uno stato dinamico dell'interfaccia (rispettivamente: navigazione da tastiera e ridimensionamento del \emph{viewport}), la verifica è stata condotta interagendo direttamente con la pagina resa, non sul solo codice sorgente statico.
+
+\todoplaceholder{criteri di costituzione del benchmark di pagine web (numerosità, fonti, composizione PA/non-PA).}
 
 % TODO: come indicato nel Piano di lavoro, la definizione dei casi di studio
 % non è stata vincolata a un singolo progetto di riferimento. In particolare,
