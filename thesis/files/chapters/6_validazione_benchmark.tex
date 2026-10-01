@@ -26,10 +26,11 @@ Per ciascun criterio, il protocollo di verifica manuale adottato è derivato dir
 
 \paragraph*{1.1.1 Non-text Content}
 \begin{description}
-\item[Controllo manuale di riferimento] Per ogni immagine, verificare che il testo alternativo dichiarato (quando presente) trasmetta lo stesso scopo funzionale dell'immagine nel contesto della pagina, distinguendo i casi di immagine decorativa, informativa o funzionale.
-\item[Tecniche] \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G94.html}{G94}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H37.html}{H37}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6.html}{ARIA6}.
+\item[Controllo manuale di riferimento] Per ogni immagine, verificare che il testo alternativo dichiarato (quando presente) trasmetta lo stesso scopo funzionale dell'immagine nel contesto della pagina, distinguendo i casi di immagine decorativa, informativa o funzionale. Distinguere il caso di un'icona accompagnata da un testo adiacente che ne veicola già il significato (l'icona può legittimamente avere \texttt{alt=""} o essere comunque nascosta alla tecnologia assistiva) dal caso di un'icona isolata priva di testo, che deve disporre di un'alternativa testuale propria, pena un fallimento rilevante anche ai fini del criterio 4.1.2 per assenza di nome accessibile. Per i loghi e le immagini non puramente decorative, l'alternativa testuale deve identificarne lo scopo o l'ente di riferimento, non descriverne l'aspetto grafico.
+\item[Tecniche] \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G94.html}{G94}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H37.html}{H37};
+\href{https://www.w3.org/WAI/WCAG22/Techniques/html/H67}{H67}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6.html}{ARIA6}.
 \item[Strumenti] NVDA\footcite{nvda:screenreader}, per ascoltare come il testo alternativo viene annunciato nel contesto della pagina.
-\item[Note / eccezioni] \texttt{alt=""} è corretto per immagini puramente decorative, non un errore: il fallimento riguarda solo le immagini informative o funzionali prive di alternativa adeguata.Includere anche le immagini di sfondo CSS che trasmettono informazioni e le immagini-link (l'alt descrive la destinazione, non l'aspetto).
+\item[Note / eccezioni] \texttt{alt=""} è corretto per immagini puramente decorative, non un errore: il fallimento riguarda solo le immagini informative o funzionali prive di alternativa adeguata. Includere anche le immagini di sfondo CSS che trasmettono informazioni e le immagini-link (l'alt descrive la destinazione, non l'aspetto).
 \end{description}
 
 \paragraph*{1.4.3 Contrast (Minimum)}
@@ -42,15 +43,15 @@ Per ciascun criterio, il protocollo di verifica manuale adottato è derivato dir
 
 \paragraph*{1.3.1 Info and Relationships}
 \begin{description}
-\item[Controllo manuale di riferimento] Verificare che intestazioni, liste, tabelle e relazioni label/campo percepibili visivamente siano rappresentate correttamente anche a livello semantico nel markup, non solo in modo sintatticamente valido.
-\item[Tecniche] \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G115.html}{G115}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H42.html}{H42}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H44.html}{H44}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H48.html}{H48}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H51.html}{H51}.
-\item[Strumenti] NVDA\footcite{nvda:screenreader}, tasto Insert+F7 (elenco di intestazioni, landmark e tabelle); HeadingsMap\footcite{headingsmap:extension}, per visualizzare la gerarchia delle intestazioni H1-H6 e confrontarla con quella visiva.
+\item[Controllo manuale di riferimento] Verificare che intestazioni, liste, tabelle, \emph{landmark} e relazioni label/campo percepibili visivamente siano rappresentate correttamente anche a livello semantico nel markup, non solo in modo sintatticamente valido. Per i \emph{landmark}, verificare che quelli principali (\emph{banner}, \emph{navigation}, \emph{main}, \emph{contentinfo}) siano presenti e che, quando ricorrono più \emph{landmark} dello stesso tipo nella pagina, siano distinguibili fra loro tramite un nome accessibile (\texttt{aria-label}/\texttt{aria-labelledby}), anziché risultare indistinguibili nell'elenco dei \emph{landmark} dello \emph{screen reader}.
+\item[Tecniche] \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G115.html}{G115}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H42.html}{H42}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H44.html}{H44}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H48.html}{H48}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H51.html}{H51}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H69.html}{H69}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11.html}{ARIA11}.
+\item[Strumenti] NVDA\footcite{nvda:screenreader}, tasto Insert+F7 (elenco di intestazioni, \emph{landmark} e tabelle); HeadingsMap\footcite{headingsmap:extension}, per visualizzare la gerarchia delle intestazioni H1-H6 e confrontarla con quella visiva.
 \item[Note / eccezioni] Quando la presentazione visiva è alterata dal posizionamento CSS, verificare inoltre che l'ordine programmatico rispetti la sequenza significativa del contenuto.
 \end{description}
 
 \paragraph*{4.1.2 Name, Role, Value}
 \begin{description}
-\item[Controllo manuale di riferimento] Per ogni componente interattivo non nativo, eseguire l'interazione e verificare che nome accessibile, ruolo e stato (ad esempio \texttt{aria-expanded}, \texttt{aria-checked}) siano esposti e si aggiornino correttamente, non solo che siano dichiarati nel markup statico.
+\item[Controllo manuale di riferimento] Per ogni componente interattivo non nativo, eseguire l'interazione e verificare che nome accessibile, ruolo e stato (ad esempio \texttt{aria-expanded}, \texttt{aria-checked}) siano esposti e si aggiornino correttamente, non solo che siano dichiarati nel markup statico. Considerare fallimento anche il caso in cui l'attributo di stato sia del tutto assente dal markup, non solo quello in cui sia presente ma non venga aggiornato dinamicamente: in entrambi i casi il componente non espone correttamente il proprio stato alla tecnologia assistiva.
 \item[Tecniche] \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G108.html}{G108}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H91.html}{H91}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16.html}{ARIA16}.
 \item[Strumenti] NVDA\footcite{nvda:screenreader}, per ascoltare l'annuncio di ruolo, stato e valore al focus sul componente.
 \item[Note / eccezioni] Dare priorità ai componenti personalizzati più comuni: menu a tendina, finestre di dialogo/modali, tab, accordion, slider, caroselli.
@@ -61,7 +62,7 @@ Per ciascun criterio, il protocollo di verifica manuale adottato è derivato dir
 \item[Controllo manuale di riferimento] Leggere il testo del link nel contesto immediato (frase, paragrafo, cella) e giudicare se lo scopo resta comprensibile anche isolato, come nella modalità \enquote{elenco link} di uno \emph{screen reader}.
 \item[Tecniche] \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G91.html}{G91}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H30.html}{H30}.
 \item[Strumenti] NVDA\footcite{nvda:screenreader}, tasto Insert+F7 \textrightarrow{} elenco link.
-\item[Note / eccezioni] Prestare attenzione ai link generici ripetuti (\enquote{clicca qui}, \enquote{leggi di più}) con testo identico ma destinazioni diverse nella stessa pagina.
+\item[Note / eccezioni] Prestare attenzione ai link generici ripetuti (\enquote{clicca qui}, \enquote{leggi di più}) con testo identico ma destinazioni diverse nella stessa pagina. Un link costituito dal solo logo o nome dell'ente/sito che rimanda alla pagina principale è generalmente accettato per convenzione consolidata, anche quando il testo del link non contiene esplicitamente \enquote{home}; va comunque segnalato come caso limite se il nome non rende ragionevolmente chiaro che si tratti di un collegamento alla pagina principale.
 \end{description}
 
 \paragraph*{3.3.2 Labels or Instructions}
@@ -69,7 +70,7 @@ Per ciascun criterio, il protocollo di verifica manuale adottato è derivato dir
 \item[Controllo manuale di riferimento] Per ogni campo di un modulo, verificare presenza e corretta associazione dell'etichetta (\texttt{<label for>}, \texttt{aria-label}/\\ \texttt{aria-labelledby}) e che le istruzioni (ad esempio formato richiesto e campi obbligatori) siano chiaramente associate al relativo campo e non comunicate esclusivamente attraverso il colore o altri indizi visivi.
 \item[Tecniche] \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G131.html}{G131}; \href{https://www.w3.org/WAI/WCAG21/Techniques/html/H90.html}{H90}.
 \item[Strumenti] NVDA\footcite{nvda:screenreader}, in modalità moduli, per verificare che l'etichetta sia effettivamente annunciata al focus sul campo.
-\item[Note / eccezioni] Pattern di fallimento frequente: \texttt{placeholder} usato al posto di un'etichetta persistente; il placeholder scompare quando il campo riceve il focus o viene compilato e non costituisce quindi un sostituto adeguato dell'etichetta.
+\item[Note / eccezioni] Pattern di fallimento più frequente: \texttt{placeholder} usato al posto di un'etichetta persistente; il placeholder scompare quando il campo riceve il focus o viene compilato e non costituisce quindi un sostituto adeguato dell'etichetta. Un secondo pattern di fallimento da distinguere dal precedente: un testo di aiuto/istruzioni visibile e persistente (non un \texttt{placeholder}) ma non collegato programmaticamente al campo tramite \texttt{aria-describedby}, e di conseguenza non annunciato dallo \emph{screen reader} al focus sul campo.
 \end{description}
 
 \paragraph*{2.4.7 Focus Visible}
@@ -82,7 +83,7 @@ Per ciascun criterio, il protocollo di verifica manuale adottato è derivato dir
 
 \paragraph*{2.4.1 Bypass Blocks}
 \begin{description}
-\item[Controllo manuale di riferimento] Verificare non solo la presenza tecnica di un meccanismo di salto (link \enquote{skip to content}, \emph{landmark} ARIA/HTML5), ma la sua reale utilizzabilità: visibilità al focus e correttezza della destinazione.
+\item[Controllo manuale di riferimento] Verificare non solo la presenza tecnica di un meccanismo di salto (link \enquote{skip to content}, \emph{landmark} ARIA/HTML5), ma la sua reale utilizzabilità: visibilità al focus e correttezza della destinazione. Verificare inoltre che ciascun collegamento disponga di una destinazione effettivamente esistente e raggiungibile e che non siano presenti più meccanismi equivalenti che svolgono la stessa funzione, ma sono presentati con diciture differenti.
 \item[Tecniche] \href{https://www.w3.org/WAI/WCAG21/Techniques/general/G1.html}{G1}; \href{https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11.html}{ARIA11}.
 \item[Strumenti] Test \enquote{Tab stops} di Accessibility Insights for Web\footcite{accessibilityinsights:tabstops}, per verificare che il collegamento di salto sia il primo elemento raggiungibile da tastiera e porti effettivamente a destinazione; NVDA\footcite{nvda:screenreader}, tasto Insert+F7 \textrightarrow{} elenco landmark, per verificarne l'effettiva esposizione allo screen reader.
 \item[Note / eccezioni] Il benchmark include una sola pagina per sito: la coerenza del meccanismo su più pagine dello stesso sito non rientra quindi nell'ambito della verifica, che si limita a presenza e usabilità del meccanismo sulla pagina campionata.
