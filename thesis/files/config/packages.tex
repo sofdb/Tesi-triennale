@@ -46,9 +46,7 @@
 % aggirando così del tutto la restrizione dello shell escape di MiKTeX.
 \usepackage[toc, acronym]{glossaries}
 \usepackage[backend=biber, style=ieee, hyperref=false, backref=true, defernumbers=true]{biblatex} % stile IEEE per le fonti non giuridiche; citazioni non cliccabili nel testo (v. thesis_config.tex). Le fonti giuridiche restano escluse da questo stile e sono gestite da \legfootcite (v. thesis_config.tex). defernumbers=true: la bibliografia è divisa in più sezioni (Bibliografia: Testi/Articoli/Normativa; Sitografia: Siti), quindi la numerazione IEEE va calcolata solo alla fine per restare coerente tra le sezioni
-\usepackage{xurl} % va caricato DOPO biblatex: controlla se biblatex è già attivo per impostare
-                   % le penalità biburllcpenalty/biburlucpenalty/biburlnumpenalty, che permettono
-                   % a biblatex di spezzare l'URL anche dopo lettere minuscole/maiuscole o cifre
+\usepackage{xurl} % permette di spezzare gli URL (es. in Sitografia) in un punto qualsiasi, non solo dopo "/" "." "-", evitando che sforino il margine quando contengono sequenze lunghe senza separatori (es. ID di estensione Chrome). Va caricato DOPO biblatex: xurl verifica con \@ifpackageloaded{biblatex} se biblatex è già attivo per impostare le penalità biburllcpenalty/biburlucpenalty/biburlnumpenalty (che permettono a biblatex di spezzare l'URL anche dopo lettere minuscole/maiuscole o cifre, non solo dopo "/" "." "-"); caricato prima di biblatex, quel controllo fallisce e le URL lunghe senza separatori continuano a sforare
 \usepackage{lmodern}
 \usepackage[top=3cm, bottom=3cm, inner=3.5cm, outer=2.5cm]{geometry} % margini specchiati per la rilegatura (richiede twoside nella \documentclass)
 \usepackage{parskip} % paragrafi separati da spazio verticale, senza rientro di prima riga
@@ -58,6 +56,7 @@
 \usepackage{titlesec}
 \usepackage[cachedir=minted-caches]{minted} % https://it.overleaf.com/learn/latex/Code_Highlighting_with_minted
 \usepackage{xcolor}
+\usepackage{soul} % \hl{...}, per evidenziare il testo con uno sfondo colorato (v. \corr in thesis_config.tex); a differenza di \colorbox si spezza correttamente a fine riga
 \usepackage{newunicodechar} % permette di "disinnescare" caratteri Unicode invisibili incollati per errore (vedi thesis_config.tex)
 \usepackage{csquotes} % gestisce automaticamente i caratteri (")
 \usepackage{etoolbox}

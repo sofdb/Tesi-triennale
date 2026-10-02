@@ -63,6 +63,21 @@
 % Placeholder visibile per le parti non ancora scritte
 \newcommand{\todoplaceholder}[1]{\par\noindent\textcolor{red!65!black}{\textbf{[DA COMPLETARE]} #1}\par}
 
+% Evidenziazione delle correzioni apportate in risposta alle revisioni della
+% tutor universitaria, per rendere visibili le differenze rispetto all'invio
+% precedente (richiesto esplicitamente dalla Prof.ssa Gaggi: "I prossimi invii
+% dovranno evidenziare le differenze"). Avvolgere il testo modificato/aggiunto
+% con \corr{...}: lo sfondo (non il colore del testo) viene evidenziato in
+% azzurro pastello tramite \hl del pacchetto soul (v. packages.tex), che a
+% differenza di \colorbox si spezza correttamente a fine riga/pagina.
+\definecolor{correzione}{RGB}{204, 230, 244} % azzurro pastello
+\sethlcolor{correzione}
+% PER LA CONSEGNA FINALE: non serve cercare/rimuovere \corr{...} nel testo,
+% basta commentare la riga seguente e scommentare quella successiva (identità,
+% nessuna evidenziazione) per far sparire tutte le evidenziazioni in un colpo solo.
+\newcommand{\corr}[1]{\hl{#1}} % <- versione "revisione": evidenzia
+% \newcommand{\corr}[1]{#1} % <- versione "consegna finale": nessuna evidenziazione (scommentare e commentare quella sopra)
+
 % Comando di citazione per le fonti giuridiche (leggi, decreti, direttive):
 % stampa il campo "usera" del file .bib (tipo di atto, data completa, numero)
 % invece della citazione autore-anno/numerica, mantenendo comunque il
@@ -116,12 +131,22 @@
 % stesso \footcite (es. \footcite{a,b,c}), a differenza della variante
 % "numeric-comp": non è un problema per il presente lavoro, dove ogni nota
 % a piè di pagina cita di norma una sola fonte per volta.
+% NOTA SULL'ORDINE: il numero viene stampato PRIMA della prenote (es.
+% "[16] Sono le Sufficient Techniques...") anziché dopo (es. "Sono le
+% Sufficient Techniques...[16]."), a differenza della normale convenzione
+% editoriale. Questo perché, quando il numero viene stampato DOPO una
+% prenote, biblatex lascia uno spazio "differito" (il suo meccanismo
+% interno di tracciamento della punteggiatura, legato a \isdot/\space in
+% \usebibmacro{prenote}) che \printfield scarica proprio davanti al
+% numero, producendo "[ 16]" invece di "[16]" (bug riproducibile sia su
+% TeX Live sia su MiKTeX). Stampando il numero per primo, senza alcun
+% testo differito prima di esso, il problema non si presenta.
 \DeclareCiteCommand{\footcite}[\mkbibfootnote]
-  {\usebibmacro{prenote}}
+  {}
   {\usebibmacro{citeindex}%
-   \bibopenbracket
-   \printtext[bibhyperref]{\printfield{labelprefix}\printfield{labelnumber}}
-   \bibclosebracket}
+   \mbox{\bibopenbracket\printtext[bibhyperref]{\printfield{labelprefix}\printfield{labelnumber}}\bibclosebracket}% \mbox: evita che "[N]" si spezzi su due righe
+   \iffieldundef{prenote}{}{\space\printfield{prenote}\isdot}% prenote dopo il numero, con punto finale se mancante
+   }
   {\multicitedelim}
   {\usebibmacro{postnote}}
 
@@ -182,7 +207,7 @@
 \fancyfoot[C]{\thepage} % Page number in the center of the footer
 
 % Adds a blank page while increasing the page number
-\newcommand\blankpage{ 
+\newcommand\blankpage{
 \clearpage
     \begingroup
     \null
